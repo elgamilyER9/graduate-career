@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+use App\Models\University;
+use App\Models\Faculty;
+use App\Models\CareerPath;
+
 class ProfileController extends Controller
 {
     /**
@@ -18,6 +22,9 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'universities' => University::all(),
+            'faculties' => Faculty::all(),
+            'careerPaths' => CareerPath::all(),
         ]);
     }
 
@@ -48,13 +55,21 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        try {
+            \Illuminate\Support\Facades\Log::info('User Deletion Started: ' . $user->id);
 
-        $user->delete();
+            Auth::logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            // Ensure we handle potential session-related issues
+            $user->delete();
 
-        return Redirect::to('/');
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return Redirect::to('/')->with('success', 'Your account has been deleted successfully.');
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('User Deletion Failed: ' . $user->id . ' - Error: ' . $e->getMessage());
+            return back()->with('error', 'Could not delete account. There might be related records preventing this action.');
+        }
     }
 }

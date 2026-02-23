@@ -3,63 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faculty;
+use App\Models\University;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $faculties = Faculty::with('university')->latest()->get();
+        return view('faculties.index', compact('faculties'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $universities = University::all();
+        return view('faculties.create', compact('universities'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'university_id' => 'required|exists:universities,id',
+        ]);
+
+        Faculty::create($request->all());
+
+        return redirect()->route('faculties.index')->with('success', 'Faculty created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Faculty $faculty)
     {
-        //
+        $faculty->load('university');
+        return view('faculties.show', compact('faculty'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Faculty $faculty)
     {
-        //
+        $universities = University::all();
+        return view('faculties.edit', compact('faculty', 'universities'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Faculty $faculty)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'university_id' => 'required|exists:universities,id',
+        ]);
+
+        $faculty->update($request->all());
+
+        return redirect()->route('faculties.index')->with('success', 'Faculty updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Faculty $faculty)
     {
-        //
+        $faculty->delete();
+        return redirect()->route('faculties.index')->with('success', 'Faculty deleted successfully.');
     }
 }

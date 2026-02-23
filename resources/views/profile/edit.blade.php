@@ -1,29 +1,81 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
+@section('content')
+    <div class="container py-5">
+        <!-- Admin Shortcut -->
+        @if(Auth::user()->role === 'admin')
+            <div class="row justify-content-center mb-4">
+                <div class="col-12 col-lg-9 animate__animated animate__fadeInDown">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 text-white"
+                        style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="fw-bold mb-1">Admin Dashboard Quick Access</h4>
+                                <p class="text-white-50 mb-0 small">Access all management tools and configurations.</p>
+                            </div>
+                            <a href="{{ route('home') }}" class="btn btn-light rounded-pill px-4 fw-bold shadow-sm">
+                                <i class="bi bi-speedometer2 me-2"></i> Go to Dashboard
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+        @endif
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9">
+                <div class="d-flex align-items-center mb-4 animate__animated animate__fadeInLeft">
+                    <h2 class="fw-bold text-dark mb-0">Profile <span class="text-primary">Settings</span></h2>
                 </div>
-            </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
+                <div class="space-y-6">
+                    <!-- Profile Information -->
+                    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 animate__animated animate__fadeInUp"
+                        style="animation-delay: 0.1s;">
+                        @include('profile.partials.update-profile-information-form')
+                    </div>
+
+                    <!-- Update Password -->
+                    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 animate__animated animate__fadeInUp"
+                        style="animation-delay: 0.2s;">
+                        @include('profile.partials.update-password-form')
+                    </div>
+
+                    <!-- Delete Account -->
+                    <div class="card border-0 shadow-sm rounded-4 p-4 animate__animated animate__fadeInUp"
+                        style="animation-delay: 0.3s;">
+                        @include('profile.partials.delete-user-form')
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+
+    <style>
+        .space-y-6>*+* {
+            margin-top: 1.5rem;
+        }
+
+        .form-control,
+        .form-select {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #0D6EFD;
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if ($errors->userDeletion->any())
+                const modal = new bootstrap.Modal(document.getElementById('confirmUserDeletionModal'));
+                modal.show();
+            @endif
+            });
+    </script>
+@endsection

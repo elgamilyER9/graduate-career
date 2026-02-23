@@ -3,63 +3,64 @@
 namespace App\Http\Controllers;
 
 use App\Models\Training;
+use App\Models\CareerPath;
 use Illuminate\Http\Request;
 
 class TrainingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $trainings = Training::with('careerPath')->latest()->get();
+        return view('trainings.index', compact('trainings'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $careerPaths = CareerPath::all();
+        return view('trainings.create', compact('careerPaths'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'provider' => 'required|string|max:255',
+            'career_path_id' => 'required|exists:career_paths,id',
+        ]);
+
+        Training::create($request->all());
+
+        return redirect()->route('trainings.index')->with('success', 'Training created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Training $training)
     {
-        //
+        $training->load('careerPath');
+        return view('trainings.show', compact('training'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Training $training)
     {
-        //
+        $careerPaths = CareerPath::all();
+        return view('trainings.edit', compact('training', 'careerPaths'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Training $training)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'provider' => 'required|string|max:255',
+            'career_path_id' => 'required|exists:career_paths,id',
+        ]);
+
+        $training->update($request->all());
+
+        return redirect()->route('trainings.index')->with('success', 'Training updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Training $training)
     {
-        //
+        $training->delete();
+        return redirect()->route('trainings.index')->with('success', 'Training deleted successfully.');
     }
 }

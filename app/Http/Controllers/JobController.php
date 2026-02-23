@@ -3,63 +3,81 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use App\Models\CareerPath;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $jobTitles = [
+        'Backend Developer',
+        'Frontend Developer',
+        'Full Stack Developer',
+        'Mobile Developer',
+        'UI/UX Designer',
+        'Data Scientist',
+        'DevOps Engineer',
+        'Quality Assurance (QA)',
+        'Digital Marketer',
+        'Project Manager',
+        'Graphic Designer',
+        'HR Specialist'
+    ];
+
     public function index()
     {
-        //
+        $jobs = Job::with('careerPath')->latest()->get();
+        return view('jobs.index', compact('jobs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $careerPaths = CareerPath::all();
+        $jobTitles = $this->jobTitles;
+        return view('jobs.create', compact('careerPaths', 'jobTitles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'company' => 'required|string|max:255',
+            'career_path_id' => 'required|exists:career_paths,id',
+        ]);
+
+        Job::create($request->all());
+
+        return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Job $job)
     {
-        //
+        $job->load('careerPath');
+        return view('jobs.show', compact('job'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Job $job)
     {
-        //
+        $careerPaths = CareerPath::all();
+        $jobTitles = $this->jobTitles;
+        return view('jobs.edit', compact('job', 'careerPaths', 'jobTitles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Job $job)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'company' => 'required|string|max:255',
+            'career_path_id' => 'required|exists:career_paths,id',
+        ]);
+
+        $job->update($request->all());
+
+        return redirect()->route('jobs.index')->with('success', 'Job updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Job $job)
     {
-        //
+        $job->delete();
+        return redirect()->route('jobs.index')->with('success', 'Job deleted successfully.');
     }
 }

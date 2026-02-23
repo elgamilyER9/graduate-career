@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\University;
+use App\Models\Faculty;
+use App\Models\CareerPath;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +23,11 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $universities = University::all();
+        $faculties = Faculty::all();
+        $careerPaths = CareerPath::all();
+
+        return view('auth.register', compact('universities', 'faculties', 'careerPaths'));
     }
 
     /**
@@ -32,14 +39,26 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:user,mentor'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'bio' => ['nullable', 'string', 'max:1000'],
+            'university_id' => ['nullable', 'exists:universities,id'],
+            'faculty_id' => ['nullable', 'exists:faculties,id'],
+            'career_path_id' => ['nullable', 'exists:career_paths,id'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'phone' => $request->phone,
+            'bio' => $request->bio,
+            'university_id' => $request->university_id,
+            'faculty_id' => $request->faculty_id,
+            'career_path_id' => $request->career_path_id,
         ]);
 
         event(new Registered($user));

@@ -7,59 +7,55 @@ use Illuminate\Http\Request;
 
 class CareerPathController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $careerPaths = CareerPath::latest()->get();
+        return view('career_paths.index', compact('careerPaths'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('career_paths.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:career_paths',
+            'description' => 'nullable|string',
+        ]);
+
+        CareerPath::create($request->all());
+
+        return redirect()->route('career_paths.index')->with('success', 'Career Path created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(CareerPath $careerPath)
     {
-        //
+        $careerPath->load(['jobs', 'skills', 'trainings']);
+        return view('career_paths.show', compact('careerPath'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(CareerPath $careerPath)
     {
-        //
+        return view('career_paths.edit', compact('careerPath'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, CareerPath $careerPath)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:career_paths,name,' . $careerPath->id,
+            'description' => 'nullable|string',
+        ]);
+
+        $careerPath->update($request->all());
+
+        return redirect()->route('career_paths.index')->with('success', 'Career Path updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(CareerPath $careerPath)
     {
-        //
+        $careerPath->delete();
+        return redirect()->route('career_paths.index')->with('success', 'Career Path deleted successfully.');
     }
 }

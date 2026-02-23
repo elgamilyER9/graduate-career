@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'phone',
+        'bio',
         'university_id',
         'faculty_id',
         'career_path_id',
@@ -41,6 +43,41 @@ class User extends Authenticatable
     public function careerPath()
     {
         return $this->belongsTo(CareerPath::class);
+    }
+
+    /**
+     * Mentorship Relationships
+     */
+    public function sentRequests()
+    {
+        return $this->hasMany(MentorshipRequest::class, 'user_id');
+    }
+
+    public function receivedRequests()
+    {
+        return $this->hasMany(MentorshipRequest::class, 'mentor_id');
+    }
+
+    public function mentees()
+    {
+        return $this->belongsToMany(User::class, 'mentorship_requests', 'mentor_id', 'user_id')
+            ->wherePivot('status', 'approved');
+    }
+
+    public function mentors()
+    {
+        return $this->belongsToMany(User::class, 'mentorship_requests', 'user_id', 'mentor_id')
+            ->wherePivot('status', 'approved');
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            // Manually clear mentorship requests if needed (although cascade should handle it)
+            \App\Models\MentorshipRequest::where('user_id', $user->id)
+                ->orWhere('mentor_id', $user->id)
+                ->delete();
+        });
     }
 
     /**
