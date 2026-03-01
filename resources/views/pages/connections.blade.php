@@ -11,9 +11,24 @@
     </div>
 
     <div class="row g-4">
-        @forelse($connections as $conn)
+        @forelse($connections as $targetUser)
             @php
-                $targetUser = Auth::user()->role === 'mentor' ? $conn->student : $conn->mentor;
+                // Determine relationship badge
+                $badgeText = __('Community');
+                if (auth()->user()->role === 'mentor') {
+                    // check if this user is a mentee
+                    $isMentee = \App\Models\MentorshipRequest::where('mentor_id', auth()->id())
+                        ->where('user_id', $targetUser->id)
+                        ->where('status', 'approved')
+                        ->exists();
+                    if ($isMentee) $badgeText = __('Mentee');
+                } else {
+                    $isMentor = \App\Models\MentorshipRequest::where('user_id', auth()->id())
+                        ->where('mentor_id', $targetUser->id)
+                        ->where('status', 'approved')
+                        ->exists();
+                    if ($isMentor) $badgeText = __('Mentor');
+                }
             @endphp
             <div class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: {{ $loop->index * 0.1 }}s">
                 <div class="card border-0 shadow-lg rounded-4 overflow-hidden transition-all duration-300 hover-translate-y-n3 h-100 p-4">
@@ -26,7 +41,7 @@
                         <div class="ms-3">
                             <h5 class="fw-bold text-dark mb-0">{{ $targetUser->name }}</h5>
                             <span class="badge bg-primary-subtle text-primary rounded-pill small fw-semibold text-uppercase mt-1" style="font-size: 0.65rem;">
-                                {{ Auth::user()->role === 'mentor' ? __('Mentee') : __('Mentor') }}
+                                {{ $badgeText }}
                             </span>
                         </div>
                     </div>
@@ -37,8 +52,8 @@
                             <span class="text-dark small fw-semibold">{{ $targetUser->faculty->name ?? __('Unknown') }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span class="text-muted small fw-bold text-uppercase">{{ __('Connected Since') }}</span>
-                            <span class="text-dark small fw-semibold">{{ $conn->updated_at->format('M d, Y') }}</span>
+                            <span class="text-muted small fw-bold text-uppercase">{{ __('Member Since') }}</span>
+                            <span class="text-dark small fw-semibold">{{ $targetUser->created_at->format('M d, Y') }}</span>
                         </div>
                     </div>
 
@@ -47,9 +62,20 @@
                             class="btn btn-primary rounded-pill flex-grow-1 fw-bold shadow-sm py-2">
                             <i class="bi bi-envelope-at me-2"></i> {{ __('Email') }}
                         </a>
-                        <button class="btn btn-light rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;" title="Chat">
+                        @php
+                            $unreadFrom = \App\Models\Message::where('sender_id', $targetUser->id)
+                                ->where('receiver_id', auth()->id())
+                                ->where('read', false)
+                                ->count();
+                        @endphp
+                        <a href="{{ route('messages.show', $targetUser) }}"
+                            class="btn btn-light rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center position-relative"
+                            style="width: 44px; height: 44px;" title="{{ __('Chat with :name', ['name' => $targetUser->name]) }}">
                             <i class="bi bi-chat-dots-fill text-primary mt-1"></i>
-                        </button>
+                            @if($unreadFrom)
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                            @endif
+                        </a>
                     </div>
                 </div>
             </div>

@@ -44,6 +44,8 @@
             background-color: rgba(255, 255, 255, 0.8) !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             padding: 0.75rem 0;
+            z-index: 1030;
+            /* ensure navbar stays above other elements */
         }
 
         .navbar-brand {
@@ -53,6 +55,11 @@
             color: #0f172a !important;
             display: flex;
             align-items: center;
+        }
+
+        .navbar-toggler {
+            z-index: 1040;
+            /* ensure toggler is above dropdowns */
         }
 
         .brand-logo {
@@ -245,7 +252,7 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light sticky-top">
-            <div class="container">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <div class="brand-logo">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -270,7 +277,13 @@
                     <ul class="navbar-nav me-auto">
                         @auth
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                                <a class="nav-link {{ request()->routeIs('front') ? 'active text-primary fw-bold' : '' }}"
+                                    href="{{ route('front') }}">
+                                    <i class="bi bi-house-door-fill me-1"></i> {{ __('Home') }}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('home') ? 'active fw-bold' : '' }}"
                                     href="{{ route('home') }}">
                                     <i class="bi bi-grid-fill me-1"></i> {{ __('Dashboard') }}
                                 </a>
@@ -293,6 +306,14 @@
                                     <i class="bi bi-globe me-1"></i> {{ __('Community') }}
                                 </a>
                             </li>
+                            @if(auth()->user()->role === 'mentor')
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold px-3 {{ request()->routeIs('job_applications.index') ? 'active text-primary' : '' }}"
+                                        href="{{ route('job_applications.index') }}">
+                                        <i class="bi bi-file-earmark-text me-1"></i> {{ __('Job Applications') }}
+                                    </a>
+                                </li>
+                            @endif
                             @if(Auth::user()->role === 'admin' || Auth::user()->role === 'mentor')
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -317,6 +338,12 @@
                                         <li><a class="dropdown-item" href="{{ route('trainings.index') }}"><i
                                                     class="bi bi-mortarboard me-2 text-danger"></i> {{ __('Trainings') }}</a>
                                         </li>
+                                        <li><a class="dropdown-item" href="{{ route('search.advanced') }}"><i
+                                                    class="bi bi-search me-2 text-secondary"></i> {{ __('Advanced Search') }}</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('files.index') }}"><i
+                                                    class="bi bi-folder-fill me-2 text-info"></i> {{ __('Files') }}</a>
+                                        </li>
                                         @if(Auth::user()->role === 'admin')
                                             <li>
                                                 <hr class="dropdown-divider opacity-50">
@@ -334,6 +361,21 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto align-items-center">
+                        <!-- Language Switcher -->
+                        <li class="nav-item me-3">
+                            @if(app()->getLocale() == 'ar')
+                                <a class="nav-link fw-bold btn btn-light rounded-pill px-3 py-1 border shadow-sm d-flex align-items-center gap-2 hover-scale transition-all"
+                                    href="{{ route('lang.switch', 'en') }}" title="English">
+                                    <i class="bi bi-globe2 text-primary"></i> <span style="font-size: 0.9rem;">EN</span>
+                                </a>
+                            @else
+                                <a class="nav-link fw-bold btn btn-light rounded-pill px-3 py-1 border shadow-sm d-flex align-items-center gap-2 hover-scale transition-all"
+                                    href="{{ route('lang.switch', 'ar') }}" title="العربية">
+                                    <i class="bi bi-globe2 text-primary"></i> <span
+                                        style="font-size: 0.9rem; font-family: 'Cairo', sans-serif;">عربي</span>
+                                </a>
+                            @endif
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -348,6 +390,43 @@
                                 </li>
                             @endif
                         @else
+                            @php
+                                $unread = \App\Models\Message::where('receiver_id', auth()->id())->where('read', false)->count();
+                                $unreadNotifications = \App\Models\Notification::where('user_id', auth()->id())->where('read', false)->count();
+                            @endphp
+                            <!-- Search Bar -->
+                            <li class="nav-item me-2 d-none d-md-block">
+                                <form action="{{ route('search.index') }}" method="GET" class="d-flex">
+                                    <input type="text" name="q" class="form-control form-control-sm rounded-pill px-3" 
+                           placeholder="{{ __('Search...') }}" style="width: 180px;">
+                                </form>
+                            </li>
+                            <!-- Notifications -->
+                            <li class="nav-item me-2">
+                                <a class="nav-link position-relative" href="{{ route('notifications.index') }}"
+                                    title="{{ __('Notifications') }}">
+                                    <i class="bi bi-bell-fill fs-5"></i>
+                                    @if($unreadNotifications)
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
+                                            {{ $unreadNotifications }}
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
+                            <!-- Messages -->
+                            <li class="nav-item me-2">
+                                <a class="nav-link position-relative" href="{{ route('connections.index') }}"
+                                    title="{{ __('Messages') }}">
+                                    <i class="bi bi-chat-dots-fill fs-5"></i>
+                                    @if($unread)
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {{ $unread }}
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                                     role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -362,10 +441,13 @@
                                 <div class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn animate__faster"
                                     aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item d-flex align-items-center" href="{{ route('home') }}">
-                                        <i class="bi bi-grid-fill me-2 text-primary"></i> {{ __('Dashboard') }}
+                                        <i class="bi bi-house-door-fill me-2 text-primary"></i> {{ __('Home') }}
                                     </a>
                                     <a class="dropdown-item d-flex align-items-center" href="{{ route('profile.edit') }}">
                                         <i class="bi bi-person-circle me-2 text-muted"></i> {{ __('Profile Settings') }}
+                                    </a>
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('files.index') }}">
+                                        <i class="bi bi-file-earmark-arrow-up me-2 text-success"></i> {{ __('My Files') }}
                                     </a>
                                     <hr class="dropdown-divider opacity-50">
                                     <a class="dropdown-item d-flex align-items-center text-danger"

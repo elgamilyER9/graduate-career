@@ -79,7 +79,42 @@
                                 @enderror
                             </div>
 
-                            @if(request('role') === 'user' || !request('role'))
+                            <div class="col-12">
+                                <label for="career_path_id"
+                                    class="form-label fw-bold text-muted small mb-1">{{ __('CAREER PATH / EXPERTISE') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i
+                                            class="bi bi-signpost-split text-muted"></i></span>
+                                    <select name="career_path_id" id="career_path_id"
+                                        class="form-select bg-light border-0 @error('career_path_id') is-invalid @enderror">
+                                        <option value="">{{ __('Select Career Path') }}</option>
+                                        @foreach ($careerPaths as $path)
+                                            <option value="{{ $path->id }}" {{ old('career_path_id') == $path->id ? 'selected' : '' }}>{{ $path->name }}
+                                            </option>
+                                        @endforeach
+                                        <option value="other" {{ old('career_path_id') == 'other' ? 'selected' : '' }}>
+                                            {{ __('Other...') }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div id="other_career_path_container"
+                                    class="mt-2 {{ old('career_path_id') == 'other' ? '' : 'd-none' }}">
+                                    <input type="text" name="other_career_path" id="other_career_path"
+                                        class="form-control bg-light border-0 py-2 @error('other_career_path') is-invalid @enderror"
+                                        placeholder="{{ __('Enter Specialty/Field Name') }}"
+                                        value="{{ old('other_career_path') }}">
+                                    @error('other_career_path')
+                                        <span class="invalid-feedback d-block mt-1"
+                                            role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                                </div>
+                                @error('career_path_id')
+                                    <span class="invalid-feedback d-block mt-2"
+                                        role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                            </div>
+
+                            @if (request('role') === 'user' || !request('role'))
                                 <div class="col-12">
                                     <label for="university_id"
                                         class="form-label fw-bold text-muted small mb-1">{{ __('UNIVERSITY') }}</label>
@@ -89,10 +124,26 @@
                                         <select name="university_id" id="university_id"
                                             class="form-select bg-light border-0 @error('university_id') is-invalid @enderror">
                                             <option value="">{{ __('Select University') }}</option>
-                                            @foreach($universities as $university)
-                                                <option value="{{ $university->id }}" {{ old('university_id') == $university->id ? 'selected' : '' }}>{{ $university->name }}</option>
+                                            @foreach ($universities as $university)
+                                                <option value="{{ $university->id }}" {{ old('university_id') == $university->id ? 'selected' : '' }}>
+                                                    {{ $university->name }}
+                                                </option>
                                             @endforeach
+                                            <option value="other" {{ old('university_id') == 'other' ? 'selected' : '' }}>
+                                                {{ __('Other...') }}
+                                            </option>
                                         </select>
+                                    </div>
+                                    <div id="other_university_container"
+                                        class="mt-2 {{ old('university_id') == 'other' ? '' : 'd-none' }}">
+                                        <input type="text" name="other_university" id="other_university"
+                                            class="form-control bg-light border-0 py-2 @error('other_university') is-invalid @enderror"
+                                            placeholder="{{ __('Enter University Name') }}"
+                                            value="{{ old('other_university') }}">
+                                        @error('other_university')
+                                            <span class="invalid-feedback d-block mt-1"
+                                                role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
                                     </div>
                                     @error('university_id')
                                         <span class="invalid-feedback d-block mt-2"
@@ -109,44 +160,108 @@
                                         <select name="faculty_id" id="faculty_id"
                                             class="form-select bg-light border-0 @error('faculty_id') is-invalid @enderror">
                                             <option value="">{{ __('Select Faculty') }}</option>
-                                            @foreach($faculties as $faculty)
+                                            @foreach ($faculties as $faculty)
                                                 <option value="{{ $faculty->id }}" data-university="{{ $faculty->university_id }}"
                                                     {{ old('faculty_id') == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}
                                                 </option>
                                             @endforeach
+                                            <option value="other" {{ old('faculty_id') == 'other' ? 'selected' : '' }}>
+                                                {{ __('Other...') }}
+                                            </option>
                                         </select>
+                                    </div>
+                                    <div id="other_faculty_container"
+                                        class="mt-2 {{ old('faculty_id') == 'other' ? '' : 'd-none' }}">
+                                        <input type="text" name="other_faculty" id="other_faculty"
+                                            class="form-control bg-light border-0 py-2 @error('other_faculty') is-invalid @enderror"
+                                            placeholder="{{ __('Enter Faculty Name') }}" value="{{ old('other_faculty') }}">
+                                        @error('other_faculty')
+                                            <span class="invalid-feedback d-block mt-1"
+                                                role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
                                     </div>
                                     @error('faculty_id')
                                         <span class="invalid-feedback d-block mt-2"
                                             role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
-
-                                <div class="col-12">
-                                    <label for="career_path_id"
-                                        class="form-label fw-bold text-muted small mb-1">{{ __('CAREER PATH') }}</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-0"><i
-                                                class="bi bi-signpost-split text-muted"></i></span>
-                                        <select name="career_path_id" id="career_path_id"
-                                            class="form-select bg-light border-0 @error('career_path_id') is-invalid @enderror">
-                                            <option value="">{{ __('Select Career Path') }}</option>
-                                            @foreach($careerPaths as $path)
-                                                <option value="{{ $path->id }}" {{ old('career_path_id') == $path->id ? 'selected' : '' }}>{{ $path->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('career_path_id')
-                                        <span class="invalid-feedback d-block mt-2"
-                                            role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
-                                </div>
                             @endif
 
-                            @if(request('role') === 'mentor')
+                            <div class="col-12">
+                                <label for="linkedin_url"
+                                    class="form-label fw-bold text-muted small mb-1">{{ __('LINKEDIN URL') }}</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-0"><i
+                                            class="bi bi-linkedin text-muted"></i></span>
+                                    <input id="linkedin_url" type="text"
+                                        class="form-control bg-light border-0 py-2 @error('linkedin_url') is-invalid @enderror"
+                                        name="linkedin_url" value="{{ old('linkedin_url') }}"
+                                        placeholder="https://linkedin.com/in/username">
+                                </div>
+                                @error('linkedin_url')
+                                    <span class="invalid-feedback d-block mt-2" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            @if (request('role') === 'mentor')
+                                <div class="col-md-6">
+                                    <label for="job_title"
+                                        class="form-label fw-bold text-muted small mb-1">{{ __('JOB TITLE') }}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i
+                                                class="bi bi-briefcase text-muted"></i></span>
+                                        <input id="job_title" type="text"
+                                            class="form-control bg-light border-0 py-2 @error('job_title') is-invalid @enderror"
+                                            name="job_title" value="{{ old('job_title') }}" placeholder="Senior Web Developer">
+                                    </div>
+                                    @error('job_title')
+                                        <span class="invalid-feedback d-block mt-2" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="company"
+                                        class="form-label fw-bold text-muted small mb-1">{{ __('COMPANY') }}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i
+                                                class="bi bi-building-fill text-muted"></i></span>
+                                        <input id="company" type="text"
+                                            class="form-control bg-light border-0 py-2 @error('company') is-invalid @enderror"
+                                            name="company" value="{{ old('company') }}" placeholder="Google, Freelance, etc.">
+                                    </div>
+                                    @error('company')
+                                        <span class="invalid-feedback d-block mt-2" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="years_experience"
+                                        class="form-label fw-bold text-muted small mb-1">{{ __('YEARS OF EXPERIENCE') }}</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light border-0"><i
+                                                class="bi bi-clock-history text-muted"></i></span>
+                                        <input id="years_experience" type="number"
+                                            class="form-control bg-light border-0 py-2 @error('years_experience') is-invalid @enderror"
+                                            name="years_experience" value="{{ old('years_experience') }}" placeholder="5">
+                                    </div>
+                                    @error('years_experience')
+                                        <span class="invalid-feedback d-block mt-2" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+
+
                                 <div class="col-12">
                                     <label for="bio"
-                                        class="form-label fw-bold text-muted small mb-1">{{ __('BIO / EXPERIENCE') }}</label>
+                                        class="form-label fw-bold text-muted small mb-1">{{ __('BIO / SUMMARY') }}</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light border-0"><i
                                                 class="bi bi-info-circle text-muted"></i></span>
@@ -196,6 +311,8 @@
                                 class="btn btn-primary rounded-pill py-2 fw-bold animate__animated animate__pulse animate__infinite animate__slower">
                                 {{ __('Create Account') }}
                             </button>
+
+
                         </div>
 
                         <div class="text-center mt-4">
@@ -214,6 +331,36 @@
         document.addEventListener('DOMContentLoaded', function () {
             const universitySelect = document.getElementById('university_id');
             const facultySelect = document.getElementById('faculty_id');
+            const careerPathSelect = document.getElementById('career_path_id');
+
+            function toggleOther(selectElement, containerId) {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    if (selectElement.value === 'other') {
+                        container.classList.remove('d-none');
+                    } else {
+                        container.classList.add('d-none');
+                    }
+                }
+            }
+
+            if (universitySelect) {
+                universitySelect.addEventListener('change', function () {
+                    toggleOther(this, 'other_university_container');
+                });
+            }
+
+            if (facultySelect) {
+                facultySelect.addEventListener('change', function () {
+                    toggleOther(this, 'other_faculty_container');
+                });
+            }
+
+            if (careerPathSelect) {
+                careerPathSelect.addEventListener('change', function () {
+                    toggleOther(this, 'other_career_path_container');
+                });
+            }
 
             if (universitySelect && facultySelect) {
                 const allFaculties = Array.from(facultySelect.options).slice(1); // Exclude "Select Faculty"

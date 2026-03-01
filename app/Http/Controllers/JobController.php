@@ -23,10 +23,26 @@ class JobController extends Controller
         'HR Specialist'
     ];
 
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = Job::with('careerPath')->latest()->get();
-        return view('jobs.index', compact('jobs'));
+        $search = $request->query('search');
+
+        $jobs = Job::with('careerPath')
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('company', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->get();
+
+        $myApplications = [];
+        if (auth()->check()) {
+            $myApplications = \App\Models\JobApplication::where('user_id', auth()->id())
+                ->pluck('status', 'job_id')
+                ->toArray();
+        }
+
+        return view('jobs.index', compact('jobs', 'search', 'myApplications'));
     }
 
     public function create()
@@ -44,7 +60,12 @@ class JobController extends Controller
             'career_path_id' => 'required|exists:career_paths,id',
         ]);
 
-        Job::create($request->all());
+        $data = $request->all();
+        if (auth()->user()->role === 'mentor') {
+            $data['mentor_id'] = auth()->id();
+        }
+
+        Job::create($data);
 
         return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
     }
@@ -52,18 +73,34 @@ class JobController extends Controller
     public function show(Job $job)
     {
         $job->load('careerPath');
-        return view('jobs.show', compact('job'));
+        $applicationStatus = null;
+        if (auth()->check()) {
+            $applicationStatus = \App\Models\JobApplication::where('user_id', auth()->id())
+                ->where('job_id', $job->id)
+                ->value('status');
+        }
+        return view('jobs.show', compact('job', 'applicationStatus'));
     }
 
     public function edit(Job $job)
     {
+        // Only admins or the mentor who created it can edit
+        if (auth()->user()->role !== 'admin' && (auth()->user()->role !== 'mentor' || auth()->user()->id !== $job->mentor_id)) {
+            abort(403, 'Unauthorized');
+        }
+
         $careerPaths = CareerPath::all();
         $jobTitles = $this->jobTitles;
-        return view('jobs.edit', compact('job', 'careerPaths', 'jobTitles'));
+        return view('jobs.edit', compact('job', 'careerPaths', $jobTitles));
     }
 
     public function update(Request $request, Job $job)
     {
+        // Only admins or the mentor who created it can update
+        if (auth()->user()->role !== 'admin' && (auth()->user()->role !== 'mentor' || auth()->user()->id !== $job->mentor_id)) {
+            abort(403, 'Unauthorized');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'company' => 'required|string|max:255',
@@ -77,6 +114,11 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
+        // Only admins and the owner mentor can delete jobs
+        if (auth()->user()->role !== 'admin' && (auth()->user()->role !== 'mentor' || auth()->user()->id !== $job->mentor_id)) {
+            abort(403, 'غير مصرح لك بحذف هذه الوظيفة. فقط الـ Admin أو صاحب الوظيفة يمكنه الحذف.');
+        }
+
         $job->delete();
         return redirect()->route('jobs.index')->with('success', 'Job deleted successfully.');
     }

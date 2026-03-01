@@ -38,6 +38,7 @@
                                                 class="btn btn-light btn-sm rounded-3 p-2 text-warning border-0 shadow-sm">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
+                                            @if(auth()->user()->role === 'admin')
                                             <form action="{{ route('universities.destroy', $university) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
@@ -48,6 +49,7 @@
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

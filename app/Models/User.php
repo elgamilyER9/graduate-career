@@ -27,7 +27,16 @@ class User extends Authenticatable
         'university_id',
         'faculty_id',
         'career_path_id',
-        'cv'
+        'cv',
+        'job_title',
+        'company',
+        'years_experience',
+        'linkedin_url',
+        'other_university',
+        'other_faculty',
+        'other_career_path',
+        'linkedin_id',
+        'linkedin_avatar',
     ];
 
     public function university()
@@ -70,6 +79,26 @@ class User extends Authenticatable
             ->wherePivot('status', 'approved');
     }
 
+    /**
+     * Training Relationships
+     */
+    public function trainingsAsCreator()
+    {
+        return $this->hasMany(Training::class, 'mentor_id');
+    }
+
+    public function trainingsAsStudent()
+    {
+        return $this->belongsToMany(Training::class, 'training_enrollments', 'user_id', 'training_id')
+            ->withTimestamps()
+            ->withPivot('status');
+    }
+
+    public function trainingEnrollments()
+    {
+        return $this->hasMany(TrainingEnrollment::class);
+    }
+
     protected static function booted()
     {
         static::deleting(function ($user) {
@@ -99,4 +128,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Set the linkedin_url attribute.
+     * Automatically adds https:// if missing.
+     */
+    protected function setLinkedinUrlAttribute($value)
+    {
+        if ($value && !str_starts_with($value, 'http://') && !str_starts_with($value, 'https://')) {
+            $this->attributes['linkedin_url'] = 'https://' . $value;
+        } else {
+            $this->attributes['linkedin_url'] = $value;
+        }
+    }
 }

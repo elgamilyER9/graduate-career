@@ -18,7 +18,9 @@
                 <div class="col-12 col-md-6 col-lg-3 animate__animated animate__fadeInUp"
                     style="animation-delay: {{ $loop->index * 0.05 }}s">
                     <div
-                        class="card border-0 shadow-lg rounded-4 text-center p-4 h-100 transition-all duration-300 hover-translate-y-n2 bg-white">
+                        class="card shadow-lg rounded-4 text-center p-4 h-100 transition-all duration-300 hover-translate-y-n2 bg-white position-relative
+                                {{ $user->role === 'admin' ? 'border border-danger' : ($user->role === 'mentor' ? 'border border-primary' : 'border border-secondary') }}">
+                        <!-- role-colored border: red=admin, blue=mentor, gray=user -->
                         <div class="position-relative d-inline-block mx-auto mb-3">
                             <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background={{ $user->role === 'mentor' ? '0D6EFD' : '6c757d' }}&color=fff&size=80"
                                 class="rounded-circle shadow-sm" alt="User">
@@ -35,9 +37,15 @@
 
                         <div class="mb-3">
                             <span
-                                class="badge {{ $user->role === 'mentor' ? 'bg-primary' : 'bg-secondary' }} bg-opacity-10 text-{{ $user->role === 'mentor' ? 'primary' : 'secondary' }} rounded-pill px-3 py-1 fw-bold text-uppercase"
+                                class="badge {{ $user->role === 'admin' ? 'bg-danger' : ($user->role === 'mentor' ? 'bg-primary' : 'bg-secondary') }} bg-opacity-10 text-{{ $user->role === 'admin' ? 'danger' : ($user->role === 'mentor' ? 'primary' : 'secondary') }} rounded-pill px-3 py-1 fw-bold text-uppercase"
                                 style="font-size: 0.6rem;">
-                                {{ $user->role === 'mentor' ? __('Mentor') : __('Student') }}
+                                @if($user->role === 'admin')
+                                    {{ __('Admin') }}
+                                @elseif($user->role === 'mentor')
+                                    {{ __('Mentor') }}
+                                @else
+                                    {{ __('Student') }}
+                                @endif
                             </span>
                         </div>
 
@@ -45,9 +53,16 @@
                             <i class="bi bi-mortarboard-fill me-1"></i> {{ $user->faculty->name ?? __('Community Member') }}
                         </p>
 
-                        <div class="mt-3 pt-3 border-top w-100">
-                            <button
-                                class="btn btn-outline-primary btn-sm rounded-pill w-100 fw-bold">{{ __('View Profile') }}</button>
+                        <div class="mt-3 pt-3 border-top w-100 d-flex gap-2">
+                            <a href="{{ route('messages.show', $user) }}"
+                                class="btn btn-primary btn-sm rounded-pill flex-grow-1 fw-bold">
+                                <i class="bi bi-chat-dots-fill me-1"></i> {{ __('Chat') }}
+                            </a>
+                            <a href="{{ route('users.show', $user) }}"
+                                class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold"
+                                title="{{ __('View Profile') }}">
+                                <i class="bi bi-person-fill"></i>
+                            </a>
                         </div>
                     </div>
                 </div>

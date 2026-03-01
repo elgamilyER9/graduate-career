@@ -8,10 +8,30 @@ use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $faculties = Faculty::with('university')->latest()->get();
-        return view('faculties.index', compact('faculties'));
+        $search = $request->get('search');
+        $universityId = $request->get('university_id');
+
+        $query = Faculty::with('university');
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
+        }
+        if ($universityId) {
+            $query->where('university_id', $universityId);
+        }
+
+        $faculties = $query->latest()->get();
+        $universities = University::all();
+        $counts = [
+            'all' => Faculty::count(),
+        ];
+        foreach ($universities as $u) {
+            $counts[$u->id] = Faculty::where('university_id', $u->id)->count();
+        }
+
+        return view('faculties.index', compact('faculties', 'universities', 'universityId', 'search', 'counts'));
     }
 
     public function create()
@@ -58,6 +78,11 @@ class FacultyController extends Controller
 
     public function destroy(Faculty $faculty)
     {
+        // Only admins can delete faculties
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'غير مصرح لك بحذف هذه الكلية. فقط الـ Admin يمكنه الحذف.');
+        }
+
         $faculty->delete();
         return redirect()->route('faculties.index')->with('success', 'Faculty deleted successfully.');
     }

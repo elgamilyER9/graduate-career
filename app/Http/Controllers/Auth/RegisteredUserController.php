@@ -44,10 +44,53 @@ class RegisteredUserController extends Controller
             'role' => ['required', 'string', 'in:user,mentor'],
             'phone' => ['nullable', 'string', 'max:20'],
             'bio' => ['nullable', 'string', 'max:1000'],
-            'university_id' => ['nullable', 'exists:universities,id'],
-            'faculty_id' => ['nullable', 'exists:faculties,id'],
-            'career_path_id' => ['nullable', 'exists:career_paths,id'],
+            'university_id' => [
+                'nullable',
+                'required_if:role,user',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && $value !== 'other' && !University::where('id', $value)->exists()) {
+                        $fail(__('The selected university is invalid.'));
+                    }
+                    if ($value === 'other' && empty($request->other_university)) {
+                        $fail(__('Please enter your university name.'));
+                    }
+                }
+            ],
+            'faculty_id' => [
+                'nullable',
+                'required_if:role,user',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && $value !== 'other' && !Faculty::where('id', $value)->exists()) {
+                        $fail(__('The selected faculty is invalid.'));
+                    }
+                    if ($value === 'other' && empty($request->other_faculty)) {
+                        $fail(__('Please enter your faculty name.'));
+                    }
+                }
+            ],
+            'career_path_id' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($value && $value !== 'other' && !CareerPath::where('id', $value)->exists()) {
+                        $fail(__('The selected career path is invalid.'));
+                    }
+                    if ($value === 'other' && empty($request->other_career_path)) {
+                        $fail(__('Please enter your custom career path.'));
+                    }
+                }
+            ],
+            'other_university' => ['nullable', 'string', 'max:255'],
+            'other_faculty' => ['nullable', 'string', 'max:255'],
+            'other_career_path' => ['nullable', 'string', 'max:255'],
+            'job_title' => ['nullable', 'string', 'max:255'],
+            'company' => ['nullable', 'string', 'max:255'],
+            'years_experience' => ['nullable', 'integer', 'min:0'],
+            'linkedin_url' => ['nullable', 'string', 'max:255'],
         ]);
+
+        $universityId = $request->university_id === 'other' ? null : $request->university_id;
+        $facultyId = $request->faculty_id === 'other' ? null : $request->faculty_id;
+        $careerPathId = $request->career_path_id === 'other' ? null : $request->career_path_id;
 
         $user = User::create([
             'name' => $request->name,
@@ -56,9 +99,16 @@ class RegisteredUserController extends Controller
             'role' => $request->role,
             'phone' => $request->phone,
             'bio' => $request->bio,
-            'university_id' => $request->university_id,
-            'faculty_id' => $request->faculty_id,
-            'career_path_id' => $request->career_path_id,
+            'university_id' => $universityId,
+            'faculty_id' => $facultyId,
+            'career_path_id' => $careerPathId,
+            'other_university' => $request->other_university,
+            'other_faculty' => $request->other_faculty,
+            'other_career_path' => $request->other_career_path,
+            'job_title' => $request->job_title,
+            'company' => $request->company,
+            'years_experience' => $request->years_experience,
+            'linkedin_url' => $request->linkedin_url,
         ]);
 
         event(new Registered($user));

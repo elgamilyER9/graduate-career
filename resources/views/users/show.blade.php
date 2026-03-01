@@ -9,7 +9,7 @@
                         class="btn btn-light rounded-circle p-2 me-3 shadow-sm transition-hover">
                         <i class="bi bi-arrow-left h5 mb-0"></i>
                     </a>
-                    <h2 class="fw-bold text-dark mb-0">User Details</h2>
+                    <h2 class="fw-bold text-dark mb-0">{{ __('User Details') }}</h2>
                 </div>
 
                 <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
@@ -53,42 +53,78 @@
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold text-muted small mb-1">UNIVERSITY</label>
+                                <label class="form-label fw-bold text-muted small mb-1">{{ __('UNIVERSITY') }}</label>
                                 <div class="p-3 bg-light rounded-3 text-dark fw-semibold h-100">
-                                    <i class="bi bi-bank me-2 text-primary"></i> {{ $user->university->name ?? 'Not Set' }}
+                                    <i class="bi bi-bank me-2 text-primary"></i>
+                                    {{ $user->university->name ?? __('Not Set') }}
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold text-muted small mb-1">FACULTY</label>
+                                <label class="form-label fw-bold text-muted small mb-1">{{ __('FACULTY') }}</label>
                                 <div class="p-3 bg-light rounded-3 text-dark fw-semibold h-100">
                                     <i class="bi bi-mortarboard me-2 text-primary"></i>
-                                    {{ $user->faculty->name ?? 'Not Set' }}
+                                    {{ $user->faculty->name ?? __('Not Set') }}
                                 </div>
                             </div>
 
                             <div class="col-12 col-md-4">
-                                <label class="form-label fw-bold text-muted small mb-1">CAREER PATH</label>
+                                <label class="form-label fw-bold text-muted small mb-1">{{ __('CAREER PATH') }}</label>
                                 <div class="p-3 bg-light rounded-3 text-dark fw-semibold h-100">
                                     <i class="bi bi-signpost-split me-2 text-primary"></i>
-                                    {{ $user->careerPath->name ?? 'Not Set' }}
+                                    {{ $user->careerPath->name ?? __('Not Set') }}
                                 </div>
+                            </div>
+
+                            <div class="col-12">
+                                <hr class="my-2 opacity-10">
+                            </div>
+
+                            {{-- LinkedIn --}}
+                            <div class="col-12">
+                                <label class="form-label fw-bold text-muted small mb-1">
+                                    <i class="bi bi-linkedin me-1 text-primary"></i> LINKEDIN
+                                </label>
+                                @if(!empty($user->linkedin_url))
+                                    <a href="{{ $user->linkedin_url }}" target="_blank" rel="noopener noreferrer"
+                                        class="d-flex align-items-center gap-3 p-3 rounded-4 text-decoration-none"
+                                        style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1px solid rgba(10,102,194,0.15); transition: all 0.2s ease;"
+                                        onmouseover="this.style.boxShadow='0 6px 20px rgba(10,102,194,0.15)'; this.style.transform='translateY(-2px)'"
+                                        onmouseout="this.style.boxShadow=''; this.style.transform=''">
+                                        <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
+                                            style="width:44px;height:44px;background:#0A66C2;">
+                                            <i class="bi bi-linkedin text-white fs-4"></i>
+                                        </div>
+                                        <div class="overflow-hidden">
+                                            <div class="fw-bold text-dark" style="font-size:0.9rem;">{{ $user->name }}</div>
+                                            <div class="text-muted text-truncate" style="font-size:0.78rem;">
+                                                {{ $user->linkedin_url }}</div>
+                                        </div>
+                                        <i class="bi bi-box-arrow-up-right text-primary ms-auto"></i>
+                                    </a>
+                                @else
+                                    <div class="p-3 bg-light rounded-3 text-muted fw-medium">
+                                        <i class="bi bi-linkedin me-2 opacity-50"></i> {{ __('Not Set') }}
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 mt-5">
-                            <a href="{{ route('users.edit', $user) }}"
-                                class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm">
-                                <i class="bi bi-pencil me-2"></i> Edit User
+                            <a href="{{ route('messages.show', $user) }}"
+                                class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                <i class="bi bi-chat-dots-fill me-2"></i> {{ __('Send Message') }}
                             </a>
-                            <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger rounded-pill px-4 fw-bold"
-                                    onclick="return confirm('Are you sure?')">
-                                    <i class="bi bi-trash me-2"></i> Delete User
-                                </button>
-                            </form>
+                            @if(auth()->user()->role === 'admin')
+                                <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger rounded-pill px-4 fw-bold"
+                                        onclick="return confirm('{{ __('Are you sure?') }}')">
+                                        <i class="bi bi-trash me-2"></i> {{ __('Delete User') }}
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>

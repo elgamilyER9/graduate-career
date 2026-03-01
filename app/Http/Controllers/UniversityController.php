@@ -52,6 +52,11 @@ class UniversityController extends Controller
 
     public function destroy(University $university)
     {
+        // Only admins can delete universities
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'غير مصرح لك بحذف هذه الجامعة. فقط الـ Admin يمكنه الحذف.');
+        }
+
         $university->delete();
         return redirect()->route('universities.index')->with('success', 'University deleted successfully.');
     }

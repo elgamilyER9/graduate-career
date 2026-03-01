@@ -33,7 +33,17 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $data = $request->validated();
+
+        // Sanitize 'other' selections
+        if (($data['university_id'] ?? null) === 'other')
+            $data['university_id'] = null;
+        if (($data['faculty_id'] ?? null) === 'other')
+            $data['faculty_id'] = null;
+        if (($data['career_path_id'] ?? null) === 'other')
+            $data['career_path_id'] = null;
+
+        $request->user()->fill($data);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

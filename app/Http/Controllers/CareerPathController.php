@@ -55,6 +55,11 @@ class CareerPathController extends Controller
 
     public function destroy(CareerPath $careerPath)
     {
+        // Only admins can delete career paths
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'غير مصرح لك بحذف هذا مسار الوظيفة. فقط الـ Admin يمكنه الحذف.');
+        }
+
         $careerPath->delete();
         return redirect()->route('career_paths.index')->with('success', 'Career Path deleted successfully.');
     }

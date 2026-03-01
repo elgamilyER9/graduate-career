@@ -34,16 +34,8 @@
                                     @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
 
-                                <div class="col-12 col-md-6">
-                                    <label class="form-label fw-bold text-muted small mb-1">ROLE</label>
-                                    <select name="role"
-                                        class="form-select form-select-lg rounded-3 border-light bg-light @error('role') is-invalid @enderror"
-                                        required>
-                                        <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
-                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                    </select>
-                                    @error('role') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                                </div>
+                                <!-- role is always mentor when created from admin panel -->
+                                <input type="hidden" name="role" value="mentor">
 
                                 <div class="col-12 col-md-6">
                                     <label class="form-label fw-bold text-muted small mb-1">PASSWORD</label>

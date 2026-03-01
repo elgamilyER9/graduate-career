@@ -61,6 +61,36 @@ class MentorshipRequestController extends Controller
             ? 'Request approved successfully!'
             : 'Request rejected.';
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'status' => $request->status
+            ]);
+        }
+
         return back()->with('success', $message);
+    }
+
+    /**
+     * Remove the specified mentorship request from storage.
+     */
+    public function destroy(MentorshipRequest $mentorshipRequest)
+    {
+        // Ensure the current user is either the student or the mentor
+        if ($mentorshipRequest->user_id !== Auth::id() && $mentorshipRequest->mentor_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $mentorshipRequest->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'تم إلغاء الطلب بنجاح.'
+            ]);
+        }
+
+        return back()->with('success', 'Request cancelled successfully.');
     }
 }

@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-5 mt-5">
-        <div class="row justify-content-center">
+    <div class="container py-5">
+        <div class="row justify-content-center align-items-center min-vh-100">
             <div class="col-12 col-md-8 col-lg-5 animate__animated animate__fadeIn">
                 <div class="text-center mb-5">
                     <div class="brand-logo mx-auto mb-3" style="width: 60px; height: 60px;">
@@ -77,10 +77,11 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit"
-                                class="btn btn-primary rounded-pill py-2 fw-bold animate__animated animate__pulse animate__infinite animate__slower">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 fw-bold">
                                 {{ __('Login') }}
                             </button>
+
+
                         </div>
 
                         @if (Route::has('register'))

@@ -53,43 +53,91 @@
             <!-- Academic Info -->
             <div class="col-md-6">
                 <label class="form-label fw-bold text-muted small mb-1">UNIVERSITY</label>
-                <select name="university_id" class="form-select @error('university_id') is-invalid @enderror">
+                <select name="university_id" id="university_id"
+                    class="form-select @error('university_id') is-invalid @enderror">
                     <option value="">Select University</option>
                     @foreach($universities as $university)
                         <option value="{{ $university->id }}" {{ old('university_id', $user->university_id) == $university->id ? 'selected' : '' }}>{{ $university->name }}</option>
                     @endforeach
+                    <option value="other" {{ old('university_id', $user->other_university) ? 'selected' : '' }}>Other...
+                    </option>
                 </select>
+                <div id="other_university_container"
+                    class="mt-2 {{ old('university_id', $user->other_university) ? '' : 'd-none' }}">
+                    <input type="text" name="other_university" class="form-control" placeholder="Enter University Name"
+                        value="{{ old('other_university', $user->other_university) }}">
+                </div>
                 @error('university_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
             <div class="col-md-6">
                 <label class="form-label fw-bold text-muted small mb-1">FACULTY</label>
-                <select name="faculty_id" class="form-select @error('faculty_id') is-invalid @enderror">
+                <select name="faculty_id" id="faculty_id" class="form-select @error('faculty_id') is-invalid @enderror">
                     <option value="">Select Faculty</option>
                     @foreach($faculties as $faculty)
                         <option value="{{ $faculty->id }}" {{ old('faculty_id', $user->faculty_id) == $faculty->id ? 'selected' : '' }}>{{ $faculty->name }}</option>
                     @endforeach
+                    <option value="other" {{ old('faculty_id', $user->other_faculty) ? 'selected' : '' }}>Other...
+                    </option>
                 </select>
+                <div id="other_faculty_container"
+                    class="mt-2 {{ old('faculty_id', $user->other_faculty) ? '' : 'd-none' }}">
+                    <input type="text" name="other_faculty" class="form-control" placeholder="Enter Faculty Name"
+                        value="{{ old('other_faculty', $user->other_faculty) }}">
+                </div>
                 @error('faculty_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
             <div class="col-md-6">
                 <label class="form-label fw-bold text-muted small mb-1">CAREER PATH</label>
-                <select name="career_path_id" class="form-select @error('career_path_id') is-invalid @enderror">
+                <select name="career_path_id" id="career_path_id"
+                    class="form-select @error('career_path_id') is-invalid @enderror">
                     <option value="">Select Path</option>
                     @foreach($careerPaths as $path)
                         <option value="{{ $path->id }}" {{ old('career_path_id', $user->career_path_id) == $path->id ? 'selected' : '' }}>{{ $path->name }}</option>
                     @endforeach
+                    <option value="other" {{ (old('career_path_id') == 'other' || $user->other_career_path) ? 'selected' : '' }}>Other...</option>
                 </select>
+                <div id="other_career_path_container"
+                    class="mt-2 {{ (old('career_path_id') == 'other' || $user->other_career_path) ? '' : 'd-none' }}">
+                    <input type="text" name="other_career_path" class="form-control" placeholder="Enter Specialty Name"
+                        value="{{ old('other_career_path', $user->other_career_path) }}">
+                </div>
                 @error('career_path_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
             <div class="col-md-6">
-                <label class="form-label fw-bold text-muted small mb-1">CV LINK (TEXT/URL)</label>
-                <input name="cv" type="text" class="form-control @error('cv') is-invalid @enderror"
-                    value="{{ old('cv', $user->cv) }}" placeholder="Link to your CV">
-                @error('cv') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                <label class="form-label fw-bold text-muted small mb-1">LINKEDIN URL</label>
+                <input name="linkedin_url" type="text" class="form-control @error('linkedin_url') is-invalid @enderror"
+                    value="{{ old('linkedin_url', $user->linkedin_url) }}" placeholder="https://linkedin.com/in/...">
+                @error('linkedin_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
+
+            @if($user->role === 'mentor')
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small mb-1">JOB TITLE</label>
+                    <input name="job_title" type="text" class="form-control @error('job_title') is-invalid @enderror"
+                        value="{{ old('job_title', $user->job_title) }}" placeholder="e.g. Senior Developer">
+                    @error('job_title') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small mb-1">COMPANY</label>
+                    <input name="company" type="text" class="form-control @error('company') is-invalid @enderror"
+                        value="{{ old('company', $user->company) }}" placeholder="e.g. Google">
+                    @error('company') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-bold text-muted small mb-1">YEARS OF EXPERIENCE</label>
+                    <input name="years_experience" type="number"
+                        class="form-control @error('years_experience') is-invalid @enderror"
+                        value="{{ old('years_experience', $user->years_experience) }}" placeholder="e.g. 5">
+                    @error('years_experience') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+
+            @endif
 
             <div class="col-12 mt-4 d-flex align-items-center gap-3">
                 <button type="submit" class="btn btn-primary rounded-pill px-5">

@@ -58,6 +58,11 @@ class SkillController extends Controller
 
     public function destroy(Skill $skill)
     {
+        // Only admins can delete skills
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'غير مصرح لك بحذف هذه المهارة. فقط الـ Admin يمكنه الحذف.');
+        }
+
         $skill->delete();
         return redirect()->route('skills.index')->with('success', 'Skill deleted successfully.');
     }

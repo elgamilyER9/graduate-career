@@ -76,6 +76,39 @@
                 const modal = new bootstrap.Modal(document.getElementById('confirmUserDeletionModal'));
                 modal.show();
             @endif
-            });
+
+                const universitySelect = document.getElementById('university_id');
+            const facultySelect = document.getElementById('faculty_id');
+            const careerPathSelect = document.getElementById('career_path_id');
+
+            function toggleOther(selectElement, containerId) {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    if (selectElement.value === 'other') {
+                        container.classList.remove('d-none');
+                    } else {
+                        container.classList.add('d-none');
+                    }
+                }
+            }
+
+            if (universitySelect) {
+                universitySelect.addEventListener('change', function () {
+                    toggleOther(this, 'other_university_container');
+                });
+            }
+
+            if (facultySelect) {
+                facultySelect.addEventListener('change', function () {
+                    toggleOther(this, 'other_faculty_container');
+                });
+            }
+
+            if (careerPathSelect) {
+                careerPathSelect.addEventListener('change', function () {
+                    toggleOther(this, 'other_career_path_container');
+                });
+            }
+        });
     </script>
 @endsection

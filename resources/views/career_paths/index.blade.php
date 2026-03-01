@@ -44,6 +44,7 @@
                                         class="btn btn-light btn-sm rounded-3 p-2 text-warning border-0 shadow-sm">
                                         <i class="bi bi-pencil"></i>
                                     </a>
+                                    @if(auth()->user()->role === 'admin')
                                     <form action="{{ route('career_paths.destroy', $path) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -53,6 +54,7 @@
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
+                                    @endif
                                 </div>
                             </div>
                         </div>

@@ -40,10 +40,9 @@
                                     <select name="role"
                                         class="form-select form-select-lg rounded-3 border-light bg-light @error('role') is-invalid @enderror"
                                         required>
-                                        <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User
-                                        </option>
-                                        <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
-                                            Admin</option>
+                                        <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>{{ __('User') }}</option>
+                                        <option value="mentor" {{ old('role', $user->role) == 'mentor' ? 'selected' : '' }}>{{ __('Mentor') }}</option>
+                                        <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>{{ __('Admin') }}</option>
                                     </select>
                                     @error('role') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 </div>
