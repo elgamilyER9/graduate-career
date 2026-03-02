@@ -1,5 +1,20 @@
 @extends('layouts.app')
 
+@php
+    if (!function_exists('formatBytes')) {
+        function formatBytes($bytes, $decimals = 2)
+        {
+            if ($bytes === 0)
+                return '0 Bytes';
+            $k = 1024;
+            $dm = $decimals < 0 ? 0 : $decimals;
+            $sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            $i = floor(log($bytes, $k));
+            return round($bytes / pow($k, $i), $dm) . ' ' . $sizes[$i];
+        }
+    }
+@endphp
+
 @section('content')
     <div class="container-fluid px-4 py-5">
         {{-- Header --}}
@@ -21,7 +36,8 @@
                             <i class="bi bi-cloud-arrow-up me-2 text-primary"></i>{{ __('Upload New File') }}
                         </h5>
 
-                        <form action="{{ route('files.store') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+                        <form action="{{ route('files.store') }}" method="POST" enctype="multipart/form-data"
+                            id="uploadForm">
                             @csrf
 
                             <div class="mb-3">
@@ -39,8 +55,8 @@
                             <div class="mb-4">
                                 <label for="fileInput" class="form-label fw-semibold">{{ __('Choose File') }}</label>
                                 <div class="input-group">
-                                    <input type="file" name="file" id="fileInput" class="form-control rounded-2" 
-                                           accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png,.gif" required>
+                                    <input type="file" name="file" id="fileInput" class="form-control rounded-2"
+                                        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png,.gif" required>
                                 </div>
                                 <small class="text-muted d-block mt-2">
                                     {{ __('Max size: 5MB') }}<br>
@@ -84,8 +100,8 @@
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-center gap-3 mb-2">
                                         {{-- File Icon --}}
-                                        <div class="rounded-3 d-flex align-items-center justify-content-center" 
-                                             style="width: 50px; height: 50px; background: #f0f4f8;">
+                                        <div class="rounded-3 d-flex align-items-center justify-content-center"
+                                            style="width: 50px; height: 50px; background: #f0f4f8;">
                                             @if(strpos($file->mime_type, 'pdf') !== false)
                                                 <i class="bi bi-file-pdf fs-4 text-danger"></i>
                                             @elseif(strpos($file->mime_type, 'word') !== false || strpos($file->mime_type, 'document') !== false)
@@ -113,13 +129,19 @@
 
                                 {{-- Actions --}}
                                 <div class="d-flex gap-2 flex-shrink-0 ms-3">
-                                    <a href="{{ route('files.download', $file) }}" class="btn btn-sm btn-outline-primary rounded-2" title="{{ __('Download') }}">
+                                    <a href="{{ route('files.show', $file) }}" target="_blank"
+                                        class="btn btn-sm btn-outline-info rounded-2" title="{{ __('View') }}">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('files.download', $file) }}"
+                                        class="btn btn-sm btn-outline-primary rounded-2" title="{{ __('Download') }}">
                                         <i class="bi bi-download"></i>
                                     </a>
-                                    <form action="{{ route('files.destroy', $file) }}" method="POST" class="d-inline" 
-                                          onsubmit="return confirm('{{ __('Are you sure?') }}')">
+                                    <form action="{{ route('files.destroy', $file) }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-2" title="{{ __('Delete') }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-2"
+                                            title="{{ __('Delete') }}">
                                             <i class="bi bi-trash3"></i>
                                         </button>
                                     </form>
@@ -163,7 +185,7 @@
         }
 
         // Form submission
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        document.getElementById('uploadForm').addEventListener('submit', function (e) {
             const fileInput = document.getElementById('fileInput');
             if (fileInput.files.length === 0) {
                 e.preventDefault();
@@ -193,16 +215,3 @@
         }
     </script>
 @endsection
-
-@php
-if (!function_exists('formatBytes')) {
-    function formatBytes($bytes, $decimals = 2) {
-        if ($bytes === 0) return '0 Bytes';
-        $k = 1024;
-        $dm = $decimals < 0 ? 0 : $decimals;
-        $sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        $i = floor(log($bytes, $k));
-        return round($bytes / pow($k, $i), $dm) . ' ' . $sizes[$i];
-    }
-}
-@endphp

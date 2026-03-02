@@ -130,10 +130,12 @@
                             class="btn btn-outline-secondary w-100 rounded-3 py-2 fw-semibold mb-2">
                             <i class="bi bi-list me-2"></i> {{ __('View All Jobs') }}
                         </a>
-                        <a href="{{ route('jobs.create') }}"
-                            class="btn btn-outline-primary w-100 rounded-3 py-2 fw-semibold">
-                            <i class="bi bi-plus-circle me-2"></i> {{ __('Create New Job') }}
-                        </a>
+                        @if(auth()->user()->role === 'admin' || auth()->user()->role === 'mentor')
+                            <a href="{{ route('jobs.create') }}"
+                                class="btn btn-outline-primary w-100 rounded-3 py-2 fw-semibold">
+                                <i class="bi bi-plus-circle me-2"></i> {{ __('Create New Job') }}
+                            </a>
+                        @endif
                     </div>
                 </div>
 
@@ -174,6 +176,7 @@
                                     </span>
                                 </div>
                                 <p class="text-muted small mb-0">{{ $description }}</p>
+                            @else
                                 <p class="text-muted small mb-3">{{ __('Submit an application for this job and it will be sent to your mentor for review.') }}</p>
                                 <form action="{{ route('job_applications.store', $job) }}" method="POST">
                                     @csrf

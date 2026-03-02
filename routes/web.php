@@ -85,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/files', [FileController::class, 'index'])->name('files.index');
     Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');
     Route::get('/files/{file}/download', [FileController::class, 'download'])->name('files.download');
+    Route::get('/files/{file}/show', [FileController::class, 'show'])->name('files.show');
 });
 
 // Language Switcher Route

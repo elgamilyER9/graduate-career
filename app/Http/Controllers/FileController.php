@@ -98,4 +98,26 @@ class FileController extends Controller
 
         return Storage::disk('public')->download($file->path, $file->name);
     }
+
+    /**
+     * Show/Preview a file in the browser
+     */
+    public function show(File $file)
+    {
+        // Verify access
+        if ($file->user_id !== auth()->id() && auth()->user()->role !== 'admin') {
+            abort(403, __('Unauthorized'));
+        }
+
+        $path = Storage::disk('public')->path($file->path);
+
+        if (!file_exists($path)) {
+            abort(404, __('File not found.'));
+        }
+
+        return response()->file($path, [
+            'Content-Type' => $file->mime_type,
+            'Content-Disposition' => 'inline; filename="' . $file->name . '"'
+        ]);
+    }
 }
