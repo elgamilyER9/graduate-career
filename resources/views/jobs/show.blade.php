@@ -2,34 +2,54 @@
 
 @section('content')
     <div class="container-fluid px-4 py-5">
-        <!-- Header with back button -->
-        <div class="d-flex align-items-center justify-content-between mb-5">
-            <div class="d-flex align-items-center gap-3">
-                <a href="{{ route('jobs.index') }}"
-                    class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
-                    style="width: 44px; height: 44px;" title="{{ __('Back') }}">
-                    <i class="bi bi-arrow-left fs-5"></i>
-                </a>
-                <div>
-                    <h2 class="fw-bold text-dark mb-1">{{ $job->title }}</h2>
-                    <p class="text-muted mb-0">{{ __('Job Details') }}</p>
+        <!-- Premium Header -->
+        <div class="row mb-5 animate__animated animate__fadeIn">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white position-relative"
+                    style="border-left: 5px solid #0d6efd !important;">
+                    <div class="position-absolute opacity-10" style="right: -20px; top: -20px; transform: rotate(-15deg);">
+                        <i class="bi bi-briefcase text-primary" style="font-size: 8rem;"></i>
+                    </div>
+                    <div
+                        class="card-body p-4 p-md-5 position-relative z-1 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
+                        <div class="d-flex align-items-center gap-4">
+                            <a href="{{ route('jobs.index') }}"
+                                class="btn btn-light rounded-circle d-flex align-items-center justify-content-center shadow-sm hover-scale"
+                                style="width: 50px; height: 50px;" title="{{ __('Back to Jobs') }}">
+                                <i class="bi bi-arrow-left fs-5 text-primary"></i>
+                            </a>
+                            <div>
+                                <span
+                                    class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-1 mb-2 fw-bold tracking-wider">{{ __('Job Details') }}</span>
+                                <h2 class="fw-black text-dark mb-1" style="letter-spacing: -0.5px;">{{ $job->title }}</h2>
+                                <p class="text-muted fw-bold mb-0">
+                                    <i class="bi bi-building me-1 text-success"></i> {{ $job->company }}
+                                    @if($job->location)
+                                        <span class="ms-3"><i class="bi bi-geo-alt me-1 text-danger"></i>
+                                            {{ $job->location }}</span>
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                        @if(auth()->user()->role === 'admin')
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('jobs.edit', $job) }}"
+                                    class="btn btn-primary rounded-3 px-4 py-2 fw-semibold shadow-sm">
+                                    <i class="bi bi-pencil me-2"></i> {{ __('Edit') }}
+                                </a>
+                                <form action="{{ route('jobs.destroy', $job) }}" method="POST"
+                                    onsubmit="return confirm('{{ __('Are you sure?') }}');" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger rounded-3 px-4 py-2 fw-semibold shadow-sm">
+                                        <i class="bi bi-trash me-2"></i> {{ __('Delete') }}
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
-            @if(auth()->user()->role === 'admin')
-                <div class="d-flex gap-2">
-                    <a href="{{ route('jobs.edit', $job) }}" class="btn btn-primary rounded-3 px-4 py-2 fw-semibold shadow-sm">
-                        <i class="bi bi-pencil me-2"></i> {{ __('Edit') }}
-                    </a>
-                    <form action="{{ route('jobs.destroy', $job) }}" method="POST"
-                        onsubmit="return confirm('{{ __('Are you sure?') }}');" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger rounded-3 px-4 py-2 fw-semibold shadow-sm">
-                            <i class="bi bi-trash me-2"></i> {{ __('Delete') }}
-                        </button>
-                    </form>
-                </div>
-            @endif
         </div>
 
         <div class="row g-4">
@@ -177,7 +197,9 @@
                                 </div>
                                 <p class="text-muted small mb-0">{{ $description }}</p>
                             @else
-                                <p class="text-muted small mb-3">{{ __('Submit an application for this job and it will be sent to your mentor for review.') }}</p>
+                                <p class="text-muted small mb-3">
+                                    {{ __('Submit an application for this job and it will be sent to your mentor for review.') }}
+                                </p>
                                 <form action="{{ route('job_applications.store', $job) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-primary w-100 rounded-3 py-2 fw-bold">
@@ -204,7 +226,8 @@
                                 <i class="bi bi-check-circle-fill text-white fs-5"></i>
                             </div>
                             <div>
-                                <p class="small text-muted fw-semibold text-uppercase mb-1">{{ __('Status') }}</p>
+                                <p class="small text-muted fw-semibold text-uppercase mb-1">{{ __('Status') }}
+                                </p>
                                 <p class="fw-bold text-dark mb-0">{{ __('Active') }}</p>
                             </div>
                         </div>
@@ -215,6 +238,23 @@
     </div>
 
     <style>
+        .fw-black {
+            font-weight: 900;
+        }
+
+        .tracking-wider {
+            letter-spacing: 0.05em;
+        }
+
+        .hover-scale {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+
         .bg-primary-subtle {
             background-color: rgba(59, 130, 246, 0.1) !important;
         }

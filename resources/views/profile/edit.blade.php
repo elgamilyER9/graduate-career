@@ -25,26 +25,47 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9">
                 <div class="d-flex align-items-center mb-4 animate__animated animate__fadeInLeft">
-                    <h2 class="fw-bold text-dark mb-0">Profile <span class="text-primary">Settings</span></h2>
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 50px; height: 50px;">
+                        <i class="bi bi-person-gear fs-4"></i>
+                    </div>
+                    <h2 class="fw-black text-dark mb-0" style="letter-spacing: -0.5px;">{{ __('Profile') }} <span class="text-primary">{{ __('Settings') }}</span></h2>
                 </div>
 
                 <div class="space-y-6">
                     <!-- Profile Information -->
-                    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 animate__animated animate__fadeInUp"
-                        style="animation-delay: 0.1s;">
-                        @include('profile.partials.update-profile-information-form')
+                    <div class="card border-0 shadow-sm rounded-4 mb-4 animate__animated animate__fadeInUp position-relative overflow-hidden"
+                        style="animation-delay: 0.1s; border-left: 4px solid #0d6efd !important;">
+                        <div class="card-header bg-white border-bottom border-light p-4 pb-0">
+                            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-person-lines-fill text-primary me-2"></i>{{ __('Profile Information') }}</h5>
+                            <p class="text-muted small mt-1 mb-0">{{ __('Update your account profile information and email address.') }}</p>
+                        </div>
+                        <div class="card-body p-4 pt-3">
+                            @include('profile.partials.update-profile-information-form')
+                        </div>
                     </div>
 
                     <!-- Update Password -->
-                    <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 animate__animated animate__fadeInUp"
-                        style="animation-delay: 0.2s;">
-                        @include('profile.partials.update-password-form')
+                    <div class="card border-0 shadow-sm rounded-4 mb-4 animate__animated animate__fadeInUp position-relative overflow-hidden"
+                        style="animation-delay: 0.2s; border-left: 4px solid #198754 !important;">
+                        <div class="card-header bg-white border-bottom border-light p-4 pb-0">
+                            <h5 class="fw-bold text-dark mb-0"><i class="bi bi-shield-lock-fill text-success me-2"></i>{{ __('Update Password') }}</h5>
+                            <p class="text-muted small mt-1 mb-0">{{ __('Ensure your account is using a long, random password to stay secure.') }}</p>
+                        </div>
+                        <div class="card-body p-4 pt-3">
+                            @include('profile.partials.update-password-form')
+                        </div>
                     </div>
 
                     <!-- Delete Account -->
-                    <div class="card border-0 shadow-sm rounded-4 p-4 animate__animated animate__fadeInUp"
-                        style="animation-delay: 0.3s;">
-                        @include('profile.partials.delete-user-form')
+                    <div class="card border-0 shadow-sm rounded-4 animate__animated animate__fadeInUp position-relative overflow-hidden"
+                        style="animation-delay: 0.3s; border-left: 4px solid #dc3545 !important;">
+                        <div class="card-header bg-white border-bottom border-light p-4 pb-0">
+                            <h5 class="fw-bold text-danger mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ __('Delete Account') }}</h5>
+                            <p class="text-muted small mt-1 mb-0">{{ __('Once your account is deleted, all of its resources and data will be permanently deleted.') }}</p>
+                        </div>
+                        <div class="card-body p-4 pt-3">
+                            @include('profile.partials.delete-user-form')
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,14 +74,18 @@
 
     <style>
         .space-y-6>*+* {
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
+        
+        .fw-black { font-weight: 900; }
 
         .form-control,
         .form-select {
             border: 1px solid #e2e8f0;
             padding: 0.75rem 1rem;
             border-radius: 10px;
+            background-color: #f8fafc;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus,

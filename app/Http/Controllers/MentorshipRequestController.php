@@ -44,8 +44,8 @@ class MentorshipRequestController extends Controller
      */
     public function update(Request $request, MentorshipRequest $mentorshipRequest)
     {
-        // Ensure the current user is the mentor for this request
-        if ($mentorshipRequest->mentor_id !== Auth::id()) {
+        // Ensure the current user is the mentor for this request OR admin
+        if ($mentorshipRequest->mentor_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
 
@@ -77,8 +77,8 @@ class MentorshipRequestController extends Controller
      */
     public function destroy(MentorshipRequest $mentorshipRequest)
     {
-        // Ensure the current user is either the student or the mentor
-        if ($mentorshipRequest->user_id !== Auth::id() && $mentorshipRequest->mentor_id !== Auth::id()) {
+        // Ensure the current user is either the student, the mentor, or an admin
+        if ($mentorshipRequest->user_id !== Auth::id() && $mentorshipRequest->mentor_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
 
@@ -92,5 +92,38 @@ class MentorshipRequestController extends Controller
         }
 
         return back()->with('success', 'Request cancelled successfully.');
+    }
+
+    /**
+     * Admin: View all mentorship requests
+     */
+    public function adminIndex(Request $request)
+    {
+        if (Auth::user()->role !== 'admin') {
+            abort(403);
+        }
+
+        $query = MentorshipRequest::with(['student', 'mentor'])->latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('student', function ($sq) use ($search) {
+                    $sq->where('name', 'like', "%{$search}%");
+                })->orWhereHas('mentor', function ($mq) use ($search) {
+                    $mq->where('name', 'like', "%{$search}%");
+                });
+            });
+        }
+
+        $requests = $query->paginate(20);
+        $pendingCount = MentorshipRequest::where('status', 'pending')->count();
+        $totalCount = MentorshipRequest::count();
+
+        return view('mentorship_requests.admin_index', compact('requests', 'pendingCount', 'totalCount'));
     }
 }

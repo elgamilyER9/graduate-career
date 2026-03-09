@@ -15,6 +15,7 @@ use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
@@ -83,9 +84,23 @@ Route::middleware('auth')->group(function () {
     // Files
     Route::post('/files/upload', [FileController::class, 'store'])->name('files.store');
     Route::get('/files', [FileController::class, 'index'])->name('files.index');
+    Route::get('/admin/files', [FileController::class, 'adminIndex'])->name('admin.files.index');
     Route::delete('/files/{file}', [FileController::class, 'destroy'])->name('files.destroy');
     Route::get('/files/{file}/download', [FileController::class, 'download'])->name('files.download');
     Route::get('/files/{file}/show', [FileController::class, 'show'])->name('files.show');
+
+    // Admin Notifications
+    Route::get('/admin/notifications', [NotificationController::class, 'adminIndex'])->name('admin.notifications.index');
+    Route::get('/messages/{message}/download', [MessageController::class, 'download'])->name('messages.download');
+    Route::get('/admin/mentorship-requests', [MentorshipRequestController::class, 'adminIndex'])->name('admin.mentorship_requests.index');
+
+    // TEMPORARY: Grant Admin Role
+    Route::get('/make-me-admin', function () {
+        $user = auth()->user();
+        $user->role = 'admin';
+        $user->save();
+        return "Role updated to admin for: " . $user->email;
+    });
 });
 
 // Language Switcher Route

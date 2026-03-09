@@ -18,7 +18,7 @@
         rel="stylesheet">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -246,6 +246,21 @@
             left: 0;
             right: auto;
         }
+
+        /* Notification Utility Classes */
+        .rounded-top-4 {
+            border-top-left-radius: 1rem !important;
+            border-top-right-radius: 1rem !important;
+        }
+
+        .rounded-bottom-4 {
+            border-bottom-left-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+        }
+
+        .extra-small {
+            font-size: 0.75rem;
+        }
     </style>
 </head>
 
@@ -324,6 +339,12 @@
                                         @if(Auth::user()->role === 'admin')
                                             <li><a class="dropdown-item" href="{{ route('users.index') }}"><i
                                                         class="bi bi-people me-2 text-primary"></i> {{ __('Users') }}</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('admin.mentorship_requests.index') }}"><i
+                                                        class="bi bi-person-heart-fill me-2 text-warning"></i>
+                                                    {{ __('Mentorship Requests') }}</a></li>
+                                            <li><a class="dropdown-item" href="{{ route('admin.notifications.index') }}"><i
+                                                        class="bi bi-bell-fill me-2 text-danger"></i>
+                                                    {{ __('Notfications Control') }}</a></li>
                                         @endif
                                         <li><a class="dropdown-item" href="{{ route('jobs.index') }}"><i
                                                     class="bi bi-briefcase me-2 text-success"></i> {{ __('Jobs') }}</a></li>
@@ -339,7 +360,8 @@
                                                     class="bi bi-mortarboard me-2 text-danger"></i> {{ __('Trainings') }}</a>
                                         </li>
                                         <li><a class="dropdown-item" href="{{ route('search.advanced') }}"><i
-                                                    class="bi bi-search me-2 text-secondary"></i> {{ __('Advanced Search') }}</a>
+                                                    class="bi bi-search me-2 text-secondary"></i>
+                                                {{ __('Advanced Search') }}</a>
                                         </li>
                                         <li><a class="dropdown-item" href="{{ route('files.index') }}"><i
                                                     class="bi bi-folder-fill me-2 text-info"></i> {{ __('Files') }}</a>
@@ -397,8 +419,8 @@
                             <!-- Search Bar -->
                             <li class="nav-item me-2 d-none d-md-block">
                                 <form action="{{ route('search.index') }}" method="GET" class="d-flex">
-                                    <input type="text" name="q" class="form-control form-control-sm rounded-pill px-3" 
-                           placeholder="{{ __('Search...') }}" style="width: 180px;">
+                                    <input type="text" name="q" class="form-control form-control-sm rounded-pill px-3"
+                                        placeholder="{{ __('Search...') }}" style="width: 180px;">
                                 </form>
                             </li>
                             <!-- Notifications -->
@@ -472,7 +494,7 @@
         </main>
 
         <!-- Toast Notifications -->
-        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" id="mainToastContainer" style="z-index: 2000;">
             @if(session('success'))
                 <div id="successToast"
                     class="toast align-items-center text-white bg-success border-0 shadow-lg rounded-4 animate__animated animate__slideInUp"
@@ -510,12 +532,84 @@
             @endif
         </div>
 
-        <footer class="footer text-center">
-            <div class="container">
-                <p class="text-muted small mb-0">&copy; {{ date('Y') }} {{ __('Graduate Career Management System') }}.
-                    {{ __('Built with ❤️ for future graduates.') }}
-                </p>
+        <!-- Modern Advanced Footer -->
+        <footer class="footer position-relative mt-5 pt-5 pb-4 border-0"
+            style="background: linear-gradient(180deg, rgba(248,250,252,1) 0%, rgba(241,245,249,1) 100%);">
+            <div class="position-absolute top-0 start-50 translate-middle-x w-75 bg-gradient shadow-sm"
+                style="height: 1px; background: linear-gradient(90deg, transparent, rgba(13,110,253,0.3), transparent);">
             </div>
+            <div class="container relative z-1">
+                <div class="row align-items-center justify-content-between g-4">
+                    <div class="col-md-6 text-center text-md-start">
+                        <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-2">
+                            <div class="brand-logo me-2 shadow-sm"
+                                style="width: 28px; height: 28px; border-radius: 8px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M12 22V12" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M22 7L12 12L2 7" stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <span class="fw-black text-dark fs-5 tracking-wider">Elgamily<span
+                                    class="text-primary">Ramadan</span></span>
+                        </div>
+                        <p class="text-muted small fw-medium mb-0">
+                            &copy; {{ date('Y') }} {{ __('Elgamily Ramadan (ER9)') }}. {{ __('All rights reserved.') }}
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <p
+                            class="text-muted small fw-semibold mb-2 d-flex align-items-center justify-content-center justify-content-md-end gap-1">
+                            {{ __('Built with') }} <i
+                                class="bi bi-heart-fill text-danger animate__animated animate__heartBeat animate__infinite animate__slower"
+                                style="font-size: 0.9rem;"></i> {{ __('for future graduates.') }}
+                        </p>
+                        <div class="d-flex gap-3 justify-content-center justify-content-md-end">
+                            <a href="https://www.linkedin.com/in/elgamily-ramadan"
+                                class="text-muted hover-scale transition-all" title="LinkedIn" target="_blank"><i
+                                    class="bi bi-linkedin fs-5 hover-text-primary"></i></a>
+                            <a href="https://github.com/elgamilyER9" class="text-muted hover-scale transition-all"
+                                title="GitHub" target="_blank"><i class="bi bi-github fs-5 hover-text-dark"></i></a>
+                            <a href="mailto:elgamilyramadan@gmail.com" class="text-muted hover-scale transition-all"
+                                title="Gmail" target="_blank"><i
+                                    class="bi bi-envelope-fill fs-5 text-danger hover-scale"></i></a>
+                            <a href="https://wa.me/201223030960" class="text-muted hover-scale transition-all"
+                                title="WhatsApp" target="_blank"><i
+                                    class="bi bi-whatsapp fs-5 text-success hover-scale"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .hover-text-primary:hover {
+                    color: var(--primary-color) !important;
+                }
+
+                .hover-text-dark:hover {
+                    color: #1e293b !important;
+                }
+
+                [dir="rtl"] .footer .text-md-start {
+                    text-align: right !important;
+                }
+
+                [dir="rtl"] .footer .text-md-end {
+                    text-align: left !important;
+                }
+
+                [dir="rtl"] .footer .justify-content-md-start {
+                    justify-content: flex-start !important;
+                }
+
+                [dir="rtl"] .footer .justify-content-md-end {
+                    justify-content: flex-end !important;
+                }
+            </style>
         </footer>
     </div>
 
@@ -528,6 +622,89 @@
                 var toast = new bootstrap.Toast(toastEl, { delay: 5000 });
                 toast.show();
             });
+
+            @auth
+                // Real-time Notifications Polling
+                let shownNotificationIds = JSON.parse(sessionStorage.getItem('shown_notifications') || '[]');
+
+                function fetchNotifications() {
+                    fetch('{{ route('notifications.recent') }}')
+                        .then(response => response.json())
+                        .then(notifications => {
+                            notifications.forEach(notification => {
+                                if (!notification.read && !shownNotificationIds.includes(notification.id)) {
+                                    showNotificationToast(notification);
+                                    shownNotificationIds.push(notification.id);
+                                }
+                            });
+                            sessionStorage.setItem('shown_notifications', JSON.stringify(shownNotificationIds));
+                        })
+                        .catch(error => console.error('Error fetching notifications:', error));
+                }
+
+                function showNotificationToast(notification) {
+                    const container = document.getElementById('mainToastContainer');
+                    const toastId = 'toast-' + notification.id;
+
+                    const toastHtml = `
+                            <div id="${toastId}" class="toast border-0 shadow-lg rounded-4 mb-3 animate__animated animate__slideInRight" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                                <div class="toast-header border-0 bg-primary text-white rounded-top-4 py-2 px-3">
+                                    <i class="bi bi-bell-fill me-2"></i>
+                                    <strong class="me-auto">${notification.title}</strong>
+                                    <small class="text-white-50">Just now</small>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body bg-white rounded-bottom-4 p-3 shadow-sm">
+                                    <p class="mb-2 small text-dark">${notification.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <a href="{{ url('/notifications') }}" class="btn btn-sm btn-light rounded-pill px-3 border py-1 extra-small fw-bold">
+                                            <i class="bi bi-eye me-1"></i> View All
+                                        </a>
+                                        <button onclick="markAsRead(${notification.id}, '${toastId}')" class="btn btn-sm btn-primary rounded-pill px-3 py-1 extra-small fw-bold shadow-sm">
+                                            <i class="bi bi-check2 me-1"></i> Got it
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                    const div = document.createElement('div');
+                    div.innerHTML = toastHtml;
+                    const toastElement = div.firstElementChild;
+                    container.appendChild(toastElement);
+
+                    const bsToast = new bootstrap.Toast(toastElement);
+                    bsToast.show();
+                }
+
+                window.markAsRead = function (id, toastId) {
+                    fetch(`/notifications/${id}/read`, {
+                        method: 'PATCH',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            const toastElement = document.getElementById(toastId);
+                            if (toastElement) {
+                                const bsToast = bootstrap.Toast.getInstance(toastElement);
+                                if (bsToast) bsToast.hide();
+                            }
+                            const badge = document.querySelector('.bi-bell-fill + .badge');
+                            if (badge) {
+                                let count = parseInt(badge.textContent) - 1;
+                                if (count <= 0) badge.remove();
+                                else badge.textContent = count;
+                            }
+                        });
+                }
+
+                fetchNotifications();
+                setInterval(fetchNotifications, 30000);
+            @endauth
         });
     </script>
 </body>

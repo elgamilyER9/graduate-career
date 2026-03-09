@@ -4,414 +4,625 @@
     <div class="container-fluid px-4">
 
         @if(auth()->user()->role === 'admin')
-            {{-- ADMIN FRONT --}}
+            {{-- ADVANCED ADMIN FRONT --}}
             <div
-                class="hero-section bg-dark text-white rounded-5 p-5 mb-5 position-relative overflow-hidden shadow-lg animate__animated animate__fadeIn">
-                <div class="position-absolute top-0 end-0 p-4 opacity-10 pointer-events-none"
-                    style="transform: scale(2) translate(10%, -10%);">
-                    <i class="bi bi-shield-check" style="font-size: 15rem;"></i>
+                class="advanced-glass-card rounded-5 border-0 shadow-2xl p-5 mb-5 position-relative overflow-hidden animate__animated animate__fadeIn">
+                <!-- Animated Background Blobs -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden pointer-events-none opacity-50">
+                    <div class="position-absolute rounded-circle blur-3xl pulse-slow"
+                        style="width: 300px; height: 300px; background: rgba(79,70,229,0.15); top: -100px; right: -50px;"></div>
+                    <div class="position-absolute rounded-circle blur-3xl pulse-slow"
+                        style="width: 250px; height: 250px; background: rgba(245,158,11,0.1); bottom: -50px; left: -50px; animation-delay: 2s;">
+                    </div>
                 </div>
-                <div class="position-relative z-1 max-w-2xl">
-                    <span
-                        class="badge bg-primary bg-opacity-25 text-primary rounded-pill px-3 py-2 mb-3 fw-bold border border-primary border-opacity-25 text-uppercase tracking-wider">
-                        <i class="bi bi-lightning-charge-fill me-1"></i> {{ __('Platform Overview') }}
-                    </span>
-                    <h1 class="display-4 fw-black mb-3" style="letter-spacing: -1px;">
-                        {{ __('Welcome back') }}, <span class="text-primary">{{ auth()->user()->name }}</span>
-                    </h1>
-                    <p class="lead text-white-50 mb-4 fw-medium">
-                        {{ __('Monitor platform activity, manage users, and oversee the entire Graduate Career ecosystem from your command center.') }}
-                    </p>
-                    <div class="d-flex gap-3 mt-4 flex-wrap">
-                        <a href="{{ route('home') }}"
-                            class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm hover-lift d-flex align-items-center gap-2">
-                            <i class="bi bi-grid-fill"></i> {{ __('Access Dashboard') }}
-                        </a>
+
+                <div class="card-body p-4 position-relative z-1">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <span
+                                class="badge bg-indigo-950 text-warning rounded-pill px-4 py-2 mb-3 fw-black small-caps tracking-widest shadow-sm">
+                                <i class="bi bi-shield-lock-fill me-2"></i> {{ __('GLOBAL COMMAND CENTER') }}
+                            </span>
+                            <h1 class="display-3 fw-black mb-3 text-dark" style="letter-spacing: -2px;">
+                                {{ __('Systems') }} <span class="text-indigo-600">{{ __('Online') }}</span>
+                            </h1>
+                            <p class="lead text-muted mb-4 fw-bold opacity-75">
+                                {{ __('Welcome back, Commander') }} <strong
+                                    class="text-dark">{{ auth()->user()->name }}</strong>.
+                                {{ __('Your ecosystem is performing at optimal levels. Manage infrastructure and user growth below.') }}
+                            </p>
+                            <div class="d-flex gap-3">
+                                <a href="{{ route('home') }}"
+                                    class="btn btn-indigo-gold rounded-pill px-5 py-3 fw-black shadow-lg hover-lift">
+                                    <i class="bi bi-cpu-fill me-2"></i> {{ __('OPEN TERMINAL') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-none d-lg-block text-center mt-5 mt-lg-0">
+                            <div class="position-relative d-inline-block">
+                                <div
+                                    class="position-absolute top-50 start-50 translate-middle w-100 h-100 bg-indigo-500 rounded-circle opacity-10 blur-3xl">
+                                </div>
+                                <i class="bi bi-gear-wide-connected text-indigo-950 display-1 floating-icon opacity-75"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="row g-4 mb-5">
-                <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                                style="width: 50px; height: 50px;">
-                                <i class="bi bi-people-fill fs-4"></i>
+                <div class="col-md-4 animate__animated animate__fadeInUp">
+                    <div
+                        class="advanced-glass-card group hover-glow p-4 transition-all h-100 position-relative overflow-hidden">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="stat-icon-box p-3 bg-soft-primary rounded-4 text-indigo-600 shadow-sm">
+                                <i class="bi bi-people-fill fs-3"></i>
                             </div>
-                            <h2 class="fw-black text-dark mb-0 fs-1">{{ $usersCount }}</h2>
+                            <div class="text-end">
+                                <h2 class="fw-black text-dark mb-0 fs-1 tracking-tighter">{{ $usersCount }}</h2>
+                                <span class="badge bg-soft-success text-success fw-black small-caps">+12%
+                                    {{ __('GROWTH') }}</span>
+                            </div>
                         </div>
-                        <h5 class="fw-bold text-dark mb-1">{{ __('Total Users') }}</h5>
-                        <p class="text-muted small mb-0">{{ __('Registered students & alumni') }}</p>
+                        <h5 class="fw-black text-dark text-uppercase tracking-wider mb-1">{{ __('Total Users') }}</h5>
+                        <p class="text-muted small fw-bold mb-0 opacity-75">{{ __('Global student & alumni base') }}</p>
+                    </div>
+                </div>
+                <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                    <div
+                        class="advanced-glass-card group hover-glow p-4 transition-all h-100 position-relative overflow-hidden">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="stat-icon-box p-3 bg-soft-warning rounded-4 text-warning shadow-sm">
+                                <i class="bi bi-briefcase-fill fs-3"></i>
+                            </div>
+                            <div class="text-end">
+                                <h2 class="fw-black text-dark mb-0 fs-1 tracking-tighter">{{ $jobsCount }}</h2>
+                                <span class="badge bg-soft-warning text-warning fw-black small-caps">{{ __('ACTIVE') }}</span>
+                            </div>
+                        </div>
+                        <h5 class="fw-black text-dark text-uppercase tracking-wider mb-1">{{ __('Job Pulse') }}</h5>
+                        <p class="text-muted small fw-bold mb-0 opacity-75">{{ __('Market opportunities active') }}</p>
                     </div>
                 </div>
                 <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center"
-                                style="width: 50px; height: 50px;">
-                                <i class="bi bi-briefcase-fill fs-4"></i>
+                    <div
+                        class="advanced-glass-card group hover-glow p-4 transition-all h-100 position-relative overflow-hidden">
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="stat-icon-box p-3 bg-soft-indigo rounded-4 text-indigo-950 shadow-sm"
+                                style="background: rgba(30,27,75,0.08);">
+                                <i class="bi bi-mortarboard-fill fs-3"></i>
                             </div>
-                            <h2 class="fw-black text-dark mb-0 fs-1">{{ $jobsCount }}</h2>
-                        </div>
-                        <h5 class="fw-bold text-dark mb-1">{{ __('Active Jobs') }}</h5>
-                        <p class="text-muted small mb-0">{{ __('Opportunities listed on platform') }}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-                    <div class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white">
-                        <div class="d-flex align-items-center justify-content-between mb-3">
-                            <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center"
-                                style="width: 50px; height: 50px;">
-                                <i class="bi bi-person-hearts fs-4"></i>
+                            <div class="text-end">
+                                <h2 class="fw-black text-dark mb-0 fs-1 tracking-tighter">{{ $mentorsCount }}</h2>
+                                <span class="badge bg-indigo-950 text-white fw-black small-caps">{{ __('ELITE') }}</span>
                             </div>
-                            <h2 class="fw-black text-dark mb-0 fs-1">{{ $mentorsCount }}</h2>
                         </div>
-                        <h5 class="fw-bold text-dark mb-1">{{ __('Expert Mentors') }}</h5>
-                        <p class="text-muted small mb-0">{{ __('Guiding the next generation') }}</p>
+                        <h5 class="fw-black text-dark text-uppercase tracking-wider mb-1">{{ __('Mentorship') }}</h5>
+                        <p class="text-muted small fw-bold mb-0 opacity-75">{{ __('Expert guides onboarded') }}</p>
                     </div>
                 </div>
             </div>
 
             {{-- Admin Quick Actions --}}
-            <div class="row g-4 mb-5 animate__animated animate__fadeInUp" style="animation-delay: 0.4s">
+            <div class="row g-4 mb-5">
                 <div class="col-12">
-                    <h4 class="fw-bolder text-dark mb-4"><i class="bi bi-lightning-fill text-warning me-2"></i>{{ __('Quick Actions') }}</h4>
+                    <h5 class="fw-black text-dark mb-4 text-uppercase tracking-widest d-flex align-items-center gap-2">
+                        <span class="p-1 bg-warning rounded-pill"></span> {{ __('Action Terminal') }}
+                    </h5>
                 </div>
-                <div class="col-md-3">
-                    <a href="{{ route('jobs.create') }}" class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white text-decoration-none text-center">
-                        <i class="bi bi-plus-circle text-primary fs-1 mb-3"></i>
-                        <h6 class="fw-bold text-dark mb-0">{{ __('Add New Job') }}</h6>
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="{{ route('trainings.create') }}" class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white text-decoration-none text-center">
-                        <i class="bi bi-mortarboard text-success fs-1 mb-3"></i>
-                        <h6 class="fw-bold text-dark mb-0">{{ __('Add Training') }}</h6>
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="{{ route('users.index') }}" class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white text-decoration-none text-center">
-                        <i class="bi bi-people text-info fs-1 mb-3"></i>
-                        <h6 class="fw-bold text-dark mb-0">{{ __('Manage Users') }}</h6>
-                    </a>
-                </div>
-                <div class="col-md-3">
-                    <a href="{{ route('career_paths.index') }}" class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white text-decoration-none text-center">
-                        <i class="bi bi-signpost-split text-danger fs-1 mb-3"></i>
-                        <h6 class="fw-bold text-dark mb-0">{{ __('Career Paths') }}</h6>
-                    </a>
-                </div>
+                @php
+                    $actions = [
+                        ['route' => 'jobs.create', 'icon' => 'bi-plus-circle', 'title' => 'Post Job', 'color' => 'indigo', 'bg' => 'bg-soft-primary'],
+                        ['route' => 'trainings.create', 'icon' => 'bi-lightning-fill', 'title' => 'New Training', 'color' => 'warning', 'bg' => 'bg-soft-warning'],
+                        ['route' => 'users.index', 'icon' => 'bi-shield-shaded', 'title' => 'IAM Control', 'color' => 'success', 'bg' => 'bg-soft-success'],
+                        ['route' => 'career_paths.index', 'icon' => 'bi-diagram-3-fill', 'title' => 'System Flow', 'color' => 'info', 'bg' => 'bg-soft-info'],
+                    ];
+                @endphp
+                @foreach($actions as $action)
+                    <div class="col-md-3 animate__animated animate__fadeInUp" style="animation-delay: {{ $loop->index * 0.1 }}s">
+                        <a href="{{ route($action['route']) }}"
+                            class="advanced-glass-card d-block p-4 text-center text-decoration-none group hover-lift border-0 shadow-lg">
+                            <div class="flex-shrink-0 mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle {{ $action['bg'] }} transition-all group-hover:scale-110"
+                                style="width: 65px; height: 65px;">
+                                <i class="bi {{ $action['icon'] }} fs-2 text-{{ $action['color'] }}"></i>
+                            </div>
+                            <h6 class="fw-black text-dark mb-0 text-uppercase tracking-wide">{{ __($action['title']) }}</h6>
+                        </a>
+                    </div>
+                @endforeach
             </div>
 
         @elseif(auth()->user()->role === 'mentor')
-            {{-- MENTOR FRONT --}}
-            <div class="hero-section text-white rounded-5 p-5 mb-5 position-relative overflow-hidden shadow-lg animate__animated animate__fadeIn"
-                style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
-                <div class="position-absolute top-0 end-0 p-4 opacity-10 pointer-events-none"
-                    style="transform: scale(2) translate(10%, -10%);">
-                    <i class="bi bi-stars" style="font-size: 15rem;"></i>
+            {{-- ADVANCED MENTOR FRONT --}}
+            <div
+                class="advanced-glass-card rounded-5 border-0 shadow-2xl p-5 mb-5 position-relative overflow-hidden animate__animated animate__fadeIn">
+                <div class="position-absolute top-0 end-0 w-100 h-100 overflow-hidden pointer-events-none opacity-50">
+                    <div class="position-absolute rounded-circle blur-3xl pulse-slow"
+                        style="width: 350px; height: 350px; background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%); top: -150px; right: -100px;">
+                    </div>
                 </div>
-                <div class="position-relative z-1 max-w-2xl">
-                    <span
-                        class="badge bg-white text-primary rounded-pill px-3 py-2 mb-3 fw-bold border border-white border-opacity-25 text-uppercase tracking-wider shadow-sm">
-                        <i class="bi bi-award-fill me-1"></i> {{ __('Mentor Hub') }}
-                    </span>
-                    <h1 class="display-4 fw-black mb-3" style="letter-spacing: -1px;">
-                        {{ __('Shape the Future') }}, <span class="text-warning">{{ auth()->user()->name }}</span>
-                    </h1>
-                    <p class="lead text-white-50 mb-4 fw-medium">
-                        {{ __('Your guidance makes a difference. Post new job opportunities, create training programs, and mentor students directly from here.') }}
-                    </p>
-                    <div class="d-flex gap-3 mt-4 flex-wrap">
-                        <a href="{{ route('jobs.create') }}"
-                            class="btn btn-warning text-dark rounded-pill px-5 py-3 fw-bold shadow-sm hover-lift d-flex align-items-center gap-2">
-                            <i class="bi bi-briefcase-fill"></i> {{ __('Post a Job') }}
-                        </a>
-                        <a href="{{ route('home') }}"
-                            class="btn btn-outline-light rounded-pill px-5 py-3 fw-bold shadow-sm hover-lift d-flex align-items-center gap-2">
-                            <i class="bi bi-grid-fill"></i> {{ __('My Dashboard') }}
-                        </a>
+
+                <div class="card-body p-4 position-relative z-1">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <span
+                                class="badge bg-indigo-950 text-warning rounded-pill px-4 py-2 mb-3 fw-black small-caps tracking-widest shadow-sm">
+                                <i class="bi bi-stars me-2"></i> {{ __('EXPERT MENTOR HUB') }}
+                            </span>
+                            <h1 class="display-3 fw-black mb-3 text-dark" style="letter-spacing: -2px;">
+                                {{ __('Shape the') }} <span class="text-warning">{{ __('Next Edge') }}</span>
+                            </h1>
+                            <p class="lead text-muted mb-4 fw-bold opacity-75">
+                                {{ __('Your wisdom is the blueprint for future success') }}. <strong
+                                    class="text-dark">{{ auth()->user()->name }}</strong>,
+                                {{ __('ready to review new candidates and launch specialized training programs?') }}
+                            </p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <a href="{{ route('jobs.create') }}"
+                                    class="btn btn-warning rounded-pill px-5 py-3 fw-black text-dark shadow-lg hover-lift">
+                                    <i class="bi bi-rocket-takeoff-fill me-2"></i> {{ __('POST NEW OPPORTUNITY') }}
+                                </a>
+                                <a href="{{ route('home') }}"
+                                    class="btn btn-indigo-gold rounded-pill px-5 py-3 fw-black shadow-lg hover-lift">
+                                    <i class="bi bi-command me-2"></i> {{ __('COMMAND CENTER') }}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 d-none d-lg-block text-center">
+                            <i class="bi bi-mortarboard text-indigo-950 display-1 floating-icon opacity-50"></i>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="row g-4 mb-5">
                 <div class="col-md-8">
-                    <h4 class="fw-bolder text-dark mb-4">{{ __('Quick Impact') }}</h4>
+                    <h5 class="fw-black text-dark mb-4 text-uppercase tracking-widest d-flex align-items-center gap-2">
+                        <span class="p-1 bg-indigo-600 rounded-pill"></span> {{ __('Real-time Impact') }}
+                    </h5>
                     <div class="row g-4 mb-4">
-                        <div class="col-sm-6 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
+                        <div class="col-sm-6 animate__animated animate__fadeInUp">
                             <div
-                                class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white border-start border-4 border-warning">
-                                <h2 class="fw-black text-dark mb-2 fs-1">{{ $menteesCount }}</h2>
-                                <h5 class="fw-bold text-dark mb-1">{{ __('Active Mentees') }}</h5>
-                                <p class="text-muted small mb-0">{{ __('Students under your guidance') }}</p>
+                                class="advanced-glass-card group hover-glow p-4 transition-all h-100 position-relative overflow-hidden border-start border-4 border-warning">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h2 class="fw-black text-dark mb-0 fs-1 tracking-tighter">{{ $menteesCount }}</h2>
+                                    <div class="stat-icon-box p-3 bg-soft-warning rounded-4 text-warning shadow-sm">
+                                        <i class="bi bi-people-fill fs-4"></i>
+                                    </div>
+                                </div>
+                                <h6 class="fw-black text-dark text-uppercase tracking-wider mb-1">{{ __('Approved Mentees') }}
+                                </h6>
+                                <p class="text-muted small fw-bold mb-0 opacity-75">{{ __('Students following your path') }}</p>
                             </div>
                         </div>
-                        <div class="col-sm-6 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                        <div class="col-sm-6 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
                             <div
-                                class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all p-4 bg-white border-start border-4 border-primary">
-                                <h2 class="fw-black text-dark mb-2 fs-1">{{ $activeJobsCount }}</h2>
-                                <h5 class="fw-bold text-dark mb-1">{{ __('Active Positions') }}</h5>
-                                <p class="text-muted small mb-0">{{ __('Jobs you have posted') }}</p>
+                                class="advanced-glass-card group hover-glow p-4 transition-all h-100 position-relative overflow-hidden border-start border-4 border-indigo-600">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <h2 class="fw-black text-dark mb-0 fs-1 tracking-tighter">{{ $activeJobsCount }}</h2>
+                                    <div class="stat-icon-box p-3 bg-soft-primary rounded-4 text-indigo-600 shadow-sm">
+                                        <i class="bi bi-briefcase-fill fs-4"></i>
+                                    </div>
+                                </div>
+                                <h6 class="fw-black text-dark text-uppercase tracking-wider mb-1">{{ __('Market Reach') }}</h6>
+                                <p class="text-muted small fw-bold mb-0 opacity-75">{{ __('Jobs you have pioneered') }}</p>
                             </div>
                         </div>
                     </div>
 
-                    {{-- Mentor Resources/Tips --}}
-                    <div class="card border-0 shadow-sm rounded-4 bg-primary bg-opacity-10 p-4 border border-primary border-opacity-25 animate__animated animate__fadeInUp" style="animation-delay: 0.3s">
-                        <h5 class="fw-bold text-primary mb-3"><i class="bi bi-lightbulb-fill me-2"></i>{{ __('Mentor Tips') }}</h5>
-                        <ul class="list-unstyled mb-0">
-                            <li class="mb-2 d-flex align-items-start"><i class="bi bi-check-circle-fill text-primary me-2 mt-1"></i> <span>{{ __('Check your messages daily to stay connected with mentees') }}.</span></li>
-                            <li class="mb-2 d-flex align-items-start"><i class="bi bi-check-circle-fill text-primary me-2 mt-1"></i> <span>{{ __('Keep your job postings detailed and requirements clear') }}.</span></li>
-                            <li class="d-flex align-items-start"><i class="bi bi-check-circle-fill text-primary me-2 mt-1"></i> <span>{{ __('Provide constructive feedback on rejected applications') }}.</span></li>
+                    {{-- Pro Tip Card --}}
+                    <div class="advanced-glass-card p-4 bg-indigo-950 border-0 shadow-2xl animate__animated animate__fadeInUp"
+                        style="animation-delay: 0.2s">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="p-2 bg-soft-warning rounded-3"><i class="bi bi-lightning-charge-fill text-warning"></i>
+                            </div>
+                            <h6 class="fw-black text-white mb-0 text-uppercase tracking-widest">{{ __('MENTAL PERFORMANCE') }}
+                            </h6>
+                        </div>
+                        <ul class="list-unstyled mb-0 vstack gap-3">
+                            <li class="d-flex align-items-start gap-3">
+                                <i class="bi bi-patch-check-fill text-warning mt-1"></i>
+                                <span class="text-white-50 small fw-bold"><strong
+                                        class="text-white">{{ __('Speed Matters:') }}</strong>
+                                    {{ __('Responding to mentees within 24h increases engagement by 60%.') }}</span>
+                            </li>
+                            <li class="d-flex align-items-start gap-3">
+                                <i class="bi bi-patch-check-fill text-warning mt-1"></i>
+                                <span class="text-white-50 small fw-bold"><strong
+                                        class="text-white">{{ __('Quality Feedback:') }}</strong>
+                                    {{ __('Constructive rejection notes help build a stronger talent pipeline.') }}</span>
+                            </li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <h4 class="fw-bolder text-dark mb-4">{{ __('Recent Applications') }}</h4>
-                    <div class="card border-0 shadow-sm rounded-4 bg-white p-2">
-                        @forelse($recentApplications as $app)
-                            <a href="{{ route('job_applications.show', $app) }}"
-                                class="text-decoration-none dropdown-item rounded-3 p-3 {{ !$loop->last ? 'border-bottom border-light' : '' }} hover-lift transition-all d-block">
-                                <div class="d-flex align-items-center">
-                                    <div class="bg-primary bg-opacity-10 text-primary fw-bold rounded-circle d-flex align-items-center justify-content-center me-3"
-                                        style="width: 40px; height: 40px;">
-                                        {{ strtoupper(substr($app->user->name, 0, 1)) }}
+                <div class="col-md-4 animate__animated animate__fadeInRight" style="animation-delay: 0.1s">
+                    <h5 class="fw-black text-dark mb-4 text-uppercase tracking-widest d-flex align-items-center gap-2">
+                        <span class="p-1 bg-warning rounded-pill"></span> {{ __('Inbox Pulse') }}
+                    </h5>
+                    <div class="advanced-glass-card shadow-lg overflow-hidden border-0"
+                        style="background: rgba(255,255,255,0.6);">
+                        <div class="list-group list-group-flush">
+                            @forelse($recentApplications as $app)
+                                <a href="{{ route('job_applications.show', $app) }}"
+                                    class="list-group-item list-group-item-action bg-transparent border-0 p-3 hover-bg-white transition-all">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="position-relative">
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($app->user->name) }}&background=1e1b4b&color=fff&size=50&bold=true"
+                                                class="rounded-circle shadow-sm border border-2 border-white" width="45"
+                                                height="45">
+                                            <div class="position-absolute bottom-0 end-0 bg-warning rounded-circle pulse-warning"
+                                                style="width:12px; height:12px; border: 2px solid white"></div>
+                                        </div>
+                                        <div class="flex-grow-1 overflow-hidden">
+                                            <h6 class="mb-0 fw-black text-dark text-truncate">{{ $app->user->name }}</h6>
+                                            <small class="text-muted fw-bold text-uppercase d-block text-truncate"
+                                                style="font-size: 0.65rem;">{{ $app->job->title }}</small>
+                                        </div>
+                                        <i class="bi bi-chevron-right text-muted opacity-25"></i>
                                     </div>
-                                    <div class="overflow-hidden">
-                                        <h6 class="mb-0 fw-bold text-dark text-truncate">{{ $app->user->name }}</h6>
-                                        <small class="text-muted text-truncate d-block">{{ $app->job->title }}</small>
-                                    </div>
+                                </a>
+                            @empty
+                                <div class="text-center py-5">
+                                    <i class="bi bi-clipboard-x text-muted display-4 opacity-25 d-block mb-3"></i>
+                                    <p class="text-muted small-caps fw-black mb-0">{{ __('No New Signals') }}</p>
                                 </div>
-                            </a>
-                        @empty
-                            <div class="text-center py-4 text-muted">
-                                <i class="bi bi-inbox fs-3 mb-2 opacity-50"></i>
-                                <p class="mb-0 small fw-medium">{{ __('No pending applications') }}</p>
-                            </div>
-                        @endforelse
+                            @endforelse
+                        </div>
                     </div>
                 </div>
             </div>
 
         @else
-            {{-- USER FRONT --}}
-            <div class="hero-section text-white rounded-5 p-5 mb-5 position-relative overflow-hidden shadow-lg animate__animated animate__fadeIn"
-                style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%);">
-                <div class="position-absolute top-0 end-0 p-4 opacity-10 pointer-events-none"
-                    style="transform: scale(2) translate(10%, -10%);">
-                    <i class="bi bi-rocket-takeoff-fill" style="font-size: 15rem;"></i>
-                </div>
-                <div class="position-relative z-1 max-w-2xl">
-                    <span
-                        class="badge bg-success bg-opacity-25 text-success rounded-pill px-3 py-2 mb-3 fw-bold border border-success border-opacity-25 text-uppercase tracking-wider">
-                        <i class="bi bi-compass-fill me-1"></i> {{ __('Discover Opportunities') }}
-                    </span>
-                    <h1 class="display-4 fw-black mb-3" style="letter-spacing: -1px;">
-                        {{ __('Launch Your Career') }}, <span class="text-success">{{ auth()->user()->name }}</span>
-                    </h1>
-                    <p class="lead text-white-50 mb-4 fw-medium" style="max-width: 600px;">
-                        {{ __('Connect with expert mentors, enroll in specialized trainings, and discover top job opportunities handpicked for graduates.') }}
-                    </p>
-                    <div class="d-flex gap-3 mt-4 flex-wrap">
-                        <a href="{{ route('jobs.index') }}"
-                            class="btn btn-success rounded-pill px-5 py-3 fw-bold shadow-sm hover-lift d-flex align-items-center gap-2 text-white">
-                            <i class="bi bi-search"></i> {{ __('Find a Job') }}
-                        </a>
-                        <a href="{{ route('mentors.index') }}"
-                            class="btn btn-light rounded-pill px-5 py-3 fw-bold shadow-sm hover-lift d-flex align-items-center gap-2">
-                            <i class="bi bi-people-fill"></i> {{ __('Find a Mentor') }}
-                        </a>
+            {{-- ADVANCED USER FRONT --}}
+            <div
+                class="advanced-glass-card rounded-5 border-0 shadow-2xl p-5 mb-5 position-relative overflow-hidden animate__animated animate__fadeIn">
+                <div class="position-absolute top-0 start-0 w-100 h-100 overflow-hidden pointer-events-none opacity-50">
+                    <div class="position-absolute rounded-circle blur-3xl pulse-slow"
+                        style="width: 400px; height: 400px; background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%); top: -150px; left: -100px;">
                     </div>
                 </div>
-            </div>
 
-            <div class="row g-4 mb-5">
-                <div class="col-lg-12 mb-2 animate__animated animate__fadeInUp">
-                    <h4 class="fw-bolder text-dark text-center mb-4">{{ __('How It Works') }}</h4>
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="text-center p-4 bg-white rounded-4 shadow-sm h-100 hover-lift transition-all">
-                                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                                    <i class="bi bi-person-badge fs-3"></i>
-                                </div>
-                                <h5 class="fw-bold text-dark mb-2">{{ __('1. Build Your Profile') }}</h5>
-                                <p class="text-muted small mb-0">{{ __('Update your skills, faculty, and LinkedIn to stand out') }}.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-center p-4 bg-white rounded-4 shadow-sm h-100 hover-lift transition-all border-bottom border-4 border-success">
-                                <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                                    <i class="bi bi-search fs-3"></i>
-                                </div>
-                                <h5 class="fw-bold text-dark mb-2">{{ __('2. Discover & Apply') }}</h5>
-                                <p class="text-muted small mb-0">{{ __('Browse curated jobs and trainings that match your path') }}.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="text-center p-4 bg-white rounded-4 shadow-sm h-100 hover-lift transition-all">
-                                <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
-                                    <i class="bi bi-chat-dots fs-3"></i>
-                                </div>
-                                <h5 class="fw-bold text-dark mb-2">{{ __('3. Connect with Mentors') }}</h5>
-                                <p class="text-muted small mb-0">{{ __('Get guidance from experts who have been in your shoes') }}.</p>
+                <div class="card-body p-4 position-relative z-1">
+                    <div class="row align-items-center">
+                        <div class="col-lg-8">
+                            <span
+                                class="badge bg-indigo-950 text-success rounded-pill px-4 py-2 mb-3 fw-black small-caps tracking-widest shadow-sm">
+                                <i class="bi bi-rocket-takeoff-fill me-2"></i> {{ __('ELEVATE YOUR CAREER') }}
+                            </span>
+                            <h1 class="display-3 fw-black mb-3 text-dark" style="letter-spacing: -2px;">
+                                {{ __('Reach New') }} <span class="text-success">{{ __('Milestones') }}</span>
+                            </h1>
+                            <p class="lead text-muted mb-4 fw-bold opacity-75">
+                                {{ __('Launch your professional journey with precision') }}. <strong
+                                    class="text-dark">{{ auth()->user()->name }}</strong>,
+                                {{ __('access top-tier jobs, premium certifications, and elite mentorship.') }}
+                            </p>
+                            <div class="d-flex gap-3 flex-wrap">
+                                <a href="{{ route('jobs.index') }}"
+                                    class="btn btn-indigo-gold rounded-pill px-5 py-3 fw-black shadow-lg hover-lift">
+                                    <i class="bi bi-briefcase-fill me-2"></i> {{ __('FIND OPPORTUNITIES') }}
+                                </a>
+                                <a href="{{ route('mentors.index') }}"
+                                    class="btn btn-outline-white-glass rounded-pill px-5 py-3 fw-black shadow-lg hover-lift text-dark border-indigo-200">
+                                    <i class="bi bi-person-bounding-box me-2"></i> {{ __('TOP MENTORS') }}
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row g-4 mb-5">
-                <div class="col-lg-8 animate__animated animate__fadeInUp" style="animation-delay: 0.1s">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h4 class="fw-bolder text-dark mb-0">
-                            <i class="bi bi-briefcase-fill text-primary me-2"></i> {{ __('Featured Jobs') }}
-                        </h4>
-                        <a href="{{ route('jobs.index') }}"
-                            class="btn btn-link text-decoration-none fw-bold p-0 d-flex align-items-center gap-1">
-                            {{ __('View All') }} <i class="bi bi-arrow-right"></i>
-                        </a>
+                <div class="row g-4 mb-5">
+                    <div class="col-12">
+                        <h5
+                            class="fw-black text-dark text-center mb-5 text-uppercase tracking-widest border-bottom pb-4 border-light">
+                            <span class="bg-soft-primary px-4 py-2 rounded-pill"><i
+                                    class="bi bi-gear-wide-connected text-indigo-600 me-2"></i>{{ __('The Excellence Framework') }}</span>
+                        </h5>
+                        <div class="row g-4">
+                            @php
+                                $steps = [
+                                    ['icon' => 'bi-person-badge', 'color' => 'indigo-600', 'title' => 'Digital Identity', 'desc' => 'Optimizing your skills profile for maximum market visibility.', 'delay' => '0.1s'],
+                                    ['icon' => 'bi-intersect', 'color' => 'success', 'title' => 'Matching Engine', 'desc' => 'Discovering curated opportunities that align with your DNA.', 'delay' => '0.2s'],
+                                    ['icon' => 'bi-bezier2', 'color' => 'warning', 'title' => 'Mentor Bridge', 'desc' => 'Direct access to elite experts who have mastered your path.', 'delay' => '0.3s']
+                                ];
+                            @endphp
+                            @foreach($steps as $step)
+                                <div class="col-md-4 animate__animated animate__fadeInUp"
+                                    style="animation-delay: {{ $step['delay'] }}">
+                                    <div
+                                        class="advanced-glass-card p-4 text-center h-100 group transition-all hover-translate-y-n2 border-0 shadow-lg">
+                                        <div class="position-relative d-inline-block mb-4">
+                                            <div
+                                                class="position-absolute top-50 start-50 translate-middle w-100 h-100 bg-{{ explode('-', $step['color'])[0] }} opacity-10 blur-2xl group-hover:opacity-20 transition-all">
+                                            </div>
+                                            <div class="bg-soft-primary text-{{ $step['color'] }} rounded-circle d-flex align-items-center justify-content-center shadow-md position-relative"
+                                                style="width: 80px; height: 80px;">
+                                                <i class="bi {{ $step['icon'] }} fs-1"></i>
+                                                <div class="position-absolute top-0 end-0 bg-indigo-950 text-white rounded-circle fw-black d-flex align-items-center justify-content-center border border-white"
+                                                    style="width: 25px; height: 25px; font-size: 0.7rem; margin: -5px;">
+                                                    {{ $loop->iteration }}</div>
+                                            </div>
+                                        </div>
+                                        <h5 class="fw-black text-dark mb-2">{{ __($step['title']) }}</h5>
+                                        <p class="text-muted small fw-bold opacity-75 px-2">{{ __($step['desc']) }}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
-                    <div class="row g-4">
-                        @forelse($featuredJobs as $job)
-                            <div class="col-md-6">
-                                <div class="card border-0 shadow-sm rounded-4 h-100 hover-lift transition-all bg-white bg-opacity-75"
-                                    style="backdrop-filter: blur(10px);">
-                                    <div class="card-body p-4">
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <div class="custom-avatar rounded-3 bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold shadow-sm"
-                                                style="width:50px; height:50px; font-size: 1.25rem;">
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-lg-8">
+                        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-light pb-3">
+                            <h5 class="fw-black text-dark mb-0 text-uppercase tracking-widest">
+                                <i class="bi bi-briefcase-fill text-indigo-600 me-2"></i> {{ __('Market Pulse') }}
+                            </h5>
+                            <a href="{{ route('jobs.index') }}"
+                                class="btn btn-link text-indigo-600 fw-black small-caps text-decoration-none hover-translate-x-2 transition-all p-0">
+                                {{ __('ALL OPPORTUNITIES') }} <i class="bi bi-arrow-right-short fs-4"></i>
+                            </a>
+                        </div>
+                        <div class="row g-4">
+                            @forelse($featuredJobs as $job)
+                                <div class="col-md-6">
+                                    <div
+                                        class="advanced-glass-card p-4 h-100 group hover-glow transition-all position-relative border-0 shadow-lg overflow-hidden">
+                                        <div class="d-flex justify-content-between align-items-start mb-4 position-relative z-1">
+                                            <div class="bg-indigo-950 text-white rounded-4 shadow-lg d-flex align-items-center justify-content-center fw-black"
+                                                style="width: 55px; height: 55px; font-size: 1.2rem;">
                                                 {{ strtoupper(substr($job->company, 0, 1)) }}
                                             </div>
                                             <span
-                                                class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 fw-bold">{{ $job->type ?? 'Full-time' }}</span>
+                                                class="badge bg-soft-primary text-indigo-600 rounded-pill px-3 py-2 fw-black small-caps shadow-sm">{{ $job->type ?? 'FULL-TIME' }}</span>
                                         </div>
-                                        <h5 class="card-title fw-bold text-dark mb-1">{{ $job->title }}</h5>
-                                        <p class="text-muted small fw-medium mb-3"><i
-                                                class="bi bi-building me-1"></i>{{ $job->company }}</p>
-                                        <div class="mt-auto pt-3 border-top border-light">
-                                            <a href="{{ route('jobs.show', $job->id) }}"
-                                                class="btn btn-primary rounded-pill w-100 fw-bold shadow-sm d-flex justify-content-center align-items-center gap-1 hover-scale">
-                                                {{ __('View Details') }}
-                                            </a>
+                                        <h5 class="fw-black text-dark mb-2 position-relative z-1">{{ $job->title }}</h5>
+                                        <div class="vstack gap-2 mb-4 position-relative z-1">
+                                            <div class="d-flex align-items-center gap-2 text-muted small fw-bold"><i
+                                                    class="bi bi-building-fill text-indigo-600"></i> {{ $job->company }}</div>
+                                            <div class="d-flex align-items-center gap-2 text-muted small fw-bold"><i
+                                                    class="bi bi-geo-alt-fill text-error"></i>
+                                                {{ $job->location ?? 'Global / Remote' }}</div>
                                         </div>
+                                        <a href="{{ route('jobs.show', $job->id) }}"
+                                            class="btn btn-soft-primary rounded-pill w-100 fw-black py-2 shadow-sm position-relative z-1 hover-lift">
+                                            {{ __('REVIEW POSITION') }}
+                                        </a>
                                     </div>
                                 </div>
-                            </div>
-                        @empty
-                            <div class="col-12">
-                                <div class="bg-light rounded-4 p-5 text-center border border-dashed">
-                                    <i class="bi bi-briefcase text-muted fs-1 mb-3"></i>
-                                    <h6 class="text-dark fw-bold">{{ __('No Featured Jobs Yet') }}</h6>
-                                    <p class="text-muted small mb-0">{{ __('Check back later for new opportunities.') }}</p>
-                                </div>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-
-                <div class="col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h4 class="fw-bolder text-dark mb-0">
-                            <i class="bi bi-star-fill text-warning me-2"></i> {{ __('Top Mentors') }}
-                        </h4>
-                    </div>
-                    <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden p-2">
-                        @forelse($topMentors as $mentor)
-                            <a href="{{ route('mentors.index') }}"
-                                class="text-decoration-none text-dark d-block p-3 rounded-3 hover-bg-light transition-all {{ !$loop->last ? 'border-bottom border-light' : '' }}">
-                                <div class="d-flex align-items-center gap-3">
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($mentor->name) }}&background=EBF4FF&color=1E40AF"
-                                        class="rounded-circle shadow-sm" style="width: 48px; height: 48px;" alt="Mentor">
-                                    <div>
-                                        <h6 class="mb-0 fw-bold text-primary">{{ $mentor->name }}</h6>
-                                        <small class="text-muted d-block text-truncate" style="max-width: 200px;">
-                                            {{ $mentor->faculty->name ?? __('Expert Mentor') }}
-                                        </small>
+                            @empty
+                                <div class="col-12">
+                                    <div class="advanced-glass-card p-5 text-center border-dashed border-2 opacity-50">
+                                        <i class="bi bi-briefcase text-muted display-4 d-block mb-3"></i>
+                                        <p class="text-muted small-caps fw-black mb-0">{{ __('Scanning for New Targets') }}</p>
                                     </div>
                                 </div>
-                            </a>
-                        @empty
-                            <div class="p-4 text-center text-muted">
-                                <i class="bi bi-people fs-3 mb-2 opacity-50"></i>
-                                <p class="mb-0 small fw-medium">{{ __('No mentors available') }}</p>
-                            </div>
-                        @endforelse
+                            @endforelse
+                        </div>
+                    </div>
 
-                        @if($topMentors->count() > 0)
-                            <div class="p-2 border-top border-light mt-2">
-                                <a href="{{ route('mentors.index') }}"
-                                    class="btn btn-light rounded-pill w-100 fw-bold text-primary btn-sm">
-                                    {{ __('Browse All Directory') }}
+                    <div class="col-lg-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-light pb-3">
+                            <h5 class="fw-black text-dark mb-0 text-uppercase tracking-widest">
+                                <i class="bi bi-shield-check text-warning me-2"></i> {{ __('Expert Node') }}
+                            </h5>
+                        </div>
+                        <div class="advanced-glass-card shadow-lg p-3 border-0" style="background: rgba(255,255,255,0.6);">
+                            @forelse($topMentors as $mentor)
+                                <a href="{{ route('mentors.index') }}" class="d-block text-decoration-none group mb-2">
+                                    <div
+                                        class="p-3 rounded-4 transition-all group-hover:bg-white group-hover:shadow-md border border-transparent group-hover:border-indigo-100">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="position-relative">
+                                                <img src="https://ui-avatars.com/api/?name={{ urlencode($mentor->name) }}&background=1e1b4b&color=fff&size=55&bold=true"
+                                                    class="rounded-circle shadow-md border-2 border-white"
+                                                    style="width: 50px; height: 50px;">
+                                                <div class="position-absolute bottom-0 end-0 bg-success border border-white border-2 rounded-circle"
+                                                    style="width: 14px; height: 14px;"></div>
+                                            </div>
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <h6 class="mb-0 fw-black text-dark text-truncate">{{ $mentor->name }}</h6>
+                                                <small class="text-muted fw-bold d-block text-truncate small-caps"
+                                                    style="font-size: 0.65rem;">
+                                                    <i class="bi bi-mortarboard-fill text-warning me-1"></i>
+                                                    {{ $mentor->faculty->name ?? __('Expert Guide') }}
+                                                </small>
+                                            </div>
+                                            <i
+                                                class="bi bi-chevron-right text-muted opacity-25 group-hover:opacity-100 transition-all"></i>
+                                        </div>
+                                    </div>
                                 </a>
-                            </div>
-                        @endif
+                            @empty
+                                <div class="p-5 text-center opacity-50">
+                                    <i class="bi bi-people text-muted display-4 d-block mb-3"></i>
+                                    <p class="text-muted small-caps fw-black mb-0">{{ __('No Guides Online') }}</p>
+                                </div>
+                            @endforelse
+
+                            @if($topMentors->count() > 0)
+                                <div class="p-2 border-top border-light mt-2">
+                                    <a href="{{ route('mentors.index') }}"
+                                        class="btn btn-indigo-gold btn-sm rounded-pill w-100 fw-black py-2">
+                                        {{ __('VIEW ALL EXPERTS') }}
+                                    </a>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
         @endif
-    </div>
+        </div>
 
-    <style>
-        .fw-black {
-            font-weight: 900;
-        }
+        <style>
+            :root {
+                --glass-bg: rgba(255, 255, 255, 0.7);
+                --glass-border: rgba(255, 255, 255, 0.4);
+                --indigo-950: #1e1b4b;
+                --gold-accent: #f59e0b;
+                --error-red: #ef4444;
+            }
 
-        .tracking-wider {
-            letter-spacing: 0.05em;
-        }
+            .advanced-glass-card {
+                background: var(--glass-bg);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                border: 1px solid var(--glass-border);
+                border-radius: 2.5rem;
+                transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
 
-        .max-w-2xl {
-            max-width: 42rem;
-        }
+            .hover-glow:hover {
+                box-shadow: 0 0 50px rgba(79, 70, 229, 0.15);
+                border-color: rgba(79, 70, 229, 0.4);
+                transform: translateY(-8px);
+            }
 
-        .hover-lift {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+            .bg-indigo-950 {
+                background-color: var(--indigo-950) !important;
+            }
 
-        .hover-lift:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1) !important;
-        }
+            .text-warning {
+                color: var(--gold-accent) !important;
+            }
 
-        .hover-scale {
-            transition: transform 0.2s ease;
-        }
+            .text-error {
+                color: var(--error-red) !important;
+            }
 
-        .hover-scale:hover {
-            transform: scale(1.02);
-        }
+            .btn-indigo-gold {
+                background: var(--indigo-950);
+                color: var(--gold-accent);
+                border: 1px solid var(--gold-accent);
+                transition: all 0.3s ease;
+            }
 
-        .hover-bg-light:hover {
-            background-color: #f8f9fa;
-        }
+            .btn-indigo-gold:hover {
+                background: var(--gold-accent);
+                color: var(--indigo-950);
+                box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3);
+                transform: translateY(-3px);
+            }
 
-        html[dir="rtl"] .me-1 {
-            margin-right: 0 !important;
-            margin-left: .25rem !important;
-        }
+            .btn-outline-white-glass {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                transition: all 0.3s ease;
+            }
 
-        html[dir="rtl"] .me-2 {
-            margin-right: 0 !important;
-            margin-left: .5rem !important;
-        }
+            .btn-outline-white-glass:hover {
+                background: rgba(255, 255, 255, 0.25);
+                border-color: rgba(255, 255, 255, 0.5);
+                transform: translateY(-3px);
+            }
 
-        html[dir="rtl"] .me-3 {
-            margin-right: 0 !important;
-            margin-left: 1rem !important;
-        }
+            .floating-icon {
+                animation: floating 4s ease-in-out infinite;
+            }
 
-        html[dir="rtl"] .ms-3 {
-            margin-left: 0 !important;
-            margin-right: 1rem !important;
-        }
+            @keyframes floating {
 
-        html[dir="rtl"] .border-start {
-            border-left: 0 !important;
-            border-right: 4px solid !important;
-            border-right-color: inherit !important;
-        }
-    </style>
+                0%,
+                100% {
+                    transform: translateY(0) rotate(0);
+                }
+
+                50% {
+                    transform: translateY(-25px) rotate(5deg);
+                }
+            }
+
+            .pulse-slow {
+                animation: pulse-slow 10s infinite ease-in-out;
+            }
+
+            @keyframes pulse-slow {
+
+                0%,
+                100% {
+                    transform: scale(1);
+                    opacity: 0.4;
+                }
+
+                50% {
+                    transform: scale(1.3);
+                    opacity: 0.7;
+                }
+            }
+
+            .fw-black {
+                font-weight: 900;
+            }
+
+            .small-caps {
+                font-variant: small-caps;
+            }
+
+            .tracking-widest {
+                letter-spacing: 0.25em;
+            }
+
+            .tracking-tighter {
+                letter-spacing: -0.05em;
+            }
+
+            .bg-soft-primary {
+                background: rgba(79, 70, 229, 0.08);
+            }
+
+            .bg-soft-warning {
+                background: rgba(245, 158, 11, 0.08);
+            }
+
+            .bg-soft-success {
+                background: rgba(16, 185, 129, 0.08);
+            }
+
+            .hover-lift:hover {
+                transform: translateY(-10px) scale(1.02);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12) !important;
+            }
+
+            .hover-translate-y-n2:hover {
+                transform: translateY(-0.5rem);
+            }
+
+            .hover-translate-x-2:hover {
+                transform: translateX(0.5rem);
+            }
+
+            .blur-2xl {
+                filter: blur(40px);
+            }
+
+            .blur-3xl {
+                filter: blur(60px);
+            }
+
+            .group:hover .group-hover\:opacity-20 {
+                opacity: 0.2 !important;
+            }
+
+            @media (max-width: 768px) {
+                .display-3 {
+                    font-size: 2.5rem;
+                }
+
+                .advanced-glass-card {
+                    border-radius: 1.5rem;
+                    padding: 2rem !important;
+                }
+            }
+
+            /* RTL Specifics */
+            html[dir="rtl"] .tracking-widest {
+                letter-spacing: normal;
+            }
+
+            html[dir="rtl"] .hover-translate-x-2:hover {
+                transform: translateX(-0.5rem);
+            }
+        </style>
 @endsection

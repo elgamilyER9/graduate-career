@@ -23,7 +23,8 @@
                             class="bi bi-stars me-2 text-warning"></i>{{ __('Welcome back, :name', ['name' => Auth::user()->name]) }}
                     </h2>
                     <p class="text-white-50 mb-4 fw-medium">
-                        {{ __('Full platform visibility and management. All systems operational.') }}</p>
+                        {{ __('Full platform visibility and management. All systems operational.') }}
+                    </p>
                     <div class="d-flex flex-wrap gap-3">
                         <a href="{{ route('users.create') }}"
                             class="btn btn-primary rounded-pill px-4 fw-bold shadow hover-scale">
@@ -46,6 +47,28 @@
             </div>
         </div>
 
+        {{-- ── NOTIFICATIONS BANNER ── --}}
+        @if($unreadAdminNotifications > 0)
+            <div class="rounded-4 p-3 mb-4 d-flex align-items-center gap-3 animate__animated animate__fadeIn"
+                style="background:linear-gradient(135deg,#f0f4ff,#e8eeff);border:1px solid #c7d2fe;">
+                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                    style="width:44px;height:44px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;">
+                    <i class="bi bi-bell-fill fs-5"></i>
+                </div>
+                <div class="flex-grow-1">
+                    <span class="fw-bold"
+                        style="color:#4338ca;">{{ __('You have :count unread notifications!', ['count' => $unreadAdminNotifications]) }}</span>
+                    <small class="text-muted d-block">{{ __('Review and manage your notifications below.') }}</small>
+                </div>
+                <a href="{{ route('admin.notifications.index') }}" class="btn btn-sm rounded-pill px-3 fw-bold"
+                    style="background:#6366f1;color:white;border:none;">
+                    <i class="bi bi-arrow-right me-1"></i>{{ __('Manage All') }}
+                </a>
+                <button type="button" class="btn-close" onclick="this.closest('.rounded-4').remove()"
+                    aria-label="Close"></button>
+            </div>
+        @endif
+
         {{-- ── PRIMARY STAT CARDS ── --}}
         <div class="row g-4 mb-5">
             @php
@@ -58,6 +81,8 @@
                     ['label' => __('Job Applications'), 'value' => $applicationsCount, 'icon' => 'bi-send-fill', 'color' => '#ef4444', 'bg' => '#fef2f2', 'link' => route('job_applications.index')],
                     ['label' => __('Career Paths'), 'value' => $careerPathsCount, 'icon' => 'bi-signpost-split-fill', 'color' => '#f97316', 'bg' => '#fff7ed', 'link' => route('career_paths.index')],
                     ['label' => __('Skills'), 'value' => $skillsCount, 'icon' => 'bi-star-fill', 'color' => '#ec4899', 'bg' => '#fdf4ff', 'link' => route('skills.index')],
+                    ['label' => __('Uploaded Files'), 'value' => $filesCount, 'icon' => 'bi-folder-fill', 'color' => '#10b981', 'bg' => '#f0fdf4', 'link' => route('admin.files.index')],
+                    ['label' => __('Notifications'), 'value' => $totalNotificationsCount, 'icon' => 'bi-bell-fill', 'color' => '#6366f1', 'bg' => '#f5f3ff', 'link' => route('admin.notifications.index')],
                 ];
             @endphp
             @foreach($statCards as $i => $card)
@@ -74,7 +99,8 @@
                                     </div>
                                 </div>
                                 <h3 class="fw-black mb-1" style="font-size:2rem;color:{{ $card['color'] }};">
-                                    {{ $card['value'] }}</h3>
+                                    {{ $card['value'] }}
+                                </h3>
                                 <p class="text-muted small fw-semibold mb-0">{{ $card['label'] }}</p>
                             </div>
                         </div>
@@ -86,126 +112,223 @@
         {{-- ── PENDING ALERTS ROW ── --}}
         <div class="row g-4 mb-5">
             <div class="col-md-6 col-xl-3">
-                <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden"
-                    style="border-top:4px solid #ef4444 !important;background:#fef2f2;">
-                    <div class="card-body p-4 d-flex align-items-center gap-4">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                            style="width:50px;height:50px;background:#fee2e2;">
-                            <i class="bi bi-clock-fill fs-3 text-danger"></i>
-                        </div>
-                        <div>
-                            <h2 class="fw-black text-danger mb-0">{{ $pendingAppsCount }}</h2>
-                            <p class="text-muted small mb-0 fw-semibold">{{ __('Pending Job Applications') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-3">
-                <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden"
-                    style="border-top:4px solid #f59e0b !important;background:#fffbeb;">
-                    <div class="card-body p-4 d-flex align-items-center gap-4">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                            style="width:50px;height:50px;background:#fef3c7;">
-                            <i class="bi bi-person-heart-fill fs-3 text-warning"></i>
-                        </div>
-                        <div>
-                            <h2 class="fw-black text-warning mb-0">{{ $pendingMentorshipCount }}</h2>
-                            <p class="text-muted small mb-0 fw-semibold">{{ __('Pending Mentorship Requests') }}</p>
+                <a href="{{ route('job_applications.index', ['status' => 'pending']) }}" class="text-decoration-none">
+                    <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden hover-lift transition-all"
+                        style="border-top:4px solid #ef4444 !important;background:#fef2f2;">
+                        <div class="card-body p-4 d-flex align-items-center gap-4">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:50px;height:50px;background:#fee2e2;">
+                                <i class="bi bi-clock-fill fs-3 text-danger"></i>
+                            </div>
+                            <div>
+                                <h2 class="fw-black text-danger mb-0">{{ $pendingAppsCount }}</h2>
+                                <p class="text-muted small mb-0 fw-semibold">{{ __('Pending Job Applications') }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-6 col-xl-3">
-                <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden"
-                    style="border-top:4px solid #10b981 !important;background:#f0fdf4;">
-                    <div class="card-body p-4 d-flex align-items-center gap-4">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                            style="width:50px;height:50px;background:#d1fae5;">
-                            <i class="bi bi-check-circle-fill fs-3 text-success"></i>
-                        </div>
-                        <div>
-                            <h2 class="fw-black text-success mb-0">{{ $approvedAppsCount }}</h2>
-                            <p class="text-muted small mb-0 fw-semibold">{{ __('Approved Applications') }}</p>
+                <a href="{{ route('admin.mentorship_requests.index', ['status' => 'pending']) }}"
+                    class="text-decoration-none">
+                    <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden hover-lift transition-all"
+                        style="border-top:4px solid #f59e0b !important;background:#fffbeb;">
+                        <div class="card-body p-4 d-flex align-items-center gap-4">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:50px;height:50px;background:#fef3c7;">
+                                <i class="bi bi-person-heart-fill fs-3 text-warning"></i>
+                            </div>
+                            <div>
+                                <h2 class="fw-black text-warning mb-0">{{ $pendingMentorshipCount }}</h2>
+                                <p class="text-muted small mb-0 fw-semibold">{{ __('Pending Mentorship Requests') }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-6 col-xl-3">
-                <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden"
-                    style="border-top:4px solid #3b82f6 !important;background:#eff6ff;">
-                    <div class="card-body p-4 d-flex align-items-center gap-4">
-                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-                            style="width:50px;height:50px;background:#dbeafe;">
-                            <i class="bi bi-chat-dots-fill fs-3 text-primary"></i>
+                <a href="{{ route('job_applications.index', ['status' => 'approved']) }}" class="text-decoration-none">
+                    <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden hover-lift transition-all"
+                        style="border-top:4px solid #10b981 !important;background:#f0fdf4;">
+                        <div class="card-body p-4 d-flex align-items-center gap-4">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:50px;height:50px;background:#d1fae5;">
+                                <i class="bi bi-check-circle-fill fs-3 text-success"></i>
+                            </div>
+                            <div>
+                                <h2 class="fw-black text-success mb-0">{{ $approvedAppsCount }}</h2>
+                                <p class="text-muted small mb-0 fw-semibold">{{ __('Approved Applications') }}</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="fw-black text-primary mb-0">{{ $unreadMessagesCount }}</h2>
-                            <p class="text-muted small mb-0 fw-semibold">{{ __('Unread Messages') }}</p>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <a href="{{ route('connections.index') }}" class="text-decoration-none">
+                    <div class="card border-0 rounded-4 shadow-sm h-100 overflow-hidden hover-lift transition-all"
+                        style="border-top:4px solid #3b82f6 !important;background:#eff6ff;">
+                        <div class="card-body p-4 d-flex align-items-center gap-4">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:50px;height:50px;background:#dbeafe;">
+                                <i class="bi bi-chat-dots-fill fs-3 text-primary"></i>
+                            </div>
+                            <div>
+                                <h2 class="fw-black text-primary mb-0">{{ $unreadMessagesCount }}</h2>
+                                <p class="text-muted small mb-0 fw-semibold">{{ __('Unread Messages') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        {{-- ── NOTIFICATIONS MANAGEMENT SECTION ── --}}
+        <div class="row g-4 mb-5 animate__animated animate__fadeInUp">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header border-0 py-4 px-4 d-flex justify-content-between align-items-center"
+                        style="background:linear-gradient(135deg,#f8f9ff,#eef2ff);">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center rounded-3 shadow-sm"
+                                style="width:45px;height:45px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;">
+                                <i class="bi bi-bell-fill fs-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bolder text-dark">{{ __('Notifications Management') }}</h5>
+                                <small class="text-muted">
+                                    <span class="fw-bold"
+                                        style="color:#6366f1;">{{ $allNotifications->where('read', false)->count() }}</span>
+                                    {{ __('unread') }} / {{ $totalNotificationsCount }} {{ __('total') }}
+                                </small>
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.notifications.index') }}" class="btn btn-sm rounded-pill px-4 fw-bold"
+                            style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border:none;">
+                            {{ __('View All') }} <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+
+                    {{-- In-page Notification Alert Messages --}}
+                    @if($allNotifications->where('read', false)->count() > 0)
+                        @foreach($allNotifications->where('read', false)->take(3) as $unread)
+                            <div class="mx-4 mt-3 rounded-3 p-3 d-flex align-items-center gap-3 animate__animated animate__pulse"
+                                style="background:#faf5ff;border:1px solid #ddd6fe;">
+                                <i class="bi {{ \App\Services\NotificationService::getIcon($unread->type) }} fs-5"
+                                    style="color:#8b5cf6;"></i>
+                                <div class="flex-grow-1">
+                                    <span class="fw-bold text-dark" style="font-size:0.87rem;">{{ $unread->title }}</span>
+                                    <small class="text-muted d-block">{{ __('From') }}: {{ $unread->user->name ?? '—' }} ·
+                                        {{ $unread->created_at->diffForHumans() }}</small>
+                                </div>
+                                <form action="{{ route('notifications.read', $unread) }}" method="POST" class="m-0">
+                                    @csrf @method('PATCH')
+                                    <button type="submit" class="btn btn-sm rounded-pill px-3 fw-bold"
+                                        style="background:#8b5cf6;color:white;border:none;font-size:0.78rem;">
+                                        <i class="bi bi-check2 me-1"></i>{{ __('Mark read') }}
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('Notification') }}
+                                        </th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('User') }}</th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold text-center">
+                                            {{ __('Status') }}
+                                        </th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('Time') }}</th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold text-end">{{ __('Actions') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($allNotifications as $notification)
+                                        <tr style="{{ !$notification->read ? 'background:#fafbff;' : '' }}">
+                                            <td class="px-4 py-3 border-0">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                                                        style="width:38px;height:38px;background:{{ !$notification->read ? '#e0e7ff' : '#f3f4f6' }};">
+                                                        <i class="bi {{ \App\Services\NotificationService::getIcon($notification->type) }}"
+                                                            style="color:{{ !$notification->read ? '#6366f1' : '#9ca3af' }};"></i>
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bold text-dark" style="font-size:0.85rem;">
+                                                            {{ $notification->title }}
+                                                        </div>
+                                                        <small
+                                                            class="text-muted">{{ Str::limit($notification->description, 50) }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 border-0">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($notification->user->name ?? '?') }}&background=EBF4FF&color=1E40AF&size=28"
+                                                        class="rounded-circle" style="width:28px;height:28px;" alt="">
+                                                    <small
+                                                        class="fw-semibold text-dark">{{ $notification->user->name ?? '—' }}</small>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 border-0 text-center">
+                                                @if(!$notification->read)
+                                                    <span class="badge rounded-pill px-2 fw-bold"
+                                                        style="background:#e0e7ff;color:#6366f1;font-size:0.72rem;">
+                                                        <i class="bi bi-circle-fill me-1"
+                                                            style="font-size:5px;vertical-align:middle;"></i>{{ __('Unread') }}
+                                                    </span>
+                                                @else
+                                                    <span class="badge bg-light text-muted rounded-pill px-2 fw-bold"
+                                                        style="font-size:0.72rem;">{{ __('Read') }}</span>
+                                                @endif
+                                            </td>
+                                            <td class="px-4 py-3 border-0">
+                                                <small
+                                                    class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                            </td>
+                                            <td class="px-4 py-3 border-0 text-end">
+                                                <div class="d-flex justify-content-end gap-1">
+                                                    @if(!$notification->read)
+                                                        <form action="{{ route('notifications.read', $notification) }}"
+                                                            method="POST" class="m-0">
+                                                            @csrf @method('PATCH')
+                                                            <button type="submit" class="btn-mini-view"
+                                                                title="{{ __('Mark as read') }}">
+                                                                <i class="bi bi-check2"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endif
+                                                    <form action="{{ route('notifications.destroy', $notification) }}"
+                                                        method="POST" class="m-0"
+                                                        onsubmit="return confirm('{{ __('Are you sure?') }}')">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" class="btn-mini-delete"
+                                                            title="{{ __('Delete') }}">
+                                                            <i class="bi bi-trash3"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center py-4 text-muted">
+                                                <i class="bi bi-inbox-fill opacity-25 fs-1"></i>
+                                                <p class="mt-2 mb-0">{{ __('No notifications yet') }}</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        {{-- ── NOTIFICATIONS SECTION ── --}}
-        @php
-            $unreadNotifications = Auth::user()->notifications()->where('read', false)->count();
-            $recentNotifications = Auth::user()->notifications()->orderBy('created_at', 'desc')->take(5)->get();
-        @endphp
-        @if($unreadNotifications > 0 || $recentNotifications->count() > 0)
-            <div class="row g-4 mb-5 animate__animated animate__fadeInUp">
-                <div class="col-12">
-                    <div class="card rounded-4 border-0 shadow-sm overflow-hidden"
-                        style="background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%); border-left: 5px solid #6366f1 !important;">
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="d-flex align-items-center justify-content-center rounded-3 shadow-sm"
-                                        style="width:45px;height:45px;background:linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);color:white;">
-                                        <i class="bi bi-bell-fill fs-5"></i>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-0 fw-bolder text-dark">{{ __('Recent Notifications') }}</h6>
-                                        <small class="text-muted">{{ __('You have :count unread notifications', ['count' => $unreadNotifications]) }}</small>
-                                    </div>
-                                </div>
-                                <a href="{{ route('notifications.index') }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">
-                                    {{ __('View All') }} <i class="bi bi-arrow-right ms-2"></i>
-                                </a>
-                            </div>
-                            @if($recentNotifications->count() > 0)
-                                <div class="notification-items" style="max-height: 300px; overflow-y: auto;">
-                                    @foreach($recentNotifications as $notification)
-                                        <div class="d-flex gap-3 p-3 mb-2 rounded-3 {{ !$notification->read ? 'bg-white shadow-sm' : '' }}" style="border-left: 3px solid {{ !$notification->read ? '#6366f1' : '#e5e7eb' }};">
-                                            <div class="small fw-bold text-primary" style="min-width: 40px; text-align: center;">
-                                                        <i class="bi {{ \App\Services\NotificationService::getIcon($notification->type) }} fs-5"></i>
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <p class="mb-1 {{ !$notification->read ? 'fw-bold text-dark' : 'text-muted' }}">{{ $notification->title }}</p>
-                                                        <small class="text-muted d-block">{{ $notification->message }}</small>
-                                                        <small class="text-muted d-block mt-1">{{ $notification->created_at->diffForHumans() }}</small>
-                                                    </div>
-                                                    @if(!$notification->read)
-                                                        <div class="d-flex align-items-center gap-2">
-                                                            <form action="{{ route('notifications.read', $notification) }}" method="POST" class="m-0">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill px-2" title="{{ __('Mark as read') }}">
-                                                                    <i class="bi bi-check2"></i>
-                                                                </button>
-                                                            </form>
-                                                            <span class="badge rounded-pill bg-primary" style="width: 8px; height: 8px; padding: 0;"></span>
-                                                        </div>
-                                                    @endif
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
 
         {{-- ── MAIN CONTENT: Users + Chart ── --}}
         <div class="row g-4 mb-5">
@@ -229,10 +352,14 @@
                     <div class="px-4 pb-3 pt-1 border-bottom">
                         <div class="d-flex gap-2 flex-wrap">
                             <div class="input-group input-group-sm flex-grow-1" style="min-width:160px;max-width:280px;">
-                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                                <input type="text" id="userSearch" class="form-control border-start-0 shadow-none" placeholder="{{ __('Search by name or email...') }}" oninput="filterTable('usersTable','userSearch','userRoleFilter')">
+                                <span class="input-group-text bg-white border-end-0"><i
+                                        class="bi bi-search text-muted"></i></span>
+                                <input type="text" id="userSearch" class="form-control border-start-0 shadow-none"
+                                    placeholder="{{ __('Search by name or email...') }}"
+                                    oninput="filterTable('usersTable','userSearch','userRoleFilter')">
                             </div>
-                            <select id="userRoleFilter" class="form-select form-select-sm shadow-none" style="max-width:140px;" onchange="filterTable('usersTable','userSearch','userRoleFilter')">
+                            <select id="userRoleFilter" class="form-select form-select-sm shadow-none"
+                                style="max-width:140px;" onchange="filterTable('usersTable','userSearch','userRoleFilter')">
                                 <option value="">{{ __('All Roles') }}</option>
                                 <option value="admin">{{ __('Admin') }}</option>
                                 <option value="mentor">{{ __('Mentor') }}</option>
@@ -254,14 +381,16 @@
                                 </thead>
                                 <tbody id="usersTable">
                                     @foreach($recentUsers as $u)
-                                        <tr data-search="{{ strtolower($u->name . ' ' . $u->email) }}" data-role="{{ $u->role }}">
+                                        <tr data-search="{{ strtolower($u->name . ' ' . $u->email) }}"
+                                            data-role="{{ $u->role }}">
                                             <td class="px-4 py-3 border-0">
                                                 <div class="d-flex align-items-center gap-3">
                                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($u->name) }}&background=EBF4FF&color=1E40AF&size=36"
                                                         class="rounded-circle shadow-sm" style="width:36px;height:36px;" alt="">
                                                     <div>
                                                         <div class="fw-bold text-dark mb-0" style="font-size:0.88rem;">
-                                                            {{ $u->name }}</div>
+                                                            {{ $u->name }}
+                                                        </div>
                                                         <small class="text-muted">{{ $u->email }}</small>
                                                     </div>
                                                 </div>
@@ -350,8 +479,11 @@
                     {{-- Jobs Filter Bar --}}
                     <div class="px-4 pb-3 pt-1 border-bottom">
                         <div class="input-group input-group-sm">
-                            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="jobSearch" class="form-control border-start-0 shadow-none" placeholder="{{ __('Search by title or company...') }}" oninput="filterTable('jobsTable','jobSearch',null)">
+                            <span class="input-group-text bg-white border-end-0"><i
+                                    class="bi bi-search text-muted"></i></span>
+                            <input type="text" id="jobSearch" class="form-control border-start-0 shadow-none"
+                                placeholder="{{ __('Search by title or company...') }}"
+                                oninput="filterTable('jobsTable','jobSearch',null)">
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -370,7 +502,8 @@
                                         <tr data-search="{{ strtolower($job->title . ' ' . $job->company) }}">
                                             <td class="px-4 py-3 border-0">
                                                 <div class="fw-bold text-dark" style="font-size:0.88rem;">
-                                                    {{ Str::limit($job->title, 30) }}</div>
+                                                    {{ Str::limit($job->title, 30) }}
+                                                </div>
                                             </td>
                                             <td class="px-4 py-3 border-0">
                                                 <small class="text-muted">{{ $job->company }}</small>
@@ -418,10 +551,14 @@
                     <div class="px-4 pb-3 pt-1 border-bottom">
                         <div class="d-flex gap-2 flex-wrap">
                             <div class="input-group input-group-sm flex-grow-1" style="min-width:130px;">
-                                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                                <input type="text" id="appSearch" class="form-control border-start-0 shadow-none" placeholder="{{ __('Search applicant or job...') }}" oninput="filterTable('appsTable','appSearch','appStatusFilter')">
+                                <span class="input-group-text bg-white border-end-0"><i
+                                        class="bi bi-search text-muted"></i></span>
+                                <input type="text" id="appSearch" class="form-control border-start-0 shadow-none"
+                                    placeholder="{{ __('Search applicant or job...') }}"
+                                    oninput="filterTable('appsTable','appSearch','appStatusFilter')">
                             </div>
-                            <select id="appStatusFilter" class="form-select form-select-sm shadow-none" style="max-width:140px;" onchange="filterTable('appsTable','appSearch','appStatusFilter')">
+                            <select id="appStatusFilter" class="form-select form-select-sm shadow-none"
+                                style="max-width:140px;" onchange="filterTable('appsTable','appSearch','appStatusFilter')">
                                 <option value="">{{ __('All Statuses') }}</option>
                                 <option value="pending">{{ __('Pending') }}</option>
                                 <option value="approved">{{ __('Approved') }}</option>
@@ -437,7 +574,8 @@
                                         <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('Applicant') }}</th>
                                         <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('Job') }}</th>
                                         <th class="px-4 py-3 border-0 text-muted small fw-bold text-center">
-                                            {{ __('Status') }}</th>
+                                            {{ __('Status') }}
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="appsTable">
@@ -446,10 +584,12 @@
                                             $sc = ['approved' => 'success', 'rejected' => 'danger', 'pending' => 'warning'];
                                             $si = $sc[$app->status] ?? 'secondary';
                                         @endphp
-                                        <tr data-search="{{ strtolower(($app->user->name ?? '') . ' ' . ($app->job->title ?? '')) }}" data-role="{{ $app->status }}">
+                                        <tr data-search="{{ strtolower(($app->user->name ?? '') . ' ' . ($app->job->title ?? '')) }}"
+                                            data-role="{{ $app->status }}">
                                             <td class="px-4 py-3 border-0">
                                                 <div class="fw-bold text-dark" style="font-size:0.85rem;">
-                                                    {{ $app->user->name ?? '—' }}</div>
+                                                    {{ $app->user->name ?? '—' }}
+                                                </div>
                                             </td>
                                             <td class="px-4 py-3 border-0">
                                                 <small class="text-muted">{{ Str::limit($app->job->title ?? '—', 22) }}</small>
@@ -460,6 +600,139 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── FILES MANAGEMENT SECTION ── --}}
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="card-header border-0 py-4 px-4 d-flex justify-content-between align-items-center"
+                        style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center justify-content-center rounded-3 shadow-sm"
+                                style="width:45px;height:45px;background:linear-gradient(135deg,#10b981,#059669);color:white;">
+                                <i class="bi bi-folder-fill fs-5"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0 fw-bolder text-dark">{{ __('Files Management') }}</h5>
+                                <small class="text-muted">{{ $filesCount }} {{ __('total files uploaded') }}</small>
+                            </div>
+                        </div>
+                        <a href="{{ route('admin.files.index') }}" class="btn btn-sm rounded-pill px-4 fw-bold"
+                            style="background:linear-gradient(135deg,#10b981,#059669);color:white;border:none;">
+                            {{ __('View All') }} <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('File') }}</th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('Uploaded By') }}</th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold text-center">{{ __('Type') }}
+                                        </th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold text-center">{{ __('Size') }}
+                                        </th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold">{{ __('Date') }}</th>
+                                        <th class="px-4 py-3 border-0 text-muted small fw-bold text-end">{{ __('Actions') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($allFiles as $file)
+                                        <tr>
+                                            <td class="px-4 py-3 border-0">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                                                        style="width:38px;height:38px;background:#f0f4f8;">
+                                                        @if(strpos($file->mime_type, 'pdf') !== false)
+                                                            <i class="bi bi-file-pdf text-danger"></i>
+                                                        @elseif(strpos($file->mime_type, 'word') !== false || strpos($file->mime_type, 'document') !== false)
+                                                            <i class="bi bi-file-word text-primary"></i>
+                                                        @elseif(strpos($file->mime_type, 'image') !== false)
+                                                            <i class="bi bi-image text-info"></i>
+                                                        @else
+                                                            <i class="bi bi-file-earmark text-muted"></i>
+                                                        @endif
+                                                    </div>
+                                                    <div>
+                                                        <div class="fw-bold text-dark" style="font-size:0.85rem;">
+                                                            {{ Str::limit($file->name, 30) }}
+                                                        </div>
+                                                        <small class="text-muted">{{ $file->mime_type }}</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 border-0">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($file->user->name ?? '?') }}&background=EBF4FF&color=1E40AF&size=28"
+                                                        class="rounded-circle" style="width:28px;height:28px;" alt="">
+                                                    <div>
+                                                        <small
+                                                            class="fw-semibold text-dark d-block">{{ $file->user->name ?? '—' }}</small>
+                                                        @if($file->user)
+                                                            <span class="badge rounded-pill px-2 fw-bold"
+                                                                style="font-size:0.68rem;background:{{ $file->user->role === 'mentor' ? '#fef3c7' : '#dbeafe' }};color:{{ $file->user->role === 'mentor' ? '#d97706' : '#1d4ed8' }};">
+                                                                {{ ucfirst($file->user->role) }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 border-0 text-center">
+                                                <span class="badge rounded-pill px-2 fw-bold"
+                                                    style="background:#f3f4f6;color:#374151;font-size:0.72rem;">
+                                                    {{ ucfirst(str_replace('_', ' ', $file->type)) }}
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3 border-0 text-center">
+                                                @php
+                                                    $bytes = $file->size;
+                                                    $sizes = ['B', 'KB', 'MB', 'GB'];
+                                                    $i = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
+                                                    $humanSize = round($bytes / pow(1024, $i), 1) . ' ' . $sizes[$i];
+                                                @endphp
+                                                <small class="text-muted fw-semibold">{{ $humanSize }}</small>
+                                            </td>
+                                            <td class="px-4 py-3 border-0">
+                                                <small class="text-muted">{{ $file->created_at->diffForHumans() }}</small>
+                                            </td>
+                                            <td class="px-4 py-3 border-0 text-end">
+                                                <div class="d-flex justify-content-end gap-1">
+                                                    <a href="{{ route('files.show', $file) }}" target="_blank"
+                                                        class="btn-mini-view" title="{{ __('View') }}">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <a href="{{ route('files.download', $file) }}" class="btn-mini-edit"
+                                                        title="{{ __('Download') }}">
+                                                        <i class="bi bi-download"></i>
+                                                    </a>
+                                                    <form action="{{ route('files.destroy', $file) }}" method="POST" class="m-0"
+                                                        onsubmit="return confirm('{{ __('Are you sure?') }}')">
+                                                        @csrf @method('DELETE')
+                                                        <button type="submit" class="btn-mini-delete"
+                                                            title="{{ __('Delete') }}">
+                                                            <i class="bi bi-trash3"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center py-4 text-muted">
+                                                <i class="bi bi-inbox-fill opacity-25 fs-1"></i>
+                                                <p class="mt-2 mb-0">{{ __('No files uploaded yet') }}</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -486,6 +759,8 @@
                                 ['label' => __('Universities'), 'icon' => 'bi-building-fill', 'color' => '#8b5cf6', 'bg' => '#f5f3ff', 'link' => route('universities.index'), 'count' => $universitiesCount],
                                 ['label' => __('Faculties'), 'icon' => 'bi-bank2', 'color' => '#10b981', 'bg' => '#f0fdf4', 'link' => route('faculties.index'), 'count' => $facultiesCount],
                                 ['label' => __('Applications'), 'icon' => 'bi-send-fill', 'color' => '#ef4444', 'bg' => '#fef2f2', 'link' => route('job_applications.index'), 'count' => $applicationsCount],
+                                ['label' => __('Files'), 'icon' => 'bi-folder-fill', 'color' => '#10b981', 'bg' => '#f0fdf4', 'link' => route('admin.files.index'), 'count' => $filesCount],
+                                ['label' => __('Notifications'), 'icon' => 'bi-bell-fill', 'color' => '#6366f1', 'bg' => '#f5f3ff', 'link' => route('admin.notifications.index'), 'count' => $totalNotificationsCount],
                             ];
                         @endphp
                         @foreach($mgmt as $m)
@@ -500,7 +775,8 @@
                                     <div>
                                         <div class="fw-bold text-dark" style="font-size:0.88rem;">{{ $m['label'] }}</div>
                                         <div class="fw-black" style="font-size:1.2rem;color:{{ $m['color'] }};">
-                                            {{ $m['count'] }}</div>
+                                            {{ $m['count'] }}
+                                        </div>
                                     </div>
                                 </a>
                             </div>
@@ -553,17 +829,17 @@
             const tbody = document.getElementById(tableId);
             if (!tbody) return;
 
-            const query   = document.getElementById(searchId)?.value.trim().toLowerCase() || '';
-            const role    = selectId ? (document.getElementById(selectId)?.value.toLowerCase() || '') : '';
-            const rows    = tbody.querySelectorAll('tr');
-            let   visible = 0;
+            const query = document.getElementById(searchId)?.value.trim().toLowerCase() || '';
+            const role = selectId ? (document.getElementById(selectId)?.value.toLowerCase() || '') : '';
+            const rows = tbody.querySelectorAll('tr');
+            let visible = 0;
 
             rows.forEach(row => {
                 const rowSearch = (row.dataset.search || '').toLowerCase();
-                const rowRole   = (row.dataset.role   || '').toLowerCase();
+                const rowRole = (row.dataset.role || '').toLowerCase();
 
                 const matchesSearch = !query || rowSearch.includes(query);
-                const matchesRole   = !role  || rowRole === role;
+                const matchesRole = !role || rowRole === role;
 
                 if (matchesSearch && matchesRole) {
                     row.style.display = '';
@@ -581,8 +857,8 @@
                     noRow.className = 'no-results-row';
                     const cols = rows[0]?.querySelectorAll('td,th').length || 3;
                     noRow.innerHTML = `<td colspan="${cols}" class="text-center py-4 text-muted small">
-                        <i class="bi bi-search me-2 opacity-50"></i>{{ __('No results found.') }}
-                    </td>`;
+                                        <i class="bi bi-search me-2 opacity-50"></i>{{ __('No results found.') }}
+                                    </td>`;
                     tbody.appendChild(noRow);
                 }
                 noRow.style.display = '';
@@ -629,6 +905,7 @@
             border: none;
             background: #f8fafc;
             font-size: 0.8rem;
+            cursor: pointer;
         }
 
         .btn-mini-view {

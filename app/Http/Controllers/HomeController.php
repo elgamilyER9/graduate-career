@@ -11,6 +11,8 @@ use App\Models\Faculty;
 use App\Models\University;
 use App\Models\MentorshipRequest;
 use App\Models\JobApplication;
+use App\Models\File;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -91,6 +93,13 @@ class HomeController extends Controller
                 'recentApplications' => JobApplication::latest()->take(8)->with(['user', 'job'])->get(),
                 'recentMentorship' => MentorshipRequest::latest()->take(6)->with(['student', 'mentor'])->get(),
                 'unreadMessagesCount' => $unreadMessagesCount,
+                // Notifications for admin
+                'allNotifications' => Notification::with('user')->latest()->take(10)->get(),
+                'unreadAdminNotifications' => Notification::where('user_id', $user->id)->where('read', false)->count(),
+                'totalNotificationsCount' => Notification::count(),
+                // Files for admin
+                'allFiles' => File::with('user')->latest()->take(10)->get(),
+                'filesCount' => File::count(),
             ];
             return view('dashboards.admin', $stats);
         } elseif ($user->role === 'mentor') {
@@ -148,7 +157,8 @@ class HomeController extends Controller
                 'availableTrainings' => Training::latest()->take(5)->with('mentor')->get(),
                 'recentJobs' => Job::latest()->take(5)->get(),
                 'myApplications' => JobApplication::where('user_id', $user->id)
-                    ->pluck('status', 'job_id'),
+                    ->get()
+                    ->keyBy('job_id'),
                 'myTrainings' => \App\Models\TrainingEnrollment::where('user_id', $user->id)
                     ->with(['training.mentor'])
                     ->latest()

@@ -69,6 +69,34 @@ class FileController extends Controller
     }
 
     /**
+     * Admin: Get all files from all users
+     */
+    public function adminIndex(Request $request)
+    {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, __('Unauthorized'));
+        }
+
+        $query = File::with('user')->latest();
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->input('type'));
+        }
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $files = $query->paginate(20);
+        return view('files.admin_index', compact('files'));
+    }
+
+    /**
      * Delete a file
      */
     public function destroy(File $file)

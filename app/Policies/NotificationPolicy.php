@@ -12,7 +12,7 @@ class NotificationPolicy
      */
     public function view(User $user, Notification $notification): bool
     {
-        return $user->id === $notification->user_id;
+        return $user->id === $notification->user_id || $user->role === 'admin';
     }
 
     /**
@@ -20,6 +20,6 @@ class NotificationPolicy
      */
     public function delete(User $user, Notification $notification): bool
     {
-        return $user->id === $notification->user_id;
+        return $user->id === $notification->user_id || $user->role === 'admin';
     }
 }

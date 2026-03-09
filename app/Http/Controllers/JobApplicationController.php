@@ -12,19 +12,24 @@ class JobApplicationController extends Controller
     /**
      * Show all applications for a job
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = JobApplication::with(['user', 'job', 'mentor'])->latest();
+
         // Only admins and mentors can view all applications
         if (auth()->user()->role === 'admin') {
-            $applications = JobApplication::with(['user', 'job', 'mentor'])->latest()->get();
+            // No extra filtering needed for admin by default
         } elseif (auth()->user()->role === 'mentor') {
-            $applications = JobApplication::where('mentor_id', auth()->id())
-                ->with(['user', 'job', 'mentor'])
-                ->latest()
-                ->get();
+            $query->where('mentor_id', auth()->id());
         } else {
             abort(403, 'غير مصرح لك بعرض هذه الصفحة.');
         }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $applications = $query->get();
 
         return view('job_applications.index', compact('applications'));
     }

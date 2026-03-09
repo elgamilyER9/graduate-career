@@ -49,7 +49,32 @@
                                     style="max-width: 80%;">
                                     <div
                                         class="message-bubble p-3 rounded-4 shadow-sm {{ $msg->sender_id === auth()->id() ? 'bg-primary text-white bubble-mine' : 'bg-white text-dark bubble-theirs' }}">
-                                        <p class="mb-0 lh-base">{{ $msg->body }}</p>
+                                        @if($msg->body)
+                                            <p class="mb-0 lh-base">{{ $msg->body }}</p>
+                                        @endif
+                                        
+                                        @if($msg->file_path)
+                                            <div class="mt-2 pt-2 border-top border-white border-opacity-10">
+                                                @if(str_contains($msg->file_type, 'image'))
+                                                    <a href="{{ Storage::url($msg->file_path) }}" target="_blank" class="d-block overflow-hidden rounded-3 shadow-sm hover-lift">
+                                                        <img src="{{ Storage::url($msg->file_path) }}" class="img-fluid w-100" style="max-height: 250px; object-fit: cover;" alt="{{ $msg->file_name }}">
+                                                    </a>
+                                                @else
+                                                    <div class="d-flex align-items-center gap-3 p-2 rounded-3 {{ $msg->sender_id === auth()->id() ? 'bg-white bg-opacity-10' : 'bg-light' }}">
+                                                        <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:40px;height:40px;background:{{ $msg->sender_id === auth()->id() ? 'rgba(255,255,255,0.2)' : '#e9ecef' }};">
+                                                            <i class="bi bi-file-earmark-text fs-5"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1 overflow-hidden">
+                                                            <div class="fw-bold truncate small mb-0">{{ $msg->file_name }}</div>
+                                                            <div class="extra-small opacity-75 text-uppercase">{{ explode('/', $msg->file_type)[1] ?? 'File' }}</div>
+                                                        </div>
+                                                        <a href="{{ route('messages.download', $msg) }}" class="btn btn-sm btn-link {{ $msg->sender_id === auth()->id() ? 'text-white' : 'text-primary' }} p-0">
+                                                            <i class="bi bi-download fs-5"></i>
+                                                        </a>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        @endif
                                     </div>
                                     <span class="extra-small text-muted mt-2 opacity-75 letter-spacing-1">
                                         {{ $msg->sender_id === auth()->id() ? __('You') . ' • ' : '' }}{{ $msg->created_at->format('H:i') }}
@@ -74,15 +99,38 @@
 
                     <!-- Message Input -->
                     <div class="chat-footer p-4 bg-white border-top">
-                        <form action="{{ route('messages.store', $user) }}" method="POST" id="chatForm">
+                        <form action="{{ route('messages.store', $user) }}" method="POST" id="chatForm" enctype="multipart/form-data">
                             @csrf
+                            
+                            {{-- File Preview Container --}}
+                            <div id="filePreviewContainer" class="mb-3 d-none animate__animated animate__fadeIn">
+                                <div class="d-flex align-items-center gap-3 p-2 rounded-4 bg-light shadow-sm">
+                                    <div id="imagePreview" class="d-none overflow-hidden rounded-3" style="width: 50px; height: 50px;">
+                                        <img src="" class="h-100 w-100" style="object-fit: cover;">
+                                    </div>
+                                    <div id="fileIcon" class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-file-earmark fs-4 text-primary"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-0 fw-bold small truncate" id="fileNamePreview"></p>
+                                        <small class="text-muted" id="fileSizePreview"></small>
+                                    </div>
+                                    <button type="button" class="btn btn-light rounded-circle btn-sm shadow-none" id="removeFileBtn">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+
                             <div
-                                class="premium-input-group d-flex align-items-center bg-light rounded- pill p-2 ps-4 shadow-sm">
+                                class="premium-input-group d-flex align-items-center bg-light rounded-pill p-2 ps-4 shadow-sm">
                                 <textarea name="body" class="form-control border-0 bg-transparent shadow-none py-2" rows="1"
-                                    placeholder="{{ __('Write your message...') }}" id="messageInput" required
+                                    placeholder="{{ __('Write your message...') }}" id="messageInput"
                                     style="resize: none;"></textarea>
+                                
+                                <input type="file" name="file" id="fileInput" class="d-none">
+
                                 <div class="d-flex gap-2 pe-1">
-                                    <button type="button" class="btn btn-light rounded-circle shadow-none text-muted">
+                                    <button type="button" class="btn btn-light rounded-circle shadow-none text-muted" id="attachBtn">
                                         <i class="bi bi-paperclip fs-5"></i>
                                     </button>
                                     <button type="button" class="btn btn-light rounded-circle shadow-none text-muted">
@@ -194,6 +242,10 @@
         document.addEventListener('DOMContentLoaded', function () {
             const chatBody = document.getElementById('chatBody');
             const messageInput = document.getElementById('messageInput');
+            const fileInput = document.getElementById('fileInput');
+            const attachBtn = document.getElementById('attachBtn');
+            const filePreview = document.getElementById('filePreviewContainer');
+            const removeFileBtn = document.getElementById('removeFileBtn');
 
             // Auto-scroll to bottom
             chatBody.scrollTop = chatBody.scrollHeight;
@@ -214,6 +266,42 @@
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     document.getElementById('chatForm').submit();
+                }
+            });
+
+            // File Upload Logic
+            attachBtn.addEventListener('click', () => fileInput.click());
+
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    document.getElementById('fileNamePreview').textContent = file.name;
+                    document.getElementById('fileSizePreview').textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+                    
+                    filePreview.classList.remove('d-none');
+
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.querySelector('#imagePreview img').src = e.target.result;
+                            document.getElementById('imagePreview').classList.remove('d-none');
+                            document.getElementById('fileIcon').classList.add('d-none');
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        document.getElementById('imagePreview').classList.add('d-none');
+                        document.getElementById('fileIcon').classList.remove('d-none');
+                    }
+                    
+                    messageInput.removeAttribute('required');
+                }
+            });
+
+            removeFileBtn.addEventListener('click', () => {
+                fileInput.value = '';
+                filePreview.classList.add('d-none');
+                if (!messageInput.value) {
+                    messageInput.setAttribute('required', 'required');
                 }
             });
         });

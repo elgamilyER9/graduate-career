@@ -31,35 +31,40 @@
                 }
             @endphp
             <div class="col-12 col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: {{ $loop->index * 0.1 }}s">
-                <div class="card border-0 shadow-lg rounded-4 overflow-hidden transition-all duration-300 hover-translate-y-n3 h-100 p-4">
-                    <div class="d-flex align-items-center mb-4">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden transition-all duration-300 hover-translate-y-n3 h-100 p-4 bg-white position-relative" style="border-top: 4px solid #0d6efd !important;">
+                    
+                    <div class="position-absolute top-0 end-0 p-3 opacity-25">
+                        <i class="bi bi-diagram-3-fill text-primary" style="font-size: 4rem;"></i>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4 position-relative z-1">
                         <div class="position-relative">
                             <img src="https://ui-avatars.com/api/?name={{ urlencode($targetUser->name) }}&background=0D6EFD&color=fff&size=60"
-                                alt="User" class="rounded-circle shadow-sm">
-                            <span class="position-absolute bottom-0 end-0 bg-success border border-white border-2 rounded-circle p-1 shadow-sm"></span>
+                                alt="User" class="rounded-circle shadow-sm border border-2 border-white">
+                            <span class="position-absolute bottom-0 end-0 bg-success border border-white border-2 rounded-circle shadow-sm" style="width: 14px; height: 14px;"></span>
                         </div>
                         <div class="ms-3">
-                            <h5 class="fw-bold text-dark mb-0">{{ $targetUser->name }}</h5>
-                            <span class="badge bg-primary-subtle text-primary rounded-pill small fw-semibold text-uppercase mt-1" style="font-size: 0.65rem;">
-                                {{ $badgeText }}
+                            <h5 class="fw-black text-dark mb-0 fs-5">{{ $targetUser->name }}</h5>
+                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill small fw-bold text-uppercase mt-1 tracking-wider" style="font-size: 0.65rem;">
+                                <i class="bi bi-link-45deg me-1"></i> {{ $badgeText }}
                             </span>
                         </div>
                     </div>
                     
-                    <div class="bg-light p-3 rounded-4 mb-4">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="text-muted small fw-bold text-uppercase">{{ __('Faculty') }}</span>
-                            <span class="text-dark small fw-semibold">{{ $targetUser->faculty->name ?? __('Unknown') }}</span>
+                    <div class="bg-light bg-opacity-50 p-3 rounded-4 mb-4 border border-light position-relative z-1">
+                        <div class="d-flex justify-content-between mb-2 align-items-center">
+                            <span class="text-muted small fw-bold text-uppercase tracking-wider" style="font-size: 0.7rem;"><i class="bi bi-building me-1"></i> {{ __('Faculty') }}</span>
+                            <span class="text-dark small fw-bold">{{ $targetUser->faculty->name ?? __('Unknown') }}</span>
                         </div>
-                        <div class="d-flex justify-content-between">
-                            <span class="text-muted small fw-bold text-uppercase">{{ __('Member Since') }}</span>
-                            <span class="text-dark small fw-semibold">{{ $targetUser->created_at->format('M d, Y') }}</span>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-muted small fw-bold text-uppercase tracking-wider" style="font-size: 0.7rem;"><i class="bi bi-calendar-check me-1"></i> {{ __('Joined') }}</span>
+                            <span class="text-dark small fw-bold">{{ $targetUser->created_at->format('M d, Y') }}</span>
                         </div>
                     </div>
 
-                    <div class="mt-auto d-flex gap-2">
+                    <div class="mt-auto d-flex gap-2 position-relative z-1 border-top pt-3">
                         <a href="mailto:{{ $targetUser->email }}"
-                            class="btn btn-primary rounded-pill flex-grow-1 fw-bold shadow-sm py-2">
+                            class="btn btn-outline-primary rounded-pill flex-grow-1 fw-bold border-2">
                             <i class="bi bi-envelope-at me-2"></i> {{ __('Email') }}
                         </a>
                         @php
@@ -69,11 +74,11 @@
                                 ->count();
                         @endphp
                         <a href="{{ route('messages.show', $targetUser) }}"
-                            class="btn btn-light rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center position-relative"
+                            class="btn btn-primary rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center position-relative hover-scale"
                             style="width: 44px; height: 44px;" title="{{ __('Chat with :name', ['name' => $targetUser->name]) }}">
-                            <i class="bi bi-chat-dots-fill text-primary mt-1"></i>
+                            <i class="bi bi-chat-dots-fill text-white pb-1"></i>
                             @if($unreadFrom)
-                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-white border-2 rounded-circle" style="width: 12px; height: 12px;"></span>
                             @endif
                         </a>
                     </div>

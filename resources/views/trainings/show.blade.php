@@ -2,13 +2,35 @@
 
 @section('content')
     <div class="container-fluid px-4 py-5">
-        <div class="d-flex align-items-center mb-4">
-            <a href="{{ route('trainings.index') }}" class="btn btn-light rounded-circle p-2 me-3 shadow-sm">
-                <i class="bi bi-arrow-left"></i>
-            </a>
-            <div>
-                <h2 class="fw-bold text-dark mb-1">{{ $training->name ?? $training->title }}</h2>
-                <p class="text-muted mb-0">{{ __('Training Program Details') }}</p>
+        <!-- Premium Header -->
+        <div class="row mb-5 animate__animated animate__fadeIn">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white position-relative"
+                    style="border-left: 5px solid #198754 !important;">
+                    <div class="position-absolute opacity-10" style="right: -20px; top: -20px; transform: rotate(-15deg);">
+                        <i class="bi bi-journal-bookmark-fill text-success" style="font-size: 8rem;"></i>
+                    </div>
+                    <div
+                        class="card-body p-4 p-md-5 position-relative z-1 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
+                        <div class="d-flex align-items-center gap-4">
+                            <a href="{{ route('trainings.index') }}"
+                                class="btn btn-light rounded-circle d-flex align-items-center justify-content-center shadow-sm hover-scale"
+                                style="width: 50px; height: 50px;" title="{{ __('Back to Trainings') }}">
+                                <i class="bi bi-arrow-left fs-5 text-success"></i>
+                            </a>
+                            <div>
+                                <span
+                                    class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-1 mb-2 fw-bold tracking-wider">{{ __('Training Details') }}</span>
+                                <h2 class="fw-black text-dark mb-1" style="letter-spacing: -0.5px;">
+                                    {{ $training->name ?? $training->title }}</h2>
+                                <p class="text-muted fw-bold mb-0">
+                                    <i class="bi bi-building me-1 text-primary"></i>
+                                    {{ $training->provider ?? __('Not Specified Provider') }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -32,7 +54,8 @@
                         <div class="col-md-6">
                             <h6 class="fw-bold text-muted small mb-2">{{ __('CAREER PATH') }}</h6>
                             <p class="fw-bold">
-                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3">
+                                <span
+                                    class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3">
                                     {{ $training->careerPath->name ?? __('N/A') }}
                                 </span>
                             </p>
@@ -69,48 +92,56 @@
                                 </thead>
                                 <tbody>
                                     @foreach($training->students as $student)
-                                        <tr>
-                                            <td class="px-4 py-3 border-0 fw-bold text-dark">{{ $student->name }}</td>
-                                            <td class="px-4 py-3 border-0 text-muted">{{ $student->email }}</td>
-                                            <td class="px-4 py-3 border-0">
-                                                @php
-                                                    $status = $student->pivot->status;
-                                                    $badgeClass = 'bg-secondary';
-                                                    if ($status === 'pending') $badgeClass = 'bg-warning text-dark';
-                                                    elseif ($status === 'enrolled') $badgeClass = 'bg-success';
-                                                    elseif ($status === 'completed') $badgeClass = 'bg-primary';
-                                                    elseif ($status === 'dropped') $badgeClass = 'bg-danger';
-                                                @endphp
-                                                <span class="badge {{ $badgeClass }} rounded-pill px-3">{{ __($status === 'pending' ? 'Pending' : ($status === 'enrolled' ? 'Enrolled' : ucfirst($status))) }}</span>
-                                            </td>
-                                            @if(auth()->user()->role === 'admin' || auth()->user()->id === $training->mentor_id)
-                                                <td class="px-4 py-3 border-0">
-                                                    @if($student->pivot->status === 'pending')
-                                                        <div class="d-flex gap-2">
-                                                            <form method="POST" action="{{ route('training_enrollments.update', $student->pivot->id) }}">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="enrolled">
-                                                                <button class="btn btn-sm btn-success">{{ __('Approve') }}</button>
-                                                            </form>
-                                                            <form method="POST" action="{{ route('training_enrollments.update', $student->pivot->id) }}">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <input type="hidden" name="status" value="dropped">
-                                                                <button class="btn btn-sm btn-danger">{{ __('Decline') }}</button>
-                                                            </form>
-                                                        </div>
-                                                    @elseif($student->pivot->status === 'enrolled')
-                                                        <form method="POST" action="{{ route('training_enrollments.update', $student->pivot->id) }}">
-                                                            @csrf
-                                                            @method('PATCH')
-                                                            <input type="hidden" name="status" value="dropped">
-                                                            <button class="btn btn-sm btn-outline-danger">{{ __('Drop') }}</button>
-                                                        </form>
-                                                    @endif
-                                                </td>
-                                            @endif
-                                        </tr>
+                                                            <tr>
+                                                                <td class="px-4 py-3 border-0 fw-bold text-dark">{{ $student->name }}</td>
+                                                                <td class="px-4 py-3 border-0 text-muted">{{ $student->email }}</td>
+                                                                <td class="px-4 py-3 border-0">
+                                                                    @php
+                                                                        $status = $student->pivot->status;
+                                                                        $badgeClass = 'bg-secondary';
+                                                                        if ($status === 'pending')
+                                                                            $badgeClass = 'bg-warning text-dark';
+                                                                        elseif ($status === 'enrolled')
+                                                                            $badgeClass = 'bg-success';
+                                                                        elseif ($status === 'completed')
+                                                                            $badgeClass = 'bg-primary';
+                                                                        elseif ($status === 'dropped')
+                                                                            $badgeClass = 'bg-danger';
+                                                                    @endphp
+                                         <span
+                                                                        class="badge {{ $badgeClass }} rounded-pill px-3">{{ __($status === 'pending' ? 'Pending' : ($status === 'enrolled' ? 'Enrolled' : ucfirst($status))) }}</span>
+                                                                </td>
+                                                                @if(auth()->user()->role === 'admin' || auth()->user()->id === $training->mentor_id)
+                                                                    <td class="px-4 py-3 border-0">
+                                                                        @if($student->pivot->status === 'pending')
+                                                                            <div class="d-flex gap-2">
+                                                                                <form method="POST"
+                                                                                    action="{{ route('training_enrollments.update', $student->pivot->id) }}">
+                                                                                    @csrf
+                                                                                    @method('PATCH')
+                                                                                    <input type="hidden" name="status" value="enrolled">
+                                                                                    <button class="btn btn-sm btn-success">{{ __('Approve') }}</button>
+                                                                                </form>
+                                                                                <form method="POST"
+                                                                                    action="{{ route('training_enrollments.update', $student->pivot->id) }}">
+                                                                                    @csrf
+                                                                                    @method('PATCH')
+                                                                                    <input type="hidden" name="status" value="dropped">
+                                                                                    <button class="btn btn-sm btn-danger">{{ __('Decline') }}</button>
+                                                                                </form>
+                                                                            </div>
+                                                                        @elseif($student->pivot->status === 'enrolled')
+                                                                            <form method="POST"
+                                                                                action="{{ route('training_enrollments.update', $student->pivot->id) }}">
+                                                                                @csrf
+                                                                                @method('PATCH')
+                                                                                <input type="hidden" name="status" value="dropped">
+                                                                                <button class="btn btn-sm btn-outline-danger">{{ __('Drop') }}</button>
+                                                                            </form>
+                                                                        @endif
+                                                                    </td>
+                                                                @endif
+                                                            </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -133,7 +164,8 @@
                         <a href="{{ route('trainings.edit', $training) }}" class="btn btn-primary w-100 rounded-3 mb-2 fw-bold">
                             <i class="bi bi-pencil me-2"></i> {{ __('Edit') }}
                         </a>
-                        <form action="{{ route('trainings.destroy', $training) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure?') }}');">
+                        <form action="{{ route('trainings.destroy', $training) }}" method="POST"
+                            onsubmit="return confirm('{{ __('Are you sure?') }}');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger w-100 rounded-3 fw-bold">
@@ -191,4 +223,22 @@
             </div>
         </div>
     </div>
+    <style>
+        .fw-black {
+            font-weight: 900;
+        }
+
+        .tracking-wider {
+            letter-spacing: 0.05em;
+        }
+
+        .hover-scale {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .hover-scale:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+    </style>
 @endsection
