@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Training extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'name', 'provider', 'description', 'career_path_id', 'mentor_id'];
+    protected $fillable = ['title', 'name', 'provider', 'description', 'instructor', 'duration', 'price', 'career_path_id', 'mentor_id'];
 
     public function careerPath()
     {
@@ -28,7 +28,7 @@ class Training extends Model
     public function students()
     {
         return $this->belongsToMany(User::class, 'training_enrollments', 'training_id', 'user_id')
-                    ->withTimestamps()
-                    ->withPivot('id', 'status');
+            ->withTimestamps()
+            ->withPivot('id', 'status');
     }
 }

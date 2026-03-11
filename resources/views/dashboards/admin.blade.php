@@ -136,7 +136,7 @@
                         <div class="card-body p-4 d-flex align-items-center gap-4">
                             <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
                                 style="width:50px;height:50px;background:#fef3c7;">
-                                <i class="bi bi-person-heart-fill fs-3 text-warning"></i>
+                                <i class="bi bi-person-heart fs-3 text-warning"></i>
                             </div>
                             <div>
                                 <h2 class="fw-black text-warning mb-0">{{ $pendingMentorshipCount }}</h2>
@@ -857,8 +857,8 @@
                     noRow.className = 'no-results-row';
                     const cols = rows[0]?.querySelectorAll('td,th').length || 3;
                     noRow.innerHTML = `<td colspan="${cols}" class="text-center py-4 text-muted small">
-                                        <i class="bi bi-search me-2 opacity-50"></i>{{ __('No results found.') }}
-                                    </td>`;
+                                            <i class="bi bi-search me-2 opacity-50"></i>{{ __('No results found.') }}
+                                        </td>`;
                     tbody.appendChild(noRow);
                 }
                 noRow.style.display = '';

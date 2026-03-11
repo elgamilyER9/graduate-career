@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class University extends Model
 {
-    use HasFactory;
-      protected $fillable = ['name'];
+  use HasFactory;
+  protected $fillable = ['name', 'location'];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
+  public function users()
+  {
+    return $this->hasMany(User::class);
+  }
 }

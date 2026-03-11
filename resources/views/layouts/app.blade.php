@@ -261,6 +261,75 @@
         .extra-small {
             font-size: 0.75rem;
         }
+
+        /* Premium Offcanvas Styles */
+        .offcanvas {
+            border: none;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.9) !important;
+            width: 320px !important;
+        }
+
+        [dir="rtl"] .offcanvas-start {
+            transform: translateX(100%);
+        }
+
+        .offcanvas-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+        }
+
+        .offcanvas-body {
+            padding: 1.5rem;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.85rem 1.25rem;
+            border-radius: 12px;
+            color: #475569;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            background: var(--primary-color);
+            color: white !important;
+        }
+
+        .mobile-nav-link:hover i,
+        .mobile-nav-link.active i {
+            color: white !important;
+        }
+
+        .mobile-nav-link i {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+        }
+
+        .mobile-profile-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        @media (max-width: 767.98px) {
+            .navbar-brand span {
+                font-size: 1.1rem;
+            }
+
+            .brand-logo {
+                width: 32px;
+                height: 32px;
+            }
+        }
     </style>
 </head>
 
@@ -281,13 +350,14 @@
                     </div>
                     <span>Graduate<span class="text-primary">Career</span></span>
                 </a>
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <i class="bi bi-list h3 mb-0"></i>
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#mobileNavbar" aria-controls="mobileNavbar"
+                    aria-label="{{ __('Toggle navigation') }}">
+                    <i class="bi bi-list h2 mb-0"></i>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Desktop Menu -->
+                <div class="collapse navbar-collapse d-none d-md-flex" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
@@ -340,7 +410,7 @@
                                             <li><a class="dropdown-item" href="{{ route('users.index') }}"><i
                                                         class="bi bi-people me-2 text-primary"></i> {{ __('Users') }}</a></li>
                                             <li><a class="dropdown-item" href="{{ route('admin.mentorship_requests.index') }}"><i
-                                                        class="bi bi-person-heart-fill me-2 text-warning"></i>
+                                                        class="bi bi-person-heart me-2 text-warning"></i>
                                                     {{ __('Mentorship Requests') }}</a></li>
                                             <li><a class="dropdown-item" href="{{ route('admin.notifications.index') }}"><i
                                                         class="bi bi-bell-fill me-2 text-danger"></i>
@@ -361,11 +431,9 @@
                                         </li>
                                         <li><a class="dropdown-item" href="{{ route('search.advanced') }}"><i
                                                     class="bi bi-search me-2 text-secondary"></i>
-                                                {{ __('Advanced Search') }}</a>
-                                        </li>
+                                                {{ __('Advanced Search') }}</a></li>
                                         <li><a class="dropdown-item" href="{{ route('files.index') }}"><i
-                                                    class="bi bi-folder-fill me-2 text-info"></i> {{ __('Files') }}</a>
-                                        </li>
+                                                    class="bi bi-folder-fill me-2 text-info"></i> {{ __('Files') }}</a></li>
                                         @if(Auth::user()->role === 'admin')
                                             <li>
                                                 <hr class="dropdown-divider opacity-50">
@@ -398,14 +466,12 @@
                                 </a>
                             @endif
                         </li>
-                        <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link fw-bold px-3" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
-
                             @if (Route::has('register'))
                                 <li class="nav-item ms-md-2">
                                     <a class="btn btn-primary" href="{{ route('select-role') }}">{{ __('Register') }}</a>
@@ -416,14 +482,12 @@
                                 $unread = \App\Models\Message::where('receiver_id', auth()->id())->where('read', false)->count();
                                 $unreadNotifications = \App\Models\Notification::where('user_id', auth()->id())->where('read', false)->count();
                             @endphp
-                            <!-- Search Bar -->
                             <li class="nav-item me-2 d-none d-md-block">
                                 <form action="{{ route('search.index') }}" method="GET" class="d-flex">
                                     <input type="text" name="q" class="form-control form-control-sm rounded-pill px-3"
-                                        placeholder="{{ __('Search...') }}" style="width: 180px;">
+                                        placeholder="{{ __('Search...') }}" style="width: 150px;">
                                 </form>
                             </li>
-                            <!-- Notifications -->
                             <li class="nav-item me-2">
                                 <a class="nav-link position-relative" href="{{ route('notifications.index') }}"
                                     title="{{ __('Notifications') }}">
@@ -436,7 +500,6 @@
                                     @endif
                                 </a>
                             </li>
-                            <!-- Messages -->
                             <li class="nav-item me-2">
                                 <a class="nav-link position-relative" href="{{ route('connections.index') }}"
                                     title="{{ __('Messages') }}">
@@ -459,32 +522,131 @@
                                     </div>
                                     <span class="fw-semibold text-dark">{{ Auth::user()->name }}</span>
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn animate__faster"
-                                    aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('home') }}">
-                                        <i class="bi bi-house-door-fill me-2 text-primary"></i> {{ __('Home') }}
-                                    </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item d-flex align-items-center" href="{{ route('profile.edit') }}">
                                         <i class="bi bi-person-circle me-2 text-muted"></i> {{ __('Profile Settings') }}
                                     </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('files.index') }}">
-                                        <i class="bi bi-file-earmark-arrow-up me-2 text-success"></i> {{ __('My Files') }}
-                                    </a>
-                                    <hr class="dropdown-divider opacity-50">
-                                    <a class="dropdown-item d-flex align-items-center text-danger"
-                                        href="{{ route('logout') }}"
+                                    <a class="dropdown-item d-flex align-items-center" href="{{ route('logout') }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        <i class="bi bi-box-arrow-right me-2"></i> {{ __('Logout') }}
+                                        <i class="bi bi-box-arrow-right me-2 text-danger"></i> {{ __('Logout') }}
                                     </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
                                     </form>
                                 </div>
                             </li>
                         @endguest
                     </ul>
+                </div>
+
+                <!-- Premium Mobile Offcanvas -->
+                <div class="offcanvas {{ app()->getLocale() == 'ar' ? 'offcanvas-end' : 'offcanvas-start' }} d-md-none"
+                    tabindex="-1" id="mobileNavbar" aria-labelledby="mobileNavbarLabel">
+                    <div class="offcanvas-header bg-white">
+                        <div class="d-flex align-items-center">
+                            <div class="brand-logo me-2" style="width: 32px; height: 32px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <h5 class="offcanvas-title fw-black" id="mobileNavbarLabel">Graduate<span
+                                    class="text-primary">Career</span></h5>
+                        </div>
+                        <button type="button" class="btn-close text-reset shadow-none" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        @auth
+                            <div class="mobile-profile-card d-flex align-items-center gap-3">
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D6EFD&color=fff&size=48"
+                                    class="rounded-circle shadow-sm" alt="User">
+                                <div>
+                                    <h6 class="fw-black mb-0">{{ Auth::user()->name }}</h6>
+                                    <p class="text-muted small-caps fw-bold mb-0" style="font-size: 0.7rem;">
+                                        {{ strtoupper(Auth::user()->role) }}</p>
+                                </div>
+                            </div>
+                        @endauth
+
+                        <div class="mobile-search mb-4">
+                            <form action="{{ route('search.index') }}" method="GET" class="position-relative">
+                                <i
+                                    class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                <input type="text" name="q"
+                                    class="form-control rounded-pill ps-5 py-2 fw-medium border-light shadow-sm"
+                                    placeholder="{{ __('Search anything...') }}">
+                            </form>
+                        </div>
+
+                        <nav class="vstack">
+                            @auth
+                                <a href="{{ route('front') }}"
+                                    class="mobile-nav-link {{ request()->routeIs('front') ? 'active' : '' }}">
+                                    <i class="bi bi-house-door-fill"></i> {{ __('Home') }}
+                                </a>
+                                <a href="{{ route('home') }}"
+                                    class="mobile-nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
+                                    <i class="bi bi-grid-fill"></i> {{ __('Dashboard') }}
+                                </a>
+                                <a href="{{ route('mentors.index') }}"
+                                    class="mobile-nav-link {{ request()->routeIs('mentors.index') ? 'active' : '' }}">
+                                    <i class="bi bi-people-fill"></i> {{ __('Mentors') }}
+                                </a>
+                                <a href="{{ route('connections.index') }}"
+                                    class="mobile-nav-link {{ request()->routeIs('connections.index') ? 'active' : '' }}">
+                                    <i class="bi bi-chat-dots-fill"></i> {{ __('Messages') }}
+                                </a>
+                                <a href="{{ route('notifications.index') }}"
+                                    class="mobile-nav-link {{ request()->routeIs('notifications.index') ? 'active' : '' }}">
+                                    <i class="bi bi-bell-fill"></i> {{ __('Notifications') }}
+                                </a>
+                                <hr class="my-3 opacity-10">
+                                @if(Auth::user()->role === 'admin')
+                                    <a href="{{ route('users.index') }}" class="mobile-nav-link">
+                                        <i class="bi bi-shield-lock-fill"></i> {{ __('Identity Control') }}
+                                    </a>
+                                @endif
+                                <a href="{{ route('jobs.index') }}" class="mobile-nav-link">
+                                    <i class="bi bi-briefcase-fill"></i> {{ __('Career Pulse') }}
+                                </a>
+                                <a href="{{ route('trainings.index') }}" class="mobile-nav-link">
+                                    <i class="bi bi-mortarboard-fill"></i> {{ __('Global Training') }}
+                                </a>
+                                <hr class="my-3 opacity-10">
+                                <a href="{{ route('profile.edit') }}" class="mobile-nav-link">
+                                    <i class="bi bi-person-gear"></i> {{ __('Settings') }}
+                                </a>
+                                <a href="{{ route('logout') }}" class="mobile-nav-link text-danger"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form-mobile').submit();">
+                                    <i class="bi bi-box-arrow-right"></i> {{ __('Log Out') }}
+                                </a>
+                                <form id="logout-form-mobile" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf</form>
+                            @else
+                                <a href="{{ route('login') }}" class="mobile-nav-link">
+                                    <i class="bi bi-box-arrow-in-right"></i> {{ __('Login') }}
+                                </a>
+                                <a href="{{ route('select-role') }}" class="mobile-nav-link">
+                                    <i class="bi bi-person-plus-fill"></i> {{ __('Join Now') }}
+                                </a>
+                            @endauth
+                        </nav>
+
+                        <div class="mt-auto pt-5 text-center">
+                            @if(app()->getLocale() == 'ar')
+                                <a class="btn btn-light rounded-pill px-4 py-2 border shadow-sm fw-bold d-inline-flex align-items-center gap-2"
+                                    href="{{ route('lang.switch', 'en') }}">
+                                    <i class="bi bi-globe2"></i> English
+                                </a>
+                            @else
+                                <a class="btn btn-light rounded-pill px-4 py-2 border shadow-sm fw-bold d-inline-flex align-items-center gap-2"
+                                    href="{{ route('lang.switch', 'ar') }}">
+                                    <i class="bi bi-globe2"></i> العربية
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -647,26 +809,26 @@
                     const toastId = 'toast-' + notification.id;
 
                     const toastHtml = `
-                            <div id="${toastId}" class="toast border-0 shadow-lg rounded-4 mb-3 animate__animated animate__slideInRight" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-                                <div class="toast-header border-0 bg-primary text-white rounded-top-4 py-2 px-3">
-                                    <i class="bi bi-bell-fill me-2"></i>
-                                    <strong class="me-auto">${notification.title}</strong>
-                                    <small class="text-white-50">Just now</small>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                                </div>
-                                <div class="toast-body bg-white rounded-bottom-4 p-3 shadow-sm">
-                                    <p class="mb-2 small text-dark">${notification.description}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <a href="{{ url('/notifications') }}" class="btn btn-sm btn-light rounded-pill px-3 border py-1 extra-small fw-bold">
-                                            <i class="bi bi-eye me-1"></i> View All
-                                        </a>
-                                        <button onclick="markAsRead(${notification.id}, '${toastId}')" class="btn btn-sm btn-primary rounded-pill px-3 py-1 extra-small fw-bold shadow-sm">
-                                            <i class="bi bi-check2 me-1"></i> Got it
-                                        </button>
+                                <div id="${toastId}" class="toast border-0 shadow-lg rounded-4 mb-3 animate__animated animate__slideInRight" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+                                    <div class="toast-header border-0 bg-primary text-white rounded-top-4 py-2 px-3">
+                                        <i class="bi bi-bell-fill me-2"></i>
+                                        <strong class="me-auto">${notification.title}</strong>
+                                        <small class="text-white-50">Just now</small>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body bg-white rounded-bottom-4 p-3 shadow-sm">
+                                        <p class="mb-2 small text-dark">${notification.description}</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <a href="{{ url('/notifications') }}" class="btn btn-sm btn-light rounded-pill px-3 border py-1 extra-small fw-bold">
+                                                <i class="bi bi-eye me-1"></i> View All
+                                            </a>
+                                            <button onclick="markAsRead(${notification.id}, '${toastId}')" class="btn btn-sm btn-primary rounded-pill px-3 py-1 extra-small fw-bold shadow-sm">
+                                                <i class="bi bi-check2 me-1"></i> Got it
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
 
                     const div = document.createElement('div');
                     div.innerHTML = toastHtml;

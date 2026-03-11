@@ -315,9 +315,12 @@
                 <div class="row g-4 mb-5">
                     <div class="col-12">
                         <h5
-                            class="fw-black text-dark text-center mb-5 text-uppercase tracking-widest border-bottom pb-4 border-light">
-                            <span class="bg-soft-primary px-4 py-2 rounded-pill"><i
-                                    class="bi bi-gear-wide-connected text-indigo-600 me-2"></i>{{ __('The Excellence Framework') }}</span>
+                            class="fw-black text-dark text-center mb-5 text-uppercase tracking-widest border-bottom pb-4 border-light d-flex align-items-center justify-content-center gap-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm"
+                                style="width:50px;height:50px;background:#e0f2fe;">
+                                <i class="bi bi-gear-wide-connected fs-3 text-info"></i>
+                            </div>
+                            {{ __('The Excellence Framework') }}
                         </h5>
                         <div class="row g-4">
                             @php
@@ -341,7 +344,8 @@
                                                 <i class="bi {{ $step['icon'] }} fs-1"></i>
                                                 <div class="position-absolute top-0 end-0 bg-indigo-950 text-white rounded-circle fw-black d-flex align-items-center justify-content-center border border-white"
                                                     style="width: 25px; height: 25px; font-size: 0.7rem; margin: -5px;">
-                                                    {{ $loop->iteration }}</div>
+                                                    {{ $loop->iteration }}
+                                                </div>
                                             </div>
                                         </div>
                                         <h5 class="fw-black text-dark mb-2">{{ __($step['title']) }}</h5>
@@ -356,8 +360,12 @@
                 <div class="row g-4 mb-5">
                     <div class="col-lg-8">
                         <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-light pb-3">
-                            <h5 class="fw-black text-dark mb-0 text-uppercase tracking-widest">
-                                <i class="bi bi-briefcase-fill text-indigo-600 me-2"></i> {{ __('Market Pulse') }}
+                            <h5 class="fw-black text-dark mb-0 text-uppercase tracking-widest d-flex align-items-center gap-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm"
+                                    style="width:50px;height:50px;background:#e0e7ff;">
+                                    <i class="bi bi-briefcase-fill fs-3 text-primary"></i>
+                                </div>
+                                {{ __('Market Pulse') }}
                             </h5>
                             <a href="{{ route('jobs.index') }}"
                                 class="btn btn-link text-indigo-600 fw-black small-caps text-decoration-none hover-translate-x-2 transition-all p-0">
@@ -404,8 +412,12 @@
 
                     <div class="col-lg-4">
                         <div class="d-flex align-items-center justify-content-between mb-4 border-bottom border-light pb-3">
-                            <h5 class="fw-black text-dark mb-0 text-uppercase tracking-widest">
-                                <i class="bi bi-shield-check text-warning me-2"></i> {{ __('Expert Node') }}
+                            <h5 class="fw-black text-dark mb-0 text-uppercase tracking-widest d-flex align-items-center gap-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm"
+                                    style="width:50px;height:50px;background:#fef3c7;">
+                                    <i class="bi bi-person-heart fs-3 text-warning"></i>
+                                </div>
+                                {{ __('Expert Node') }}
                             </h5>
                         </div>
                         <div class="advanced-glass-card shadow-lg p-3 border-0" style="background: rgba(255,255,255,0.6);">
