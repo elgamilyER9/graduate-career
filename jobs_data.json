@@ -1,0 +1,282 @@
+[
+    {
+        "id": 3,
+        "title": "Full Stack Developer",
+        "company": "جوجل",
+        "career_path_id": 5,
+        "created_at": "2026-02-28T19:42:42.000000Z",
+        "updated_at": "2026-02-28T19:42:42.000000Z",
+        "mentor_id": null,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 5,
+            "name": "الحوسبة السحابية و DevOps",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 4,
+        "title": "UI\/UX Designer",
+        "company": "ميكروسوفت",
+        "career_path_id": 9,
+        "created_at": "2026-02-28T19:43:42.000000Z",
+        "updated_at": "2026-02-28T19:43:42.000000Z",
+        "mentor_id": null,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 9,
+            "name": "تحليل الأعمال",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 7,
+        "title": "Backend Developer",
+        "company": "جوجل",
+        "career_path_id": 1,
+        "created_at": "2026-02-28T20:46:12.000000Z",
+        "updated_at": "2026-02-28T20:46:12.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 1,
+            "name": "تطوير الويب (Full Stack)",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 8,
+        "title": "Project Manager",
+        "company": "Innovation Hub",
+        "career_path_id": 4,
+        "created_at": "2026-02-28T20:49:13.000000Z",
+        "updated_at": "2026-02-28T20:49:13.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 4,
+            "name": "الأمن السيبراني",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 9,
+        "title": "Junior Frontend Engineer",
+        "company": "Creative Web Agency",
+        "career_path_id": 8,
+        "created_at": "2026-02-28T20:49:13.000000Z",
+        "updated_at": "2026-02-28T20:49:13.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 8,
+            "name": "إدارة المشاريع",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 10,
+        "title": "UI\/UX Designer",
+        "company": "Product Studio",
+        "career_path_id": 3,
+        "created_at": "2026-02-28T20:49:13.000000Z",
+        "updated_at": "2026-02-28T20:49:13.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 3,
+            "name": "علوم البيانات والذكاء الاصطناعي",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 14,
+        "title": "Backend Engineer (Node.js)",
+        "company": "FinTech Innovators",
+        "career_path_id": 8,
+        "created_at": "2026-02-28T20:49:36.000000Z",
+        "updated_at": "2026-02-28T20:49:36.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 8,
+            "name": "إدارة المشاريع",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 15,
+        "title": "Mobile Developer (Flutter)",
+        "company": "Startup Founders",
+        "career_path_id": 7,
+        "created_at": "2026-02-28T20:49:36.000000Z",
+        "updated_at": "2026-02-28T20:49:36.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 7,
+            "name": "التصميم الجرافيكي و UI\/UX",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 16,
+        "title": "Project Manager",
+        "company": "Innovation Hub",
+        "career_path_id": 7,
+        "created_at": "2026-02-28T20:49:36.000000Z",
+        "updated_at": "2026-02-28T20:49:36.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 7,
+            "name": "التصميم الجرافيكي و UI\/UX",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 25,
+        "title": "Laravel Senior Developer",
+        "company": "Google",
+        "career_path_id": 1,
+        "created_at": "2026-03-10T01:28:03.000000Z",
+        "updated_at": "2026-03-10T01:28:03.000000Z",
+        "mentor_id": null,
+        "description": "تجربة في تطوير الـ APIs المعقدة",
+        "location": "Cairo",
+        "salary_range": "10k-15k",
+        "type": "full-time",
+        "career_path": {
+            "id": 1,
+            "name": "تطوير الويب (Full Stack)",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 26,
+        "title": "HR Specialist",
+        "company": "DU",
+        "career_path_id": 10,
+        "created_at": "2026-03-11T08:58:58.000000Z",
+        "updated_at": "2026-03-11T08:58:58.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 10,
+            "name": "اختبار البرمجيات وضمان الجودة",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 27,
+        "title": "Senior Laravel Developer",
+        "company": "Tech Solutions Corp",
+        "career_path_id": 4,
+        "created_at": "2026-03-19T04:38:33.000000Z",
+        "updated_at": "2026-03-19T04:38:33.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 4,
+            "name": "الأمن السيبراني",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    },
+    {
+        "id": 28,
+        "title": "Junior Frontend Engineer",
+        "company": "Creative Web Agency",
+        "career_path_id": 12,
+        "created_at": "2026-03-19T04:38:33.000000Z",
+        "updated_at": "2026-03-19T04:38:33.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 12,
+            "name": "تطوير الويب (Full Stack)",
+            "description": null,
+            "created_at": "2026-03-19T04:38:33.000000Z",
+            "updated_at": "2026-03-19T04:38:33.000000Z"
+        }
+    },
+    {
+        "id": 29,
+        "title": "Project Manager",
+        "company": "Innovation Hub",
+        "career_path_id": 5,
+        "created_at": "2026-03-19T04:38:33.000000Z",
+        "updated_at": "2026-03-19T04:38:33.000000Z",
+        "mentor_id": 9,
+        "description": null,
+        "location": null,
+        "salary_range": null,
+        "type": null,
+        "career_path": {
+            "id": 5,
+            "name": "الحوسبة السحابية و DevOps",
+            "description": null,
+            "created_at": "2026-02-27T00:52:46.000000Z",
+            "updated_at": "2026-02-27T00:52:46.000000Z"
+        }
+    }
+]

@@ -1,0 +1,148 @@
+.sub-navbar {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: #ffffff;
+    height: 42px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    z-index: 1060;
+    font-family: 'Inter', 'Cairo', sans-serif;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Premium glass shine effect */
+.sub-navbar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    animation: subShine 8s infinite linear;
+}
+
+@keyframes subShine {
+    to {
+        left: 200%;
+    }
+}
+
+.sub-nav-container {
+    max-width: 1536px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* This puts items on left and right */
+    gap: 1.5rem;
+}
+
+.sub-nav-left,
+.sub-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.sub-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.sub-nav-item i {
+    color: #60a5fa;
+    font-size: 1rem;
+    filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.3));
+}
+
+.live-time {
+    color: #fbbf24;
+    font-family: 'monospace';
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.divider {
+    color: rgba(255, 255, 255, 0.2);
+    margin: 0 6px;
+}
+
+.sub-nav-sep {
+    width: 1px;
+    height: 18px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.prayer-name {
+    color: #ffffff;
+    background: rgba(59, 130, 246, 0.3);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prayer-time {
+    font-weight: 700;
+    color: #34d399;
+}
+
+.hijri {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #f8fafc;
+}
+
+/* RTL Adjustments */
+[dir="rtl"] .sub-nav-container {
+    flex-direction: row;
+    /* Keep it horizontal but swap left/right visually */
+}
+
+/* Ensuring mobile behavior is clean */
+@media (max-width: 991px) {
+    .sub-navbar {
+        height: auto;
+        padding: 5px 0;
+    }
+
+    .sub-nav-container {
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px 1rem;
+    }
+
+    .sub-nav-left,
+    .sub-nav-right {
+        width: 100%;
+        justify-content: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 5px;
+    }
+
+    .sub-nav-right {
+        border-bottom: none;
+    }
+
+    .sub-nav-sep {
+        display: none;
+    }
+}
