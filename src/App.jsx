@@ -15,6 +15,7 @@ import Universities from './pages/Universities';
 import UniversityDetails from './pages/UniversityDetails';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
+import ScrollButtons from './components/ScrollButtons';
 
 const App = () => {
     const { i18n } = useTranslation();
@@ -79,6 +80,7 @@ const App = () => {
                         </Routes>
                     </div>
                     <Footer />
+                    <ScrollButtons />
                 </div>
             </Router>
         </ErrorBoundary>

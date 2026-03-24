@@ -118,8 +118,8 @@ const Universities = () => {
                                         </div>
                                         
                                         <div className="card-body p-4 d-flex flex-column text-center">
-                                            <div className="uni-icon-square mx-auto mb-3 bg-primary bg-opacity-10 rounded-4 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px' }}>
-                                                <i className="fas fa-graduation-cap fa-2x text-primary"></i>
+                                            <div className="uni-icon-square mx-auto mb-3 bg-white shadow-sm rounded-4 d-flex align-items-center justify-content-center" style={{ width: '60px', height: '60px', border: '1px solid #eee' }}>
+                                                <span style={{ fontSize: '2.5rem' }}>🏛️</span>
                                             </div>
                                             <h4 className="fw-black text-dark mb-3" style={{ fontSize: '1.3rem', lineHeight: '1.4' }}>{uni.name}</h4>
                                             

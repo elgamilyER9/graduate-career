@@ -200,8 +200,8 @@ const Home = () => {
                     <div className="row g-4 justify-content-center">
                         <div className="col-md-6 col-lg-3">
                             <div className="featurs-item text-center rounded-4 bg-white p-5 shadow-lg border-0 h-100 transition-all hover-translate">
-                                <div className="featurs-icon btn-square rounded-circle bg-primary-soft mb-4 mx-auto d-flex align-items-center justify-content-center" style={{ width: '90px', height: '90px' }}>
-                                    <i className="fas fa-graduation-cap fa-3x text-primary"></i>
+                                <div className="featurs-icon btn-square rounded-circle bg-white shadow-lg mb-4 mx-auto d-flex align-items-center justify-content-center" style={{ width: '90px', height: '90px' }}>
+                                    <span style={{ fontSize: '3rem' }}>🏛️</span>
                                 </div>
                                 <div className="featurs-content">
                                     <h5 className="fw-bold mb-3">{t('features.growth.title')}</h5>
