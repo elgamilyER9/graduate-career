@@ -195,50 +195,58 @@ const Home = () => {
             </div>
 
             {/* Features Section */}
-            <div className="container-fluid py-5 bg-white position-relative" style={{ zIndex: 10, marginTop: '-60px' }}>
+            <div className="container-fluid py-5 position-relative" style={{ zIndex: 10, marginTop: '-60px' }}>
                 <div className="container py-lg-4">
                     <div className="row g-4 justify-content-center">
                         <div className="col-md-6 col-lg-3">
-                            <div className="featurs-item text-center rounded-4 bg-white p-5 shadow-lg border-0 h-100 transition-all hover-translate">
-                                <div className="featurs-icon btn-square rounded-circle bg-white shadow-lg mb-4 mx-auto d-flex align-items-center justify-content-center" style={{ width: '90px', height: '90px' }}>
-                                    <span style={{ fontSize: '3rem' }}>🏛️</span>
-                                </div>
-                                <div className="featurs-content">
-                                    <h5 className="fw-bold mb-3">{t('features.growth.title')}</h5>
-                                    <p className="mb-0 text-muted small px-3">{t('features.growth.desc')}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6 col-lg-3">
-                            <div className="featurs-item text-center rounded-4 bg-white p-5 shadow-lg border-0 h-100 transition-all hover-translate">
-                                <div className="featurs-icon btn-square rounded-circle bg-primary-soft mb-4 mx-auto d-flex align-items-center justify-content-center" style={{ width: '90px', height: '90px' }}>
-                                    <i className="fas fa-user-shield fa-3x text-primary"></i>
-                                </div>
-                                <div className="featurs-content">
-                                    <h5 className="fw-bold mb-3">{t('features.secure.title')}</h5>
-                                    <p className="mb-0 text-muted small px-3">{t('features.secure.desc')}</p>
+                            <div className="feature-3d-perspective">
+                                <div className="feature-card-premium feature-stagger-in" style={{ animationDelay: '0.1s' }}>
+                                    <div className="feature-icon-box">
+                                        <i className="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <div className="feature-content">
+                                        <h5 className="feature-title">{t('features.growth.title')}</h5>
+                                        <p className="feature-desc">{t('features.growth.desc')}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-3">
-                            <div className="featurs-item text-center rounded-4 bg-white p-5 shadow-lg border-0 h-100 transition-all hover-translate">
-                                <div className="featurs-icon btn-square rounded-circle bg-primary-soft mb-4 mx-auto d-flex align-items-center justify-content-center" style={{ width: '90px', height: '90px' }}>
-                                    <i className="fas fa-brain fa-3x text-primary"></i>
-                                </div>
-                                <div className="featurs-content">
-                                    <h5 className="fw-bold mb-3">{t('features.ai.title')}</h5>
-                                    <p className="mb-0 text-muted small px-3">{t('features.ai.desc')}</p>
+                            <div className="feature-3d-perspective">
+                                <div className="feature-card-premium feature-stagger-in" style={{ animationDelay: '0.2s' }}>
+                                    <div className="feature-icon-box">
+                                        <i className="fas fa-user-shield"></i>
+                                    </div>
+                                    <div className="feature-content">
+                                        <h5 className="feature-title">{t('features.secure.title')}</h5>
+                                        <p className="feature-desc">{t('features.secure.desc')}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-6 col-lg-3">
-                            <div className="featurs-item text-center rounded-4 bg-white p-5 shadow-lg border-0 h-100 transition-all hover-translate">
-                                <div className="featurs-icon btn-square rounded-circle bg-primary-soft mb-4 mx-auto d-flex align-items-center justify-content-center" style={{ width: '90px', height: '90px' }}>
-                                    <i className="fas fa-headset fa-3x text-primary"></i>
+                            <div className="feature-3d-perspective">
+                                <div className="feature-card-premium feature-stagger-in" style={{ animationDelay: '0.3s' }}>
+                                    <div className="feature-icon-box">
+                                        <i className="fas fa-brain"></i>
+                                    </div>
+                                    <div className="feature-content">
+                                        <h5 className="feature-title">{t('features.ai.title')}</h5>
+                                        <p className="feature-desc">{t('features.ai.desc')}</p>
+                                    </div>
                                 </div>
-                                <div className="featurs-content">
-                                    <h5 className="fw-bold mb-3">{t('features.support.title')}</h5>
-                                    <p className="mb-0 text-muted small px-3">{t('features.support.desc')}</p>
+                            </div>
+                        </div>
+                        <div className="col-md-6 col-lg-3">
+                            <div className="feature-3d-perspective">
+                                <div className="feature-card-premium feature-stagger-in" style={{ animationDelay: '0.4s' }}>
+                                    <div className="feature-icon-box">
+                                        <i className="fas fa-headset"></i>
+                                    </div>
+                                    <div className="feature-content">
+                                        <h5 className="feature-title">{t('features.support.title')}</h5>
+                                        <p className="feature-desc">{t('features.support.desc')}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

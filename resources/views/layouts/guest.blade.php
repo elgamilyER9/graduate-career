@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Elgamily Ramadan (ER9)') }}</title>
+    <title>@hasSection('title')@yield('title') | {{ config('app.name', 'Graduate Career') }}@else{{ config('app.name', 'Graduate Career') }}@endif</title>
+
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">

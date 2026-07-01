@@ -39,6 +39,19 @@ class NotificationController extends Controller
     }
 
     /**
+     * Get total notifications count
+     */
+    public function totalCount()
+    {
+        $user = auth()->user();
+        $count = $user->role === 'admin'
+            ? Notification::count()
+            : Notification::where('user_id', $user->id)->count();
+
+        return response()->json(['count' => $count]);
+    }
+
+    /**
      * Get recent notifications (AJAX)
      */
     public function recent()

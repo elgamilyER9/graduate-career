@@ -776,23 +776,7 @@
             transition: all 0.2s ease-in-out;
         }
 
-        /* Custom scrollbar for cards */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
+        /* Scrollbar inherits global styles from layout */
 
         .list-item {
             transition: all 0.3s ease;

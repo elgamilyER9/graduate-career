@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import LogoIcon from './LogoIcon';
 
 const Footer = () => {
     const { t, i18n } = useTranslation();
@@ -22,7 +23,7 @@ const Footer = () => {
                     <div className="footer-section about-section">
                         <Link to="/" className="footer-logo">
                             <div className="logo-icon-footer">
-                                <i className="fas fa-graduation-cap"></i>
+                                <LogoIcon size={22} />
                             </div>
                             <span className="logo-text-footer">graduate<span className="text-gradient"> career</span></span>
                         </Link>

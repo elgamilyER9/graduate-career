@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
+@section('title', __('All Notifications'))
+
 @section('content')
     <div class="container-fluid px-4 py-5">
         {{-- Header --}}
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
                 <h2 class="display-6 fw-bolder mb-2">
-                    <i class="bi bi-bell-fill me-2 text-primary"></i>{{ __('Notifications') }}
+                    <i class="bi bi-bell-fill me-2 text-primary"></i>{{ __('All Notifications') }}
                 </h2>
                 <p class="text-muted">{{ __('Stay updated with all your activities') }}</p>
             </div>

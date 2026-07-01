@@ -386,9 +386,9 @@ const Articles = () => {
 
                 /* Scrollbar */
                 .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-                .custom-scrollbar::-webkit-scrollbar-track { background: #f8f9fa; }
-                .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
-                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: #eef2f7; border-radius: 999px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #5b9cff 0%, #0f4cff 100%); border-radius: 999px; border: 2px solid #eef2f7; }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #3b7aed 0%, #0036cc 100%); }
                 
                 /* Typography enhancements */
                 .article-body-text p:first-of-type::first-letter {

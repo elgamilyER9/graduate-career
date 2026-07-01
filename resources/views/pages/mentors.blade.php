@@ -119,7 +119,7 @@
                                         </div>
                                         <h6 class="fw-bold text-dark mb-1">{{ __('Guidance from') }} <span class="text-success">{{ $mentor->name }}</span></h6>
                                         <p class="text-muted small fw-medium mb-0 bg-light rounded-pill px-2 py-1 d-inline-block mt-1">
-                                            {{ $mentor->job_title ?: $mentor->careerPath->name }}</p>
+                                            {{ $mentor->job_title ?: ($mentor->careerPath->name ?? __('Professional Mentor')) }}</p>
                                     </div>
 
                                     <form action="{{ route('mentorship_requests.store') }}" method="POST" class="mt-auto flex-grow-1 d-flex flex-column">

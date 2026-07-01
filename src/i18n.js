@@ -5,6 +5,10 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
     en: {
         translation: {
+            "app": {
+                "name": "Graduate Career",
+                "tagline": "Professional Career Recommendation System"
+            },
             "nav": {
                 "home": "Home",
                 "services": "Services",
@@ -318,6 +322,10 @@ const resources = {
     },
     ar: {
         translation: {
+            "app": {
+                "name": "Graduate Career",
+                "tagline": "نظام التوصية المهنية للخريجين"
+            },
             "nav": {
                 "home": "الرئيسية",
                 "services": "خدمات",

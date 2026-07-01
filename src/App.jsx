@@ -16,6 +16,7 @@ import UniversityDetails from './pages/UniversityDetails';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
 import ScrollButtons from './components/ScrollButtons';
+import DocumentTitle from './components/DocumentTitle';
 
 const App = () => {
     const { i18n } = useTranslation();
@@ -32,6 +33,7 @@ const App = () => {
     return (
         <ErrorBoundary>
             <Router>
+                <DocumentTitle />
                 <div className="app-container">
                     <Navbar />
                     <div style={{ minHeight: '600px' }}>

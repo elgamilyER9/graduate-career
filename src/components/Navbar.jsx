@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import LoginModal from './LoginModal';
 import SubNavbar from './SubNavbar';
 import NewsMarquee from './NewsMarquee';
+import LogoIcon from './LogoIcon';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -89,9 +90,7 @@ const Navbar = () => {
                 {/* Logo Section */}
                 <Link to="/" className="brand-logo" onClick={() => setIsMobileMenuOpen(false)}>
                     <div className="logo-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        </svg>
+                        <LogoIcon size={24} />
                     </div>
                     <span className="logo-text">graduate<span> career</span></span>
                 </Link>

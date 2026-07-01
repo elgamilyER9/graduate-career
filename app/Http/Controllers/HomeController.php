@@ -50,7 +50,7 @@ class HomeController extends Controller
             $data = [
                 'featuredJobs' => Job::latest()->take(4)->get(),
                 'featuredTrainings' => Training::latest()->take(3)->with('mentor')->get(),
-                'topMentors' => User::where('role', 'mentor')->latest()->take(4)->with(['university', 'faculty'])->get(),
+                'topMentors' => User::where('role', 'mentor')->latest()->take(4)->with(['university', 'faculty', 'careerPath'])->get(),
             ];
             return view('pages.front', $data);
         }
@@ -172,7 +172,7 @@ class HomeController extends Controller
     public function mentors()
     {
         $user = auth()->user();
-        $mentors = User::where('role', 'mentor')->with(['university', 'faculty'])->get();
+        $mentors = User::where('role', 'mentor')->with(['university', 'faculty', 'careerPath'])->get();
 
         // load any requests the current user has already sent so we can disable/hide the button
         $myRequests = [];

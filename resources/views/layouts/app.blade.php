@@ -8,7 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Graduate Career') }}</title>
+    <title>@hasSection('title')@yield('title') | {{ config('app.name', 'Graduate Career') }}@else{{ config('app.name', 'Graduate Career') }}@endif</title>
+
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +34,61 @@
             --primary-color: #0D6EFD;
             --primary-hover: #0056b3;
             --bg-light: #f8fafc;
+
+            --scrollbar-size: 8px;
+            --scrollbar-track: #eef2f7;
+            --scrollbar-thumb: #0f4cff;
+            --scrollbar-thumb-hover: #0036cc;
+            --scrollbar-border: #eef2f7;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+        }
+
+        ::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #5b9cff 0%, var(--scrollbar-thumb) 100%);
+            border-radius: 999px;
+            border: 2px solid var(--scrollbar-border);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #3b7aed 0%, var(--scrollbar-thumb-hover) 100%);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: var(--scrollbar-size);
+            height: var(--scrollbar-size);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+            border-radius: 999px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #5b9cff 0%, var(--scrollbar-thumb) 100%);
+            border-radius: 999px;
+            border: 2px solid var(--scrollbar-border);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #3b7aed 0%, var(--scrollbar-thumb-hover) 100%);
         }
 
         body {
@@ -154,7 +212,7 @@
         .brand-logo svg {
             width: 20px;
             height: 20px;
-            stroke: #fff;
+            color: #fff;
         }
 
         /* Generic Utilities */
@@ -248,6 +306,49 @@
         }
 
         /* Notification Utility Classes */
+        .nav-icon-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-icon-link:hover {
+            background: rgba(13, 110, 253, 0.08);
+        }
+
+        .notification-count-badge {
+            position: absolute;
+            top: 2px;
+            inset-inline-end: 0;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            line-height: 1;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 999px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+            pointer-events: none;
+        }
+
+        .notification-count-badge.mobile {
+            position: static;
+            margin-inline-start: auto;
+            min-width: 22px;
+            height: 22px;
+            font-size: 0.72rem;
+        }
+
         .rounded-top-4 {
             border-top-left-radius: 1rem !important;
             border-top-right-radius: 1rem !important;
@@ -312,6 +413,51 @@
             color: var(--primary-color);
         }
 
+        .nav-website-btn {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+            color: #047857 !important;
+            border: 2px solid #10b981 !important;
+            border-radius: 10px !important;
+            padding: 0.4rem 1rem !important;
+            font-weight: 700;
+            font-size: 0.88rem;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+            transition: all 0.25s ease;
+        }
+
+        .nav-website-btn:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: #fff !important;
+            border-color: #059669 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-website-btn i {
+            color: inherit;
+        }
+
+        .mobile-nav-link.nav-website-link {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+            color: #047857 !important;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+        }
+
+        .mobile-nav-link.nav-website-link i {
+            color: #10b981 !important;
+        }
+
+        .mobile-nav-link.nav-website-link:hover {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: #fff !important;
+            border-color: #059669;
+        }
+
+        .mobile-nav-link.nav-website-link:hover i {
+            color: #fff !important;
+        }
+
         .mobile-profile-card {
             background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
             border-radius: 16px;
@@ -330,26 +476,158 @@
                 height: 32px;
             }
         }
+
+        /* Sub Navbar */
+        .site-header {
+            z-index: 1030;
+        }
+
+        .sub-navbar {
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: #ffffff;
+            height: 42px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Cairo', 'Outfit', sans-serif;
+            letter-spacing: 0.01em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sub-navbar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 30%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            animation: subShine 8s infinite linear;
+        }
+
+        @keyframes subShine {
+            to { left: 200%; }
+        }
+
+        .sub-nav-container {
+            max-width: 1536px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            height: 100%;
+        }
+
+        .sub-nav-left,
+        .sub-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .sub-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sub-nav-item i {
+            color: #60a5fa;
+            font-size: 1rem;
+            filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.3));
+        }
+
+        .sub-navbar .live-time {
+            color: #fbbf24;
+            font-family: monospace;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .sub-navbar .divider {
+            color: rgba(255, 255, 255, 0.2);
+            margin: 0 6px;
+        }
+
+        .sub-nav-sep {
+            width: 1px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .sub-navbar .prayer-name {
+            color: #ffffff;
+            background: rgba(59, 130, 246, 0.3);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sub-navbar .prayer-time {
+            font-weight: 700;
+            color: #34d399;
+        }
+
+        .sub-navbar .hijri {
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .sub-navbar .weather-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #f8fafc;
+        }
+
+        .sub-navbar .loading-dots {
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
     </style>
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light sticky-top">
+        <header class="site-header sticky-top">
+            @include('layouts.partials.sub-navbar')
+
+            <nav class="navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <div class="brand-logo">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M12 22V12" stroke="white" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M22 7L12 12L2 7" stroke="white" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
+                        <x-brand-logo-icon />
                     </div>
                     <span>Graduate<span class="text-primary">Career</span></span>
                 </a>
+                @auth
+                    @php
+                        $notificationsUrl = auth()->user()->role === 'admin'
+                            ? route('admin.notifications.index')
+                            : route('notifications.index');
+                        $totalNotifications = auth()->user()->role === 'admin'
+                            ? \App\Models\Notification::count()
+                            : \App\Models\Notification::where('user_id', auth()->id())->count();
+                    @endphp
+                    <a href="{{ $notificationsUrl }}"
+                        class="nav-link nav-icon-link position-relative d-md-none ms-auto me-2"
+                        title="{{ __('All Notifications') }}">
+                        <i class="bi bi-bell-fill fs-5"></i>
+                        <span id="notification-badge-mobile-header" class="notification-count-badge"
+                            style="{{ $totalNotifications > 0 ? '' : 'display:none;' }}">
+                            {{ $totalNotifications > 99 ? '99+' : $totalNotifications }}
+                        </span>
+                    </a>
+                @endauth
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#mobileNavbar" aria-controls="mobileNavbar"
                     aria-label="{{ __('Toggle navigation') }}">
@@ -453,9 +731,9 @@
                     <ul class="navbar-nav ms-auto align-items-center">
                         <!-- Back to Website -->
                         <li class="nav-item me-2 d-none d-md-block">
-                            <a class="nav-link fw-bold btn btn-primary text-white rounded-pill px-3 py-1 shadow-sm d-flex align-items-center gap-2 hover-scale transition-all"
+                            <a class="nav-link nav-website-btn d-flex align-items-center gap-2"
                                 href="{{ url('/') }}" title="{{ __('Back to Website') }}">
-                                <i class="bi bi-box-arrow-up-right"></i> <span style="font-size: 0.9rem;">{{ __('Website') }}</span>
+                                <i class="bi bi-box-arrow-up-right"></i> <span>{{ __('Website') }}</span>
                             </a>
                         </li>
                         <!-- Language Switcher -->
@@ -487,7 +765,12 @@
                         @else
                             @php
                                 $unread = \App\Models\Message::where('receiver_id', auth()->id())->where('read', false)->count();
-                                $unreadNotifications = \App\Models\Notification::where('user_id', auth()->id())->where('read', false)->count();
+                                $notificationsUrl = $notificationsUrl ?? (auth()->user()->role === 'admin'
+                                    ? route('admin.notifications.index')
+                                    : route('notifications.index'));
+                                $totalNotifications = $totalNotifications ?? (auth()->user()->role === 'admin'
+                                    ? \App\Models\Notification::count()
+                                    : \App\Models\Notification::where('user_id', auth()->id())->count());
                             @endphp
                             <li class="nav-item me-2 d-none d-md-block">
                                 <form action="{{ route('search.index') }}" method="GET" class="d-flex">
@@ -496,15 +779,13 @@
                                 </form>
                             </li>
                             <li class="nav-item me-2">
-                                <a class="nav-link position-relative" href="{{ route('notifications.index') }}"
-                                    title="{{ __('Notifications') }}">
+                                <a class="nav-link nav-icon-link position-relative" href="{{ $notificationsUrl }}"
+                                    title="{{ __('All Notifications') }}">
                                     <i class="bi bi-bell-fill fs-5"></i>
-                                    @if($unreadNotifications)
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning">
-                                            {{ $unreadNotifications }}
-                                        </span>
-                                    @endif
+                                    <span id="notification-badge" class="notification-count-badge"
+                                        style="{{ $totalNotifications > 0 ? '' : 'display:none;' }}">
+                                        {{ $totalNotifications > 99 ? '99+' : $totalNotifications }}
+                                    </span>
                                 </a>
                             </li>
                             <li class="nav-item me-2">
@@ -541,11 +822,7 @@
                     <div class="offcanvas-header bg-white">
                         <div class="d-flex align-items-center">
                             <div class="brand-logo me-2" style="width: 32px; height: 32px;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
+                                <x-brand-logo-icon :size="18" />
                             </div>
                             <h5 class="offcanvas-title fw-black" id="mobileNavbarLabel">Graduate<span
                                     class="text-primary">Career</span></h5>
@@ -578,8 +855,8 @@
 
                         <nav class="vstack">
                             @auth
-                                <a href="{{ route('front') }}"
-                                    class="mobile-nav-link text-primary fw-bold bg-primary bg-opacity-10 mb-2 rounded-3 {{ request()->routeIs('front') ? 'active' : '' }}">
+                                <a href="{{ url('/') }}"
+                                    class="mobile-nav-link nav-website-link fw-bold mb-2">
                                     <i class="bi bi-box-arrow-up-right me-2"></i> {{ __('Back to Website') }}
                                 </a>
                                 <a href="{{ route('home') }}"
@@ -594,9 +871,13 @@
                                     class="mobile-nav-link {{ request()->routeIs('connections.index') ? 'active' : '' }}">
                                     <i class="bi bi-chat-dots-fill"></i> {{ __('Messages') }}
                                 </a>
-                                <a href="{{ route('notifications.index') }}"
-                                    class="mobile-nav-link {{ request()->routeIs('notifications.index') ? 'active' : '' }}">
-                                    <i class="bi bi-bell-fill"></i> {{ __('Notifications') }}
+                                <a href="{{ $notificationsUrl }}"
+                                    class="mobile-nav-link {{ request()->routeIs('notifications.index') || request()->routeIs('admin.notifications.index') ? 'active' : '' }}">
+                                    <i class="bi bi-bell-fill"></i> {{ __('All Notifications') }}
+                                    <span id="notification-badge-mobile" class="notification-count-badge mobile"
+                                        style="{{ $totalNotifications > 0 ? '' : 'display:none;' }}">
+                                        {{ $totalNotifications > 99 ? '99+' : $totalNotifications }}
+                                    </span>
                                 </a>
                                 <hr class="my-3 opacity-10">
                                 @if(Auth::user()->role === 'admin')
@@ -647,6 +928,7 @@
                 </div>
             </div>
         </nav>
+        </header>
 
         <main class="py-5">
             @yield('content')
@@ -703,15 +985,7 @@
                         <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-2">
                             <div class="brand-logo me-2 shadow-sm"
                                 style="width: 28px; height: 28px; border-radius: 8px;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M12 22V12" stroke="white" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M22 7L12 12L2 7" stroke="white" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
+                                <x-brand-logo-icon :size="16" />
                             </div>
                             <span class="fw-black text-dark fs-5 tracking-wider">Elgamily<span
                                     class="text-primary">Ramadan</span></span>
@@ -786,6 +1060,27 @@
                 // Real-time Notifications Polling
                 let shownNotificationIds = JSON.parse(sessionStorage.getItem('shown_notifications') || '[]');
 
+                function updateNotificationBadge(count) {
+                    const displayCount = count > 99 ? '99+' : count;
+                    ['notification-badge', 'notification-badge-mobile', 'notification-badge-mobile-header'].forEach(id => {
+                        const badge = document.getElementById(id);
+                        if (!badge) return;
+                        if (count > 0) {
+                            badge.textContent = displayCount;
+                            badge.style.display = 'inline-flex';
+                        } else {
+                            badge.style.display = 'none';
+                        }
+                    });
+                }
+
+                function fetchTotalCount() {
+                    fetch('{{ route('notifications.total.count') }}')
+                        .then(response => response.json())
+                        .then(data => updateNotificationBadge(data.count))
+                        .catch(error => console.error('Error fetching notification count:', error));
+                }
+
                 function fetchNotifications() {
                     fetch('{{ route('notifications.recent') }}')
                         .then(response => response.json())
@@ -797,6 +1092,7 @@
                                 }
                             });
                             sessionStorage.setItem('shown_notifications', JSON.stringify(shownNotificationIds));
+                            fetchTotalCount();
                         })
                         .catch(error => console.error('Error fetching notifications:', error));
                 }
@@ -816,8 +1112,8 @@
                                     <div class="toast-body bg-white rounded-bottom-4 p-3 shadow-sm">
                                         <p class="mb-2 small text-dark">${notification.description}</p>
                                         <div class="d-flex justify-content-between align-items-center mt-3">
-                                            <a href="{{ url('/notifications') }}" class="btn btn-sm btn-light rounded-pill px-3 border py-1 extra-small fw-bold">
-                                                <i class="bi bi-eye me-1"></i> View All
+                                            <a href="{{ $notificationsUrl ?? url('/notifications') }}" class="btn btn-sm btn-light rounded-pill px-3 border py-1 extra-small fw-bold">
+                                                <i class="bi bi-eye me-1"></i> {{ __('All Notifications') }}
                                             </a>
                                             <button onclick="markAsRead(${notification.id}, '${toastId}')" class="btn btn-sm btn-primary rounded-pill px-3 py-1 extra-small fw-bold shadow-sm">
                                                 <i class="bi bi-check2 me-1"></i> Got it
@@ -852,15 +1148,11 @@
                                 const bsToast = bootstrap.Toast.getInstance(toastElement);
                                 if (bsToast) bsToast.hide();
                             }
-                            const badge = document.querySelector('.bi-bell-fill + .badge');
-                            if (badge) {
-                                let count = parseInt(badge.textContent) - 1;
-                                if (count <= 0) badge.remove();
-                                else badge.textContent = count;
-                            }
+                            fetchTotalCount();
                         });
                 }
 
+                fetchTotalCount();
                 fetchNotifications();
                 setInterval(fetchNotifications, 30000);
             @endauth

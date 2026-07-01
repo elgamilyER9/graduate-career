@@ -196,9 +196,18 @@
             width: 6px;
         }
 
+        .chat-body::-webkit-scrollbar-track {
+            background: #eef2f7;
+            border-radius: 999px;
+        }
+
         .chat-body::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            background: linear-gradient(180deg, #5b9cff 0%, #0f4cff 100%);
+            border-radius: 999px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #3b7aed 0%, #0036cc 100%);
         }
 
         /* Utilities */

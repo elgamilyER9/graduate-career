@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Dashboard'))
+
 @section('content')
     <div class="container-fluid px-4 py-5">
         <!-- Welcome Header -->

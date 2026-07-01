@@ -844,21 +844,6 @@
             box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.1);
-        }
+        /* Scrollbar inherits global styles from layout */
     </style>
 @endsection
